@@ -22,6 +22,7 @@
         "barryvdh/laravel-ide-helper": "^2.12",
         "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.18",
+        "laravel/envoy": "^2.8",
         "laravel/pint": "^1.0",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
@@ -63,48 +64,6 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ],
-        "setup-base": [
-            "@composer install",
-            "npm install",
-            "npm run build",
-            "[ ! -e rr ] && ./vendor/bin/rr get-binary -n",
-            "touch database/database.sqlite",
-            "@php artisan migrate"
-        ],
-        "install-base": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "@php artisan key:generate --ansi"
-        ],
-        "setup-dev": [
-            "@install-base",
-            "@setup-base",
-            "caddy start --config Caddyfile.dev"
-        ],
-        "setup-prod": [
-            "@install-base",
-            "@setup-base",
-            "caddy start --config Caddyfile.prod"
-        ],
-        "deploy": [
-            "@setup-base",
-            "caddy reload --config Caddyfile.prod",
-            "@php artisan octane:reload"
-        ],
-        "refresh": [
-            "@composer dumpautoload",
-            "@php artisan clear-compiled",
-            "@php artisan optimize:clear",
-            "@php artisan config:clear",
-            "@php artisan view:clear",
-            "@php artisan route:clear",
-            "@php artisan cache:clear",
-            "@php artisan event:clear",
-            "@php artisan optimize",
-            "@php artisan config:cache",
-            "@php artisan view:cache",
-            "@php artisan route:cache",
-            "@php artisan event:cache"
         ]
     },
     "extra": {

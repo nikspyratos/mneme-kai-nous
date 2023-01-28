@@ -52,13 +52,31 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan nova:publish",
+            "@php artisan ide-helper:eloquent -n",
+            "@php artisan ide-helper:meta -n",
+            "@php artisan ide-helper:generate -n"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "refresh": [
+            "@php artisna clear-compiled",
+            "@php artisan optimize:clear",
+            "@php artisan config:clear",
+            "@php artisan view:clear",
+            "@php artisan route:clear",
+            "@php artisan cache:clear",
+            "@php artisan event:clea",
+            "@php artisan optimize",
+            "@php artisan config:cache",
+            "@php artisan view:cache",
+            "@php artisan route:cache",
+            "@php artisan event:cache"
         ]
     },
     "extra": {

@@ -180,6 +180,5 @@ return [
         Watchers\ViewWatcher::class => env('TELESCOPE_VIEW_WATCHER', true),
     ],
     'users' => [
-        env('TELESCOPE_USER_EMAIL')
     ]
 ];

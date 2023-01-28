@@ -8,6 +8,7 @@
         "php": "^8.2.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
+        "laravel/nova": "~4.0",
         "laravel/octane": "^1.4",
         "laravel/sanctum": "^3.0",
         "laravel/telescope": "^4.12",
@@ -25,6 +26,12 @@
         "phpunit/phpunit": "^9.5.10",
         "spatie/laravel-ignition": "^1.0"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "App\\": "app/",

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Account::class);
             $table->dateTime('date');
             $table->text('description');
-            $table->text('detail');
+            $table->text('detail')->nullable();
             $table->string('currency');
             $table->bigInteger('amount');
             $table->bigInteger('listed_balance');

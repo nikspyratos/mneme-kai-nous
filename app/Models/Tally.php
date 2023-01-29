@@ -11,7 +11,6 @@ class Tally extends Model
 
     public $fillable = [
         'name',
-        'categories',
         'currency',
         'amount',
     ];

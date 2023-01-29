@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('tallies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->json('categories');
             $table->string('currency');
             $table->bigInteger('amount');
             $table->timestamps();

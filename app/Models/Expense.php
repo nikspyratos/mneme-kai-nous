@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Account extends Model
+class Expense extends Model
 {
     use HasFactory;
 
     public $fillable = [
         'name',
-        'bank_name',
-        'account_number',
+        'description',
+        'group',
         'currency',
-        'balance',
-        'type',
+        'amount',
+        'due_date'
     ];
 
     public function transactions(): HasMany

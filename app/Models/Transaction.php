@@ -16,10 +16,12 @@ class Transaction extends Model
         'budget_id',
         'tally_id',
         'date',
+        'type',
         'description',
         'detail',
         'currency',
         'amount',
+        'fee',
         'listed_balance',
     ];
 

@@ -48,7 +48,6 @@
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
-            "@php artisan nova:publish",
             "@php artisan ide-helper:eloquent -n",
             "@php artisan ide-helper:meta -n",
             "@php artisan ide-helper:generate -n"

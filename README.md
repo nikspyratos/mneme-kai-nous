@@ -6,19 +6,20 @@ Personal automation
 
 ### Dev
 ```
-composer run-script setup-dev 
+php vendor/bin/envoy run install-dev
 ```
 
 ### Prod
 
 ```
-composer run-script setup-prod 
+php vendor/bin/envoy run install-dev
+
 ```
 
 ## Deploy (Prod-only)
 
 ```
-composer run-script deploy
+php vendor/bin/envoy run deploy
 ```
 
 ## Troubleshooting

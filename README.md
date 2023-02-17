@@ -30,6 +30,6 @@ php vendor/bin/envoy run deploy
 - Removes compiled class file
 - Clears & re-caches config, view, route, event and general cache
 
-```
-composer run-script refresh
-```
+## TODO
+
+- Install https://github.com/Wulfheart/laravel-actions-ide-helper once it supports Laravel 10

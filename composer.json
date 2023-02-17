@@ -13,6 +13,7 @@
         "laravel/sanctum": "^3.2",
         "laravel/telescope": "^4.12",
         "laravel/tinker": "^2.7",
+        "lorisleiva/laravel-actions": "^2.5",
         "maatwebsite/excel": "^3.1",
         "spiral/roadrunner": "^2.8.2"
     },

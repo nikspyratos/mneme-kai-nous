@@ -33,3 +33,6 @@ php vendor/bin/envoy run deploy
 ## TODO
 
 - Install https://github.com/Wulfheart/laravel-actions-ide-helper once it supports Laravel 10
+- Get Vite + HMR working with Caddy
+  - https://github.com/nuxt/nuxt/issues/12748
+  - https://github.com/vitejs/vite/discussions/6473

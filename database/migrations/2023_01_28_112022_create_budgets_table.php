@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('budgets', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('currency');
-            $table->bigInteger('amount');
+            $table->string('currency')->default('ZAR');
+            $table->bigInteger('amount')->nullable();
+            $table->string('period_type');
             $table->timestamps();
         });
     }

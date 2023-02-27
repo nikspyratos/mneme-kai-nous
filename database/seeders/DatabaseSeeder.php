@@ -3,10 +3,70 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Budget;
+use App\Models\Expense;
+use App\Models\Tally;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
+    private array $budgetData = [
+        [
+            'name' => 'Groceries',
+            'currency' => 'ZAR',
+            'amount' => 5000_00,
+            'period_type' => 'monthly',
+        ],
+        [
+            'name' => 'Discretionary',
+            'currency' => 'ZAR',
+            'amount' => 10000_00,
+            'period_type' => 'monthly',
+        ],
+    ];
+
+    private array $expenseData = [
+        [
+            'name' => 'Rent',
+            'description' => null,
+            'group' => null, //TODO group enum
+            'currency' => 'ZAR',
+            'amount' => '13000',
+            'due_period' => 'monthly', //NOTE enum?
+            'due_day' => 1
+        ],
+        [
+            'name' => 'Bond',
+            'description' => null,
+            'group' => null, //TODO group enum
+            'currency' => 'ZAR',
+            'amount' => '10500',
+            'due_period' => 'monthly', //NOTE enum?
+            'due_day' => 1
+        ],
+        [
+            'name' => 'Internet',
+            'description' => null,
+            'group' => null, //TODO group enum
+            'currency' => 'ZAR',
+            'amount' => '1000',
+            'due_period' => 'monthly', //NOTE enum?
+            'due_day' => 1
+        ],
+        [
+            'name' => 'Levies',
+            'description' => null,
+            'group' => null, //TODO group enum
+            'currency' => 'ZAR',
+            'amount' => '1000',
+            'due_period' => null,
+            'due_day' => null
+        ],
+    ];
+
     /**
      * Seed the application's database.
      *
@@ -14,11 +74,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        User::firstOrCreate([
+            'name' => 'Nik',
+            'email' => config('app.admin_user_email'),
+            'password' => bcrypt('zzzzzzzz'),
+        ]);
+        foreach ($this->budgetData as $budgetDatum) {
+            $budget = Budget::firstOrCreate($budgetDatum);
+            Tally::firstOrCreate([
+                'budget_id' => $budget->id,
+                'name' => $budget->name,
+                'currency' => $budget->currency,
+                'balance' => 0,
+                'start_date' => Carbon::today()->startOfMonth(),
+                'end_date' => Carbon::today()->endOfMonth(),
+            ]);
+        }
+        foreach ($this->expenseData as $expenseDatum) {
+            Expense::firstOrCreate($expenseDatum);
+        }
     }
 }

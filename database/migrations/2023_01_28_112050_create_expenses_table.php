@@ -16,11 +16,12 @@ return new class extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
-            $table->string('group');
-            $table->string('currency');
-            $table->bigInteger('amount');
-            $table->dateTime('due_date');
+            $table->text('description')->nullable();
+            $table->string('group')->nullable();
+            $table->string('currency')->default('ZAR');
+            $table->bigInteger('amount')->nullable();
+            $table->string('due_period')->nullable();
+            $table->integer('due_day')->nullable();
             $table->timestamps();
         });
     }

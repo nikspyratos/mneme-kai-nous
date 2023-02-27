@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('bank_name');
-            $table->string('account_number');
-            $table->string('currency');
-            $table->bigInteger('balance');
+            $table->string('account_number')->nullable();
+            $table->string('currency')->default('ZAR');
+            $table->bigInteger('balance')->nullable();
             $table->string('type');
             $table->timestamps();
         });

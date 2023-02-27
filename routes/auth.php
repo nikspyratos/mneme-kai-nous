@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 //    Route::get('login', [AuthenticatedSessionController::class, 'create'])
 //                ->name('login');
 //
-//    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::get('login', \Filament\Http\Livewire\Auth\Login::class)->name('login');
 //
 //    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
 //                ->name('password.request');

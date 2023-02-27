@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('summaries', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('currency');
-            $table->bigInteger('amount');
+            $table->string('currency')->default('ZAR');
+            $table->bigInteger('amount')->nullable();
             $table->timestamps();
         });
     }

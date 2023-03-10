@@ -37,16 +37,22 @@ class PerceptionSeeder extends Seeder
                 'name' => 'Finance',
                 'slug' => 'finance',
                 'description' => '',
-            ], [
-                'name' => 'Self',
-                'slug' => 'self',
-                'description' => 'Who are you?',
-            ], [
+            ],
+            [
+                'name' => 'Health',
+                'slug' => 'health',
+                'description' => 'Physical, mental, spiritual.',
+            ],
+            [
                 'name' => 'Hobbies',
                 'slug' => 'hobbies',
                 'description' => '',
             ],
-
+            [
+                'name' => 'Self',
+                'slug' => 'self',
+                'description' => 'Who are you?',
+            ],
         ];
 
         foreach ($data as $datum) {

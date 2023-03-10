@@ -13,7 +13,7 @@ class Quote extends Model
     public $fillable = [
         'perception_id',
         'content',
-        'author'
+        'author',
     ];
 
     public function perception(): BelongsTo

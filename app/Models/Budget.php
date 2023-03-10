@@ -21,6 +21,7 @@ class Budget extends Model
     public function currentTally(): ?Tally
     {
         $today = Carbon::today();
+
         return $this->tallies
             ->where('start_date', '<=', $today)
             ->where('end_date', '>=', $today)

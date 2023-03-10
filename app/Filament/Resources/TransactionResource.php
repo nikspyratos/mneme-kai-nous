@@ -2,16 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TransactionResource\Pages;
-use App\Filament\Resources\TransactionResource\RelationManagers;
+use App\Filament\Resources\TransactionResource\Pages\CreateTransaction;
+use App\Filament\Resources\TransactionResource\Pages\EditTransaction;
+use App\Filament\Resources\TransactionResource\Pages\ListTransactions;
 use App\Models\Transaction;
-use Filament\Forms;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
-use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 
 class TransactionResource extends Resource
 {
@@ -25,28 +29,28 @@ class TransactionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('account_id')
+                Select::make('account_id')
                     ->relationship('account', 'name')
                     ->required(),
-                Forms\Components\DateTimePicker::make('date')
+                DateTimePicker::make('date')
                     ->required(),
-                Forms\Components\Textarea::make('description')
+                Textarea::make('description')
                     ->required(),
-                Forms\Components\Textarea::make('detail'),
-                Forms\Components\TextInput::make('currency')
+                Textarea::make('detail'),
+                TextInput::make('currency')
                     ->required(),
-                Forms\Components\TextInput::make('amount')
+                TextInput::make('amount')
                     ->required(),
-                Forms\Components\TextInput::make('listed_balance')
+                TextInput::make('listed_balance')
                     ->required(),
-                Forms\Components\Select::make('expense_id')
+                Select::make('expense_id')
                     ->relationship('expense', 'name'),
-                Forms\Components\Select::make('budget_id')
+                Select::make('budget_id')
                     ->relationship('budget', 'name'),
-                Forms\Components\Select::make('tally_id')
+                Select::make('tally_id')
                     ->relationship('tally', 'name'),
-                Forms\Components\TextInput::make('type'),
-                Forms\Components\TextInput::make('fee'),
+                TextInput::make('type'),
+                TextInput::make('fee'),
             ]);
     }
 
@@ -54,48 +58,48 @@ class TransactionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('account.name'),
-                Tables\Columns\TextColumn::make('date')
+                TextColumn::make('account.name'),
+                TextColumn::make('date')
                     ->dateTime(),
-                Tables\Columns\TextColumn::make('description'),
-                Tables\Columns\TextColumn::make('detail'),
-                Tables\Columns\TextColumn::make('currency'),
-                Tables\Columns\TextColumn::make('amount'),
-                Tables\Columns\TextColumn::make('listed_balance'),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('description'),
+                TextColumn::make('detail'),
+                TextColumn::make('currency'),
+                TextColumn::make('amount'),
+                TextColumn::make('listed_balance'),
+                TextColumn::make('created_at')
                     ->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime(),
-                Tables\Columns\TextColumn::make('expense.name'),
-                Tables\Columns\TextColumn::make('budget.name'),
-                Tables\Columns\TextColumn::make('tally.name'),
-                Tables\Columns\TextColumn::make('type'),
-                Tables\Columns\TextColumn::make('fee'),
+                TextColumn::make('expense.name'),
+                TextColumn::make('budget.name'),
+                TextColumn::make('tally.name'),
+                TextColumn::make('type'),
+                TextColumn::make('fee'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTransactions::route('/'),
-            'create' => Pages\CreateTransaction::route('/create'),
-            'edit' => Pages\EditTransaction::route('/{record}/edit'),
+            'index' => ListTransactions::route('/'),
+            'create' => CreateTransaction::route('/create'),
+            'edit' => EditTransaction::route('/{record}/edit'),
         ];
-    }    
+    }
 }

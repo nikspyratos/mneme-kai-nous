@@ -11,6 +11,5 @@ class ConvertTransactionsToMarkdown
 
     public function handle(Collection $transactions)
     {
-
     }
 }

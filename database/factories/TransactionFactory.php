@@ -25,6 +25,7 @@ class TransactionFactory extends Factory
 
         $selectedBudget = $budgets->random();
         $selectedTally = $selectedBudget->currentTally();
+
         return [
             'expense_id' => $this->faker->randomElement([$expenses->random(), null]),
             'budget_id' => $selectedBudget->id,
@@ -48,6 +49,4 @@ class TransactionFactory extends Factory
             ];
         });
     }
-
-
 }

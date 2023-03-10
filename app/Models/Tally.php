@@ -16,7 +16,7 @@ class Tally extends Model
         'currency',
         'balance',
         'start_date',
-        'end_date'
+        'end_date',
     ];
 
     public $casts = [

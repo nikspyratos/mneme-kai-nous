@@ -219,6 +219,6 @@ return [
      | The day of the month the budgets will roll over to (start and end dates for tallies).
      | This should usually be the same day the primary income is expected to hit the primary account.
      */
-    'financial_month_rollover_day' => env('FINANCIAL_MONTH_ROLLOVER_DAY', 25)
+    'financial_month_rollover_day' => env('FINANCIAL_MONTH_ROLLOVER_DAY', 25),
 
 ];

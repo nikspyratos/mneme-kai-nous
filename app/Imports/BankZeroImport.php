@@ -3,8 +3,6 @@
 namespace App\Imports;
 
 use App\Models\Account;
-use App\Models\Expense;
-use App\Models\Tally;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -12,22 +10,21 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class BankZeroImport implements ToModel, WithMultipleSheets
 {
-
     public function __construct(
         private Account $account,
-    ) {}
+    ) {
+    }
+
     public function sheets(): array
     {
         return [
-            1 => new BankZeroTransactionSheetImport()
+            1 => new BankZeroTransactionSheetImport,
         ];
     }
 
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
         return new Transaction([
@@ -42,7 +39,7 @@ class BankZeroImport implements ToModel, WithMultipleSheets
             'currency' => $this->account->currency,
             'amount' => $row['Amount'],
             'fee' => $row['Fee'],
-            'listed_balance' => $row['Balance']
+            'listed_balance' => $row['Balance'],
         ]);
     }
 }

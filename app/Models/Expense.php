@@ -31,10 +31,11 @@ class Expense extends Model
         if (Carbon::today()->day > $this->due_day) {
             if ($this->due_period == 'monthly') {
                 return Carbon::today()->addMonth()->setDay($this->due_day);
-            } else if ($this->due_period == 'weekly') {
+            } elseif ($this->due_period == 'weekly') {
                 return Carbon::today()->addWeek()->setDay($this->due_day);
             }
         }
+
         return null;
     }
 }

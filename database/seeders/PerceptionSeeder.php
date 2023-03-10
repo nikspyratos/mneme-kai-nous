@@ -16,35 +16,35 @@ class PerceptionSeeder extends Seeder
             [
                 'name' => 'Dating & Relationships',
                 'slug' => 'dating-relationships',
-                'description' => 'How to deal with dating, relationships, and sexuality.'
+                'description' => 'How to deal with dating, relationships, and sexuality.',
             ],
             [
                 'name' => 'Ambition',
                 'slug' => 'ambition',
-                'description' => 'Career, business, ambition.'
+                'description' => 'Career, business, ambition.',
             ],
             [
                 'name' => 'Learning',
                 'slug' => 'learning',
-                'description' => ''
+                'description' => '',
             ],
             [
                 'name' => 'Collaboration & Leadership',
                 'slug' => 'collaboration-leadership',
-                'description' => 'Working in groups, communities, tribes, and leading.'
+                'description' => 'Working in groups, communities, tribes, and leading.',
             ],
             [
                 'name' => 'Finance',
                 'slug' => 'finance',
-                'description' => ''
-            ],[
+                'description' => '',
+            ], [
                 'name' => 'Self',
                 'slug' => 'self',
-                'description' => 'Who are you?'
-            ],[
+                'description' => 'Who are you?',
+            ], [
                 'name' => 'Hobbies',
                 'slug' => 'hobbies',
-                'description' => ''
+                'description' => '',
             ],
 
         ];

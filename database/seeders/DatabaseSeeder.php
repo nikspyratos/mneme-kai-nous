@@ -2,14 +2,12 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Budget;
 use App\Models\Expense;
 use App\Models\Tally;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -36,7 +34,7 @@ class DatabaseSeeder extends Seeder
             'currency' => 'ZAR',
             'amount' => '13000',
             'due_period' => 'monthly', //NOTE enum?
-            'due_day' => 1
+            'due_day' => 1,
         ],
         [
             'name' => 'Bond',
@@ -45,7 +43,7 @@ class DatabaseSeeder extends Seeder
             'currency' => 'ZAR',
             'amount' => '10500',
             'due_period' => 'monthly', //NOTE enum?
-            'due_day' => 1
+            'due_day' => 1,
         ],
         [
             'name' => 'Internet',
@@ -54,7 +52,7 @@ class DatabaseSeeder extends Seeder
             'currency' => 'ZAR',
             'amount' => '1000',
             'due_period' => 'monthly', //NOTE enum?
-            'due_day' => 1
+            'due_day' => 1,
         ],
         [
             'name' => 'Levies',
@@ -63,7 +61,7 @@ class DatabaseSeeder extends Seeder
             'currency' => 'ZAR',
             'amount' => '1000',
             'due_period' => null,
-            'due_day' => null
+            'due_day' => null,
         ],
     ];
 
@@ -78,9 +76,9 @@ class DatabaseSeeder extends Seeder
             'name' => 'Nik',
             'email' => config('app.admin_user_email'),
         ],
-        [
-            'password' => bcrypt('zzzzzzzz'),
-        ]);
+            [
+                'password' => bcrypt('zzzzzzzz'),
+            ]);
         foreach ($this->budgetData as $budgetDatum) {
             $budget = Budget::firstOrCreate($budgetDatum);
             Tally::firstOrCreate([

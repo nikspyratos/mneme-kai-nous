@@ -23,6 +23,10 @@ namespace App\Models{
  * @property string $type
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $debt
+ * @property-read mixed $debt_paid_off_percentage
+ * @property-read string $formatted_balance
+ * @property-read string $formatted_debt
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
  * @method static \Database\Factories\AccountFactory factory($count = null, $state = [])
@@ -34,12 +38,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereBankName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereCurrency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Account whereDebt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  */
 	class Account extends \Eloquent {}
 }
@@ -67,8 +70,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Budget whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget wherePeriodType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tally> $tallies
  */
 	class Budget extends \Eloquent {}
 }
@@ -103,8 +104,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Expense whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Expense whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Expense whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  */
 	class Expense extends \Eloquent {}
 }
@@ -131,8 +130,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Perception whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Perception whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Perception whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Quote> $quotes
  */
 	class Perception extends \Eloquent {}
 }
@@ -158,7 +155,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Quote whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quote wherePerceptionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quote whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class Quote extends \Eloquent {}
 }
@@ -182,7 +178,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class Summary extends \Eloquent {}
 }
@@ -201,6 +196,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Budget|null $budget
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally forCurrentMonth()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally query()
@@ -213,7 +209,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class Tally extends \Eloquent {}
 }
@@ -262,7 +257,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereTallyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereUpdatedAt($value)
- * @mixin \Eloquent
  */
 	class Transaction extends \Eloquent {}
 }
@@ -279,6 +273,7 @@ namespace App\Models{
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $birthdate
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
@@ -287,6 +282,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereBirthdate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
@@ -295,9 +291,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
- * @mixin \Eloquent
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  */
 	class User extends \Eloquent {}
 }

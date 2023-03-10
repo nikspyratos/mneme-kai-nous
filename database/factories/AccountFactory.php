@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\AccountType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,7 +23,7 @@ class AccountFactory extends Factory
             'account_number' => '1234567890',
             'currency' => $this->faker->randomElement(['EUR', 'USD', 'GBP', 'ZAR']),
             'balance' => $this->faker->randomNumber(5) * 100,
-            'type' => $this->faker->randomElement(['Credit', 'Loan', 'Home Loan', 'Transactional']),
+            'type' => $this->faker->randomElement(AccountType::cases())->value,
         ];
     }
 }

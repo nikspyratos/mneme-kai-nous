@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Enums\BudgetPeriodTypes;
 use App\Models\Budget;
 use App\Models\Tally;
+use App\Services\TallyRolloverDateCalculator;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 
@@ -29,14 +30,10 @@ class RolloverBudgetMonth extends Command
      */
     public function handle(): void
     {
-        $rolloverDay = config('app.financial_month_rollover_day', '25');
-        $rolloverDate = Carbon::today()->setDay($rolloverDay);
-        if ($rolloverDate->isWeekend()) {
-            $rolloverDate = $rolloverDate->previousWeekday();
-        }
-        if (Carbon::today()->day == $rolloverDate->day) {
+        $nextRolloverDate = TallyRolloverDateCalculator::getNextDate();
+        if (Carbon::today()->day == $nextRolloverDate->day) {
             $budgets = Budget::wherePeriodType(BudgetPeriodTypes::MONTHLY);
-            $nextMonthDay = Carbon::today()->addMonth()->setDay($rolloverDay);
+            $nextMonthDay = Carbon::today()->addMonth()->setDay(TallyRolloverDateCalculator::getRolloverDay());
             if ($nextMonthDay->isWeekend()) {
                 $nextMonthDay = $nextMonthDay->previousWeekday();
             }
@@ -47,7 +44,7 @@ class RolloverBudgetMonth extends Command
                     'currency' => $budget->currency,
                     'balance' => 0,
                     'start_date' => Carbon::today(),
-                    'end_date' => $nextMonthDay
+                    'end_date' => $nextMonthDay,
                 ]);
             });
             //TODO: LogSnag notification of rollover

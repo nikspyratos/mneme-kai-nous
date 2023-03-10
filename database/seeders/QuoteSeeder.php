@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Enums\PerceptionsIds;
-use App\Models\Perception;
 use App\Models\Quote;
 use Illuminate\Database\Seeder;
 

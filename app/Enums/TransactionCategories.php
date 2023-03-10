@@ -17,5 +17,4 @@ enum TransactionCategories: string
     case LEARNING = 'learning';
     case HOBBY = 'hobby';
     case VEHICLE = 'vehicle';
-
 }

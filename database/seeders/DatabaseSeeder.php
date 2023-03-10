@@ -77,6 +77,8 @@ class DatabaseSeeder extends Seeder
         User::firstOrCreate([
             'name' => 'Nik',
             'email' => config('app.admin_user_email'),
+        ],
+        [
             'password' => bcrypt('zzzzzzzz'),
         ]);
         foreach ($this->budgetData as $budgetDatum) {
@@ -93,5 +95,6 @@ class DatabaseSeeder extends Seeder
         foreach ($this->expenseData as $expenseDatum) {
             Expense::firstOrCreate($expenseDatum);
         }
+        $this->call(PerceptionSeeder::class);
     }
 }

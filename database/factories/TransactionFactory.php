@@ -33,8 +33,8 @@ class TransactionFactory extends Factory
             'type' => null, //TODO transaction categories
             'description' => $this->faker->words(5, true),
             'detail' => $this->faker->words(5, true),
-            'amount' => random_int(1, 10000_00) * 100,
-            'fee' => $this->faker->randomElement([random_int(0, 50_00), null]),
+            'amount' => random_int(1, 10000) * 100,
+            'fee' => $this->faker->randomElement([random_int(0, 50) * 100, null]),
             'listed_balance' => null,
         ];
     }

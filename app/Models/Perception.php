@@ -16,15 +16,6 @@ class Perception extends Model
         'description',
     ];
 
-    public const DATING_RELATIONSHIPS = 1;
-    public const AMBITION = 2;
-    public const LEARNING = 3;
-    public const LEADERSHIP_COLLABORATION = 4;
-    public const FINANCE = 5;
-    public const HEALTH = 6;
-    public const HOBBIES = 7;
-    public const MYSELF = 8;
-
     public function quotes(): HasMany
     {
         return $this->hasMany(Quote::class);

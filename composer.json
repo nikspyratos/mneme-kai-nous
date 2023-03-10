@@ -53,7 +53,8 @@
             "@php artisan filament:upgrade",
             "@php artisan ide-helper:eloquent -n",
             "@php artisan ide-helper:meta -n",
-            "@php artisan ide-helper:generate -n"
+            "@php artisan ide-helper:generate -n",
+            "@php artisan ide-helper:models -n"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

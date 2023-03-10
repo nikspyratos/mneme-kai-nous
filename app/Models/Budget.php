@@ -15,7 +15,7 @@ class Budget extends Model
         'name',
         'currency',
         'amount',
-        'period_type', //monthly
+        'period_type',
     ];
 
     public function currentTally(): ?Tally

@@ -17,6 +17,7 @@ class Transaction extends Model
         'tally_id',
         'date',
         'type',
+        'category',
         'description',
         'detail',
         'currency',

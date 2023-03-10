@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\BudgetPeriodTypes;
 use App\Models\Budget;
 use App\Models\Tally;
 use Illuminate\Console\Command;
@@ -34,7 +35,7 @@ class RolloverBudgetMonth extends Command
             $rolloverDate = $rolloverDate->previousWeekday();
         }
         if (Carbon::today()->day == $rolloverDate->day) {
-            $budgets = Budget::all();
+            $budgets = Budget::wherePeriodType(BudgetPeriodTypes::MONTHLY);
             $nextMonthDay = Carbon::today()->addMonth()->setDay($rolloverDay);
             if ($nextMonthDay->isWeekend()) {
                 $nextMonthDay = $nextMonthDay->previousWeekday();

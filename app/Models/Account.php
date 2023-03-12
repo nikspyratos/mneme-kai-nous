@@ -74,11 +74,8 @@ class Account extends Model
     public function getDebtPaidOffPercentageAttribute()
     {
         if ($this->type == AccountType::DEBT->value) {
-            $amount = round(($this->debt - $this->balance) / $this->debt, 2);
-
-            return Money::of($amount, $this->currency)->formatTo('en_ZA');
+            return round(($this->debt - $this->balance) / $this->debt, 2);
         }
-
         return null;
     }
 

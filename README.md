@@ -36,3 +36,13 @@ php vendor/bin/envoy run deploy
 - Get Vite + HMR working with Caddy
   - https://github.com/nuxt/nuxt/issues/12748
   - https://github.com/vitejs/vite/discussions/6473
+
+## Exposing the API publicly
+
+To test Investec's programmable banking events, you need a publicly accessible event.
+
+1. Install https://expose.dev/ & follow initial steps for token & server selection
+2. Run Octane `php artisan octane:start --watch`
+3. Run Expose `expose share https://localhost --subdomain=nikolaos-spyratos`
+
+The service should now be accessible on the web on the domain provided to you by Expose. Use this for programmable banking testing.

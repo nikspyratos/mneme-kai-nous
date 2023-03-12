@@ -14,8 +14,8 @@ use Illuminate\Support\Collection;
 
 class UpdateInvestecAccounts extends Command
 {
-    protected $signature = 'app:update-investec-accounts 
-    {--from=} 
+    protected $signature = 'app:update-investec-accounts
+    {--from=}
     {--to=}';
 
     protected $description = 'Retrieves latest balance & transactions for each Investec account';
@@ -31,7 +31,8 @@ class UpdateInvestecAccounts extends Command
             if ($this->hasOption('to')) {
                 $transactionsTo = Carbon::createFromFormat('Y-m-d', $this->option('to'))->format('Y-m-d');
             }
-        } catch (InvalidFormatException $e) {}
+        } catch (InvalidFormatException $e) {
+        }
         // Get API accounts and their balances
         $this->info('Fetching Investec accounts from API...');
         $investecAccounts = collect($investecApiClient->getAccounts());
@@ -50,7 +51,7 @@ class UpdateInvestecAccounts extends Command
         // Create missing accounts
         $this->info('Reconciling missing accounts...');
         if ($investecAccounts->count() !== $accounts->count()) {
-            $investecAccounts->each(function ($investecAccount) use ($investecApiClient, $investecAccountsBalances, &$accounts){
+            $investecAccounts->each(function ($investecAccount) use ($investecAccountsBalances, &$accounts) {
                 $balanceData = $investecAccountsBalances->firstWhere('accountId', $investecAccount['accountId']);
                 $newAccount = Account::firstOrCreateInvestec(
                     $investecAccount['accountNumber'],
@@ -68,7 +69,7 @@ class UpdateInvestecAccounts extends Command
         // Sync bank identifier, balance, and create/update transactions
         $accounts->each(function ($account) use ($investecApiClient, $investecAccounts, $investecAccountsBalances, $transactionsFrom, $transactionsTo) {
             $this->info('Updating bank accounts and transactions for account ' . $account->name . '...');
-            if (!$account->bank_identifier) {
+            if (! $account->bank_identifier) {
                 $account->bank_identifier = $investecAccounts->firstWhere('accountNumber', $account->account_number)['accountId'];
             }
             $account->balance = $investecAccountsBalances->firstWhere('accountId', $account->bank_identifier)['currentBalance'];
@@ -91,12 +92,11 @@ class UpdateInvestecAccounts extends Command
                         'listed_balance' => $investecTransaction['runningBalance'] * 100,
                         'data' => collect($investecTransaction)
                             ->except(['transactionDate', 'transactionType', 'description', 'amount', 'runningBalance'])
-                            ->toArray()
+                            ->toArray(),
                     ]
                 );
             });
         });
         $this->info('Complete!');
     }
-
 }

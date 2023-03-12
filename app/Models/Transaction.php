@@ -24,7 +24,7 @@ class Transaction extends Model
         'amount',
         'fee',
         'listed_balance',
-        'data'
+        'data',
     ];
 
     public $casts = [

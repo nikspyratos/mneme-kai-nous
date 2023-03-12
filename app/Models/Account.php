@@ -24,11 +24,11 @@ class Account extends Model
         'type',
         'has_overdraft',
         'bank_identifier',
-        'data'
+        'data',
     ];
 
     public $casts = [
-        'data' => 'object'
+        'data' => 'object',
     ];
 
     public static function firstOrCreateInvestec(
@@ -38,19 +38,18 @@ class Account extends Model
         ?string $bankIdentifier = null,
         ?string $accountName = null,
         ?array $data = null
-    ): self
-    {
+    ): self {
         return Account::firstOrCreate([
             'account_number' => $accountNumber,
             'bank_name' => Banks::INVESTEC->value,
             'currency' => $currency,
         ],
-        [
-            'name' => $accountName ?? Banks::INVESTEC->value . " " . $accountNumber,
-            'type' => AccountType::TRANSACTIONAL->value,
-            'bank_identifier' => $bankIdentifier,
-            'data' => $data
-        ]);
+            [
+                'name' => $accountName ?? Banks::INVESTEC->value . ' ' . $accountNumber,
+                'type' => AccountType::TRANSACTIONAL->value,
+                'bank_identifier' => $bankIdentifier,
+                'data' => $data,
+            ]);
     }
 
     public function transactions(): HasMany
@@ -86,7 +85,7 @@ class Account extends Model
     public function updateBalance(int $amount)
     {
         $this->balance -= $amount;
-        if ($this->balance < 0 && !$this->has_overdraft) {
+        if ($this->balance < 0 && ! $this->has_overdraft) {
             Log::error('Non-overdraft account has negative balance', ['account' => $this->name, 'balance' => $this->balance]);
         }
         if ($this->has_overdraft && abs($this->balance) > $this->overdraft_amount) {

@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\AccountType;
-use App\Enums\Banks;
 use App\Enums\Currencies;
 use App\Enums\InvestecTransactionTypes;
-use App\Enums\TransactionType;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Models\Transaction;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -41,10 +39,10 @@ class TransactionController extends Controller
                 'amount' => $request->input('centsAmount'),
                 'fee' => null,
                 'listed_balance' => null,
-                'data' => $request->except(['accountNumber', 'currencyCode', 'dateTime', 'reference', 'centsAmount'])
+                'data' => $request->except(['accountNumber', 'currencyCode', 'dateTime', 'reference', 'centsAmount']),
             ]);
             $account->updateBalance($transaction->amount);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error(self::class . ': ' . $e->getMessage());
         } finally {
             Log::debug(
@@ -55,7 +53,6 @@ class TransactionController extends Controller
                 ]
             );
         }
-
 
         return response()->json();
     }

@@ -226,6 +226,6 @@ return [
             'client_id' => env('INVESTEC_OPENAPI_CLIENTID'),
             'secret' => env('INVESTEC_OPENAPI_SECRET'),
             'api_key' => env('INVESTEC_OPENAPI_API_KEY'),
-        ]
-    ]
+        ],
+    ],
 ];

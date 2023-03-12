@@ -72,7 +72,7 @@ class UpdateInvestecAccounts extends Command
             if (! $account->bank_identifier) {
                 $account->bank_identifier = $investecAccounts->firstWhere('accountNumber', $account->account_number)['accountId'];
             }
-            $account->balance = $investecAccountsBalances->firstWhere('accountId', $account->bank_identifier)['currentBalance'];
+            $account->balance = $investecAccountsBalances->firstWhere('accountId', $account->bank_identifier)['currentBalance'] * 100;
             $account->save();
             $investecTransactions = collect($investecApiClient->getTransactions($account->bank_identifier, $transactionsFrom, $transactionsTo));
             $investecTransactions->each(function ($investecTransaction) use ($account) {

@@ -16,6 +16,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('telescope:prune --hours=48')->monthly();
         $schedule->command('app:rollover-budget-month')->daily();
+        //TODO Perhaps change to hourly/every X hours schedule
+        $schedule->command('app:update-investec-accounts')->daily();
     }
 
     /**

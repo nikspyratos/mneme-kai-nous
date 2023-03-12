@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Enums\AccountType;
 use App\Enums\Banks;
 use App\Enums\Currencies;
+use App\Enums\InvestecTransactionTypes;
+use App\Enums\TransactionType;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -16,26 +19,24 @@ class TransactionController extends Controller
 {
     public function createTransaction(Request $request)
     {
+        // NOTE: API access fetches non-card transactions,
+        // so for my purposes of budget tracking this endpoint is superfluous.
         try {
-            $bankName = Banks::INVESTEC->value;
-            $account = Account::firstOrCreate([
-                'account_number' => $request->input('accountNumber'),
-                'bank_name' => $bankName,
-                'currency' => Str::upper($request->input('currencyCode') ?? Currencies::RANDS->value),
-            ],
-            [
-                'name' => "$bankName " . $request->input('accountNumber'),
-                'type' => AccountType::TRANSACTIONAL->value,
-            ]);
+            $account = Account::firstOrCreateInvestec(
+                $request->input('accountNumber'),
+                Str::upper($request->input('currencyCode') ?? Currencies::RANDS->value)
+            );
             $transaction = Transaction::create([
                 'account_id' => $account->id,
                 'expense_id' => null,
                 'budget_id' => null,
                 'tally_id' => null,
-                'date' => $request->input('dateTime'),
-                'category' => $request->input('merchant.category.name'),
+                'date' => Carbon::parse($request->input('dateTime')) //Need to homogenise the time because the bank API only gives date
+                    ->setHour(0)
+                    ->setMinute(0)
+                    ->setSecond(0),
+                'category' => InvestecTransactionTypes::CARD->value,
                 'description' => $request->input('reference'),
-                'detail' => $request->input('merchant.name'),
                 'currency' => Str::upper($request->input('currencyCode')),
                 'amount' => $request->input('centsAmount'),
                 'fee' => null,

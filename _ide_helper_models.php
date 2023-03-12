@@ -24,6 +24,9 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int|null $debt
+ * @property int $has_overdraft
+ * @property int|null $overdraft_amount
+ * @property string|null $bank_identifier
  * @property-read mixed $debt_paid_off_percentage
  * @property-read string $formatted_balance
  * @property-read string $formatted_debt
@@ -35,12 +38,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Account query()
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereAccountNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereBalance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Account whereBankIdentifier($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereBankName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereCurrency($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereDebt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Account whereHasOverdraft($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Account whereOverdraftAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereUpdatedAt($value)
  */

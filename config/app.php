@@ -220,5 +220,12 @@ return [
      | This should usually be the same day the primary income is expected to hit the primary account.
      */
     'financial_month_rollover_day' => env('FINANCIAL_MONTH_ROLLOVER_DAY', 25),
-
+    'bank_apis' => [
+        'investec' => [
+            'base_url' => env('INVESTEC_OPENAPI_URL'),
+            'client_id' => env('INVESTEC_OPENAPI_CLIENTID'),
+            'secret' => env('INVESTEC_OPENAPI_SECRET'),
+            'api_key' => env('INVESTEC_OPENAPI_API_KEY'),
+        ]
+    ]
 ];

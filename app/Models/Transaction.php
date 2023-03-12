@@ -24,6 +24,12 @@ class Transaction extends Model
         'amount',
         'fee',
         'listed_balance',
+        'data'
+    ];
+
+    public $casts = [
+        'date' => 'datetime',
+        'data' => 'json',
     ];
 
     public function account(): BelongsTo

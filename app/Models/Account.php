@@ -7,6 +7,7 @@ use Brick\Money\Money;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Log;
 
 class Account extends Model
 {
@@ -20,6 +21,7 @@ class Account extends Model
         'balance',
         'debt',
         'type',
+        'has_overdraft',
     ];
 
     public function transactions(): HasMany
@@ -50,5 +52,17 @@ class Account extends Model
         }
 
         return null;
+    }
+
+    public function updateBalance(int $amount)
+    {
+        $this->balance -= $amount;
+        if ($this->balance < 0 && !$this->has_overdraft) {
+            Log::error('Non-overdraft account has negative balance', ['account' => $this->name, 'balance' => $this->balance]);
+        }
+        if ($this->has_overdraft && abs($this->balance) > $this->overdraft_amount) {
+            Log::error('Overdraft exceeded on account', ['account' => $this->name, 'balance' => $this->balance, 'overdraft' => $this->overdraft_amount]);
+        }
+        $this->save();
     }
 }

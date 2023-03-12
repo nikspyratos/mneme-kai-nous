@@ -196,6 +196,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Budget|null $budget
+ * @property-read string $formatted_balance
  * @method static \Illuminate\Database\Eloquent\Builder|Tally forCurrentMonth()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newQuery()
@@ -222,7 +223,7 @@ namespace App\Models{
  * @property int|null $expense_id
  * @property int|null $budget_id
  * @property int|null $tally_id
- * @property string $date
+ * @property \Illuminate\Support\Carbon $date
  * @property string|null $type
  * @property string|null $description
  * @property string|null $detail
@@ -233,6 +234,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $category
+ * @property array|null $data
  * @property-read \App\Models\Account|null $account
  * @property-read \App\Models\Budget|null $budget
  * @property-read \App\Models\Expense|null $expense
@@ -247,6 +249,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereCategory($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereCurrency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereDetail($value)
@@ -292,6 +295,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  */
-	class User extends \Eloquent {}
+	class User extends \Eloquent implements \Filament\Models\Contracts\FilamentUser {}
 }
 

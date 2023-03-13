@@ -63,7 +63,7 @@ class UpdateInvestecAccounts extends Command
         // Create missing accounts
         $this->info('Reconciling missing accounts...');
         if ($investecAccounts->count() !== $accounts->count()) {
-            foreach($investecAccounts as $investecAccount) {
+            foreach ($investecAccounts as $investecAccount) {
                 $balanceData = $investecAccountsBalances->firstWhere('accountId', $investecAccount['accountId']);
                 $newAccount = Account::firstOrCreateInvestec(
                     $investecAccount['accountNumber'],

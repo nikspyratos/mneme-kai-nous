@@ -2,7 +2,6 @@
 
 use App\Models\Account;
 use App\Models\Budget;
-use App\Models\ExpectedTransaction;
 use App\Models\Tally;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

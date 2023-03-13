@@ -76,6 +76,7 @@ class Account extends Model
         if ($this->type == AccountType::DEBT->value) {
             return round(($this->debt - $this->balance) / $this->debt, 2);
         }
+
         return null;
     }
 

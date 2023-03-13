@@ -43,6 +43,7 @@ class Transaction extends Model
         if ($endDate) {
             $query = $query->where('date', '<=', $endDate);
         }
+
         return $query;
     }
 

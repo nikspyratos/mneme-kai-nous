@@ -16,7 +16,7 @@ class AccountsWidget extends BaseWidget
         $accounts->each(function ($account) use (&$data) {
             $synced = $account->isBalanceInSyncWithTransactions() ? 'true' : 'false';
             $content = $account->formatted_balance;
-            $description = $account->bank_name . " | Synced: $synced";
+            $description = $account->bank_name . " | Synced: {$synced}";
             if ($account->type == AccountType::DEBT->value) {
                 $content .= ' / ' . $account->formattedDebt;
                 $description .= ' | Paid off: ' . $account->debtPaidOffPercentage . '%';

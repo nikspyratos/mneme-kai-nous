@@ -2,8 +2,8 @@
 
 namespace App\Filament\Widgets;
 
-use Carbon\Carbon;
 use Filament\Widgets\PieChartWidget;
+use Illuminate\Support\Carbon;
 
 class LifePercentage extends PieChartWidget
 {

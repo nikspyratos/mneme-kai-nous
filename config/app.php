@@ -228,4 +228,8 @@ return [
             'api_key' => env('INVESTEC_OPENAPI_API_KEY'),
         ],
     ],
+    'eskomsepush' => [
+        'base_url' => env('ESKOMSEPUSH_URL'),
+        'api_token' => env('ESKOMSEPUSH_API_TOKEN'),
+    ],
 ];

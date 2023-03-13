@@ -28,7 +28,7 @@ class Account extends Model
     ];
 
     public $casts = [
-        'data' => 'object',
+        'data' => 'json',
     ];
 
     public static function firstOrCreateInvestec(

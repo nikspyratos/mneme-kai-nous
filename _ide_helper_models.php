@@ -27,7 +27,7 @@ namespace App\Models{
  * @property int $has_overdraft
  * @property int|null $overdraft_amount
  * @property string|null $bank_identifier
- * @property object|null $data
+ * @property array|null $data
  * @property-read mixed $debt_paid_off_percentage
  * @property-read string $formatted_balance
  * @property-read string $formatted_debt
@@ -108,7 +108,7 @@ namespace App\Models{
  * @property int $enabled
  * @property string $type
  * @property int $is_tax_relevant
- * @property-read \Carbon\Carbon|null $next_due_date
+ * @property-read \Illuminate\Support\Carbon|null $next_due_date
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction newModelQuery()
@@ -131,6 +131,36 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereUpdatedAt($value)
  */
 	class ExpectedTransaction extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\LoadsheddingSchedule
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $zone
+ * @property string $api_id
+ * @property string $region
+ * @property array|null $today_times
+ * @property array|null $data
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read string $today_times_formatted
+ * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule query()
+ * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereApiId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereRegion($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereTodayTimes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereZone($value)
+ */
+	class LoadsheddingSchedule extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -269,7 +299,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction query()
- * @method static \Illuminate\Database\Eloquent\Builder|Transaction taxRelevant(?\Carbon\Carbon $startDate = null, ?\Carbon\Carbon $endDate = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction taxRelevant(?\Illuminate\Support\Carbon $startDate = null, ?\Illuminate\Support\Carbon $endDate = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereAccountId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereBudgetId($value)

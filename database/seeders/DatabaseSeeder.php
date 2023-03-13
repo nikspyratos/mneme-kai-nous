@@ -6,8 +6,8 @@ use App\Models\Budget;
 use App\Models\ExpectedTransaction;
 use App\Models\Tally;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class DatabaseSeeder extends Seeder
 {

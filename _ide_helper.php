@@ -1629,7 +1629,7 @@
                     /**
          * Register a callback to be invoked when the command lifecycle duration exceeds a given amount of time.
          *
-         * @param \DateTimeInterface|\Carbon\CarbonInterval|float|int $threshold
+         * @param \DateTimeInterface|\Illuminate\Support\CarbonInterval|float|int $threshold
          * @param callable $handler
          * @return void 
          * @static 
@@ -5467,7 +5467,7 @@
                     /**
          * Register a callback to be invoked when the connection queries for longer than a given amount of time.
          *
-         * @param \DateTimeInterface|\Carbon\CarbonInterval|float|int $threshold
+         * @param \DateTimeInterface|\Illuminate\Support\CarbonInterval|float|int $threshold
          * @param callable $handler
          * @return void 
          * @static 

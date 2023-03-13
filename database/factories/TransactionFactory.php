@@ -5,8 +5,8 @@ namespace Database\Factories;
 use App\Models\Account;
 use App\Models\Budget;
 use App\Models\ExpectedTransaction;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Carbon;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Transaction>

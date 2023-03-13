@@ -4,7 +4,7 @@ namespace App\Imports;
 
 use App\Models\Account;
 use App\Models\Transaction;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 

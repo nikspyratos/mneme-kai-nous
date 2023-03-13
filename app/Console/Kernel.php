@@ -15,10 +15,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('telescope:prune --hours=48')->monthly();
-        $schedule->command('app:rollover-budget-month')->daily();
+        $schedule->command('app:rollover-budget-month')->monthlyOn(config('app.financial_month_rollover_day'));
         //TODO Perhaps change to hourly/every X hours schedule
-        $schedule->command('app:update-investec-accounts')->daily();
-        $schedule->command('app:update-loadshedding-schedules')->daily();
+        $schedule->command('app:update-investec-accounts')->dailyAt('05:00');
+        $schedule->command('app:update-loadshedding-schedules')->dailyAt('05:00');
         $schedule->command('app:send-logsnag-report')->dailyAt('07:00');
     }
 

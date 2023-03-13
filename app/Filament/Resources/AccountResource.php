@@ -2,10 +2,15 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AccountType;
+use App\Enums\Banks;
+use App\Enums\Currencies;
 use App\Filament\Resources\AccountResource\Pages\CreateAccount;
 use App\Filament\Resources\AccountResource\Pages\EditAccount;
 use App\Filament\Resources\AccountResource\Pages\ListAccounts;
 use App\Models\Account;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -24,20 +29,48 @@ class AccountResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $banksSelect = [];
+        $banks = Banks::cases();
+        foreach ($banks as $bank) {
+            $banksSelect[$bank->name] = $bank->value;
+        }
+        $currenciesSelect = [];
+        $currencies = Currencies::cases();
+        foreach ($currencies as $currency) {
+            $currenciesSelect[$currency->name] = $currency->value;
+        }
+        $typesSelect = [];
+        $types = AccountType::cases();
+        foreach ($types as $type) {
+            $typesSelect[$type->name] = $type->value;
+        }
         return $form
             ->schema([
                 TextInput::make('name')
                     ->required(),
-                TextInput::make('bank_name')
+                Select::make('bank_name')
+                    ->options($banksSelect)
+                    ->disablePlaceholderSelection()
                     ->required(),
                 TextInput::make('account_number')
                     ->required(),
-                TextInput::make('currency')
+                Select::make('currency')
+                    ->options($currenciesSelect)
+                    ->disablePlaceholderSelection()
                     ->required(),
                 TextInput::make('balance')
+                    ->numeric()
                     ->required(),
-                TextInput::make('type')
+                TextInput::make('debt')
+                    ->numeric(),
+                Select::make('type')
+                    ->options($typesSelect)
+                    ->disablePlaceholderSelection()
                     ->required(),
+                Checkbox::make('has_overdraft'),
+                TextInput::make('bank_identifier')
+                   ->required(),
+                Checkbox::make('is_primary'),
             ]);
     }
 
@@ -51,10 +84,10 @@ class AccountResource extends Resource
                 TextColumn::make('currency'),
                 TextColumn::make('balance'),
                 TextColumn::make('type'),
-                TextColumn::make('created_at')
-                    ->dateTime(),
-                TextColumn::make('updated_at')
-                    ->dateTime(),
+                TextColumn::make('has_overdraft'),
+                TextColumn::make('bank_identifier'),
+                TextColumn::make('type'),
+                TextColumn::make('is_primary'),
             ])
             ->filters([
                 //

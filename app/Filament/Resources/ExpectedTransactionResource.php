@@ -2,14 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ExpenseResource\Pages;
+use App\Filament\Resources\ExpectedTransactionResource\Pages;
+use App\Filament\Resources\ExpectedTransactionResource\RelationManagers;
 use App\Models\ExpectedTransaction;
+use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ExpenseResource extends Resource
+class ExpectedTransactionResource extends Resource
 {
     protected static ?string $model = ExpectedTransaction::class;
 
@@ -39,20 +43,20 @@ class ExpenseResource extends Resource
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-
+    
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-
+    
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListExpenses::route('/'),
-            'create' => Pages\CreateExpense::route('/create'),
-            'edit' => Pages\EditExpense::route('/{record}/edit'),
+            'index' => Pages\ListExpectedTransactions::route('/'),
+            'create' => Pages\CreateExpectedTransaction::route('/create'),
+            'edit' => Pages\EditExpectedTransaction::route('/{record}/edit'),
         ];
-    }
+    }    
 }

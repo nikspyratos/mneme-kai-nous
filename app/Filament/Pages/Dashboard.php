@@ -8,6 +8,6 @@ class Dashboard extends BasePage
 {
     protected function getColumns(): int|array
     {
-        return 3;
+        return 5;
     }
 }

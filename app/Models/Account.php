@@ -29,7 +29,9 @@ class Account extends Model
     ];
 
     public $casts = [
+        'has_overdraft' => 'boolean',
         'data' => 'json',
+        'is_primary' => 'boolean',
     ];
 
     public static function firstOrCreateInvestec(

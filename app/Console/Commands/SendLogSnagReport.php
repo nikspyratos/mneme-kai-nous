@@ -50,7 +50,7 @@ class SendLogSnagReport extends Command
         }
 
         [$percentageLeft, $percentageComplete] = $user->getDeathPercentage();
-        $data[] = "**Death:** $percentageComplete%";
+        $data[] = "**Life:** $percentageComplete%";
 
         $quote = Quote::inRandomOrder()->first();
         if ($quote) {

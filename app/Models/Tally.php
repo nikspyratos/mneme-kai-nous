@@ -43,4 +43,9 @@ class Tally extends Model
 
         return Money::of($amount, $this->currency)->formatTo('en_ZA');
     }
+
+    public function getBalancePercentageOfBudget(): int
+    {
+        return $this->balance / $this->budget->balance * 100;
+    }
 }

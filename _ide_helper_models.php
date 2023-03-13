@@ -27,6 +27,7 @@ namespace App\Models{
  * @property int $has_overdraft
  * @property int|null $overdraft_amount
  * @property string|null $bank_identifier
+ * @property object|null $data
  * @property-read mixed $debt_paid_off_percentage
  * @property-read string $formatted_balance
  * @property-read string $formatted_debt
@@ -42,6 +43,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereBankName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereCurrency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Account whereData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereDebt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereHasOverdraft($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereId($value)
@@ -64,6 +66,9 @@ namespace App\Models{
  * @property string $period_type
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $identifier
+ * @property string|null $identifier_transaction_type
+ * @property int $enabled
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tally> $tallies
  * @property-read int|null $tallies_count
  * @method static \Illuminate\Database\Eloquent\Builder|Budget newModelQuery()
@@ -72,10 +77,14 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Budget whereAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget whereCurrency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Budget whereEnabled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Budget whereIdentifier($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Budget whereIdentifierTransactionType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget wherePeriodType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Budget withCurrentTallies()
  */
 	class Budget extends \Eloquent {}
 }
@@ -94,6 +103,9 @@ namespace App\Models{
  * @property int|null $due_day
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property string|null $identifier
+ * @property string|null $identifier_transaction_type
+ * @property int $enabled
  * @property-read \Carbon\Carbon|null $next_due_date
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
@@ -106,8 +118,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Expense whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Expense whereDueDay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Expense whereDuePeriod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Expense whereEnabled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Expense whereGroup($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Expense whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Expense whereIdentifier($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Expense whereIdentifierTransactionType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Expense whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Expense whereUpdatedAt($value)
  */

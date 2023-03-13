@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CategorisesTransactions;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Expense extends Model
 {
-    use HasFactory;
+    use HasFactory, CategorisesTransactions;
 
     public $fillable = [
         'name',
@@ -19,6 +20,9 @@ class Expense extends Model
         'amount',
         'due_period',
         'due_day',
+        'identifier',
+        'identifier_transaction_type', //Ideally this should be set WITHOUT identifier
+        'enabled,'
     ];
 
     public function transactions(): HasMany

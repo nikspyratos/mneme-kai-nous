@@ -43,8 +43,8 @@ class TransactionResource extends Resource
                     ->required(),
                 TextInput::make('listed_balance')
                     ->required(),
-                Select::make('expense_id')
-                    ->relationship('expense', 'name'),
+                Select::make('expected_transaction_id')
+                    ->relationship('expected_transaction', 'name'),
                 Select::make('budget_id')
                     ->relationship('budget', 'name'),
                 Select::make('tally_id')
@@ -70,7 +70,7 @@ class TransactionResource extends Resource
                     ->dateTime(),
                 TextColumn::make('updated_at')
                     ->dateTime(),
-                TextColumn::make('expense.name'),
+                TextColumn::make('expected_transaction.name'),
                 TextColumn::make('budget.name'),
                 TextColumn::make('tally.name'),
                 TextColumn::make('type'),

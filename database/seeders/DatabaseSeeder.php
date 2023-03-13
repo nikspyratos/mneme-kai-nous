@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Budget;
-use App\Models\Expense;
+use App\Models\ExpectedTransaction;
 use App\Models\Tally;
 use App\Models\User;
 use Carbon\Carbon;
@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         ],
     ];
 
-    private array $expenseData = [
+    private array $expectedTransactionData = [
         [
             'name' => 'Rent',
             'description' => null,
@@ -90,8 +90,8 @@ class DatabaseSeeder extends Seeder
                 'end_date' => Carbon::today()->endOfMonth(),
             ]);
         }
-        foreach ($this->expenseData as $expenseDatum) {
-            Expense::firstOrCreate($expenseDatum);
+        foreach ($this->expectedTransactionData as $expectedTransactionDatum) {
+            ExpectedTransaction::firstOrCreate($expectedTransactionDatum);
         }
         $this->call(PerceptionSeeder::class);
     }

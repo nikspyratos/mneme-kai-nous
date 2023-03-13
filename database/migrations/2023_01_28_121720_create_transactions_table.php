@@ -2,7 +2,7 @@
 
 use App\Models\Account;
 use App\Models\Budget;
-use App\Models\Expense;
+use App\Models\ExpectedTransaction;
 use App\Models\Tally;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class);
-            $table->foreignIdFor(Expense::class)->nullable();
+            $table->foreignIdFor(ExpectedTransaction::class)->nullable();
             $table->foreignIdFor(Budget::class)->nullable();
             $table->foreignIdFor(Tally::class)->nullable();
             $table->dateTime('date');

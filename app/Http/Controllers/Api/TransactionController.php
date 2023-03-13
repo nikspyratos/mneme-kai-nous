@@ -26,7 +26,7 @@ class TransactionController extends Controller
             );
             $transaction = Transaction::create([
                 'account_id' => $account->id,
-                'expense_id' => null,
+                'expected_transaction_id' => null,
                 'budget_id' => null,
                 'tally_id' => null,
                 'date' => Carbon::parse($request->input('dateTime')) //Need to homogenise the time because the bank API only gives date

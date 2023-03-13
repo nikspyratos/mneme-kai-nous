@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Account;
 use App\Models\Budget;
-use App\Models\Expense;
+use App\Models\ExpectedTransaction;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,14 +20,14 @@ class TransactionFactory extends Factory
      */
     public function definition(): array
     {
-        $expenses = Expense::all();
+        $expectedTransactions = ExpectedTransaction::all();
         $budgets = Budget::query()->with('tallies')->get();
 
         $selectedBudget = $budgets->random();
         $selectedTally = $selectedBudget->currentTally();
 
         return [
-            'expense_id' => $this->faker->randomElement([$expenses->random(), null]),
+            'expected_transaction_id' => $this->faker->randomElement([$expectedTransactions->random(), null]),
             'budget_id' => $selectedBudget->id,
             'tally_id' => $selectedTally->id,
             'date' => Carbon::today()->startOfMonth()->addDays(random_int(0, Carbon::today()->endOfMonth()->day)),

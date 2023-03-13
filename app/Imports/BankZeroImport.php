@@ -29,7 +29,7 @@ class BankZeroImport implements ToModel, WithMultipleSheets
     {
         return new Transaction([
             'account_id' => $this->account->id,
-            'expense_id' => null,
+            'expected_transaction_id' => null,
             'budget_id' => null,
             'tally_id' => null,
             'date' => Carbon::createFromFormat('Y-m-d H:i', $row['Date'] . ' ' . $row['Time']),

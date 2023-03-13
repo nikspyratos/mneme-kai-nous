@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ExpenseResource\Pages;
-use App\Models\Expense;
+use App\Models\ExpectedTransaction;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -11,7 +11,7 @@ use Filament\Tables;
 
 class ExpenseResource extends Resource
 {
-    protected static ?string $model = Expense::class;
+    protected static ?string $model = ExpectedTransaction::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 

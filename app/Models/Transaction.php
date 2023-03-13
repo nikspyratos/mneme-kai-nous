@@ -12,7 +12,7 @@ class Transaction extends Model
 
     public $fillable = [
         'account_id',
-        'expense_id',
+        'expected_transaction_id',
         'budget_id',
         'tally_id',
         'date',
@@ -25,6 +25,7 @@ class Transaction extends Model
         'fee',
         'listed_balance',
         'data',
+        'is_tax_relevant',
     ];
 
     public $casts = [
@@ -37,9 +38,9 @@ class Transaction extends Model
         return $this->belongsTo(Account::class);
     }
 
-    public function expense(): BelongsTo
+    public function expectedTransaction(): BelongsTo
     {
-        return $this->belongsTo(Expense::class);
+        return $this->belongsTo(ExpectedTransaction::class);
     }
 
     public function budget(): BelongsTo

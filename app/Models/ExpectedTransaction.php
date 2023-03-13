@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Expense extends Model
+class ExpectedTransaction extends Model
 {
     use HasFactory, CategorisesTransactions;
 
@@ -22,7 +22,9 @@ class Expense extends Model
         'due_day',
         'identifier',
         'identifier_transaction_type', //Ideally this should be set WITHOUT identifier
-        'enabled,'
+        'enabled',
+        'type',
+        'is_tax_relevant',
     ];
 
     public function transactions(): HasMany

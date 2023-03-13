@@ -6,7 +6,7 @@ use App\Enums\Banks;
 use App\Enums\Currencies;
 use App\Models\Account;
 use App\Models\Budget;
-use App\Models\Expense;
+use App\Models\ExpectedTransaction;
 use App\Models\Transaction;
 use App\Services\InvestecApiClient;
 use Carbon\Exceptions\InvalidFormatException;
@@ -43,7 +43,7 @@ class UpdateInvestecAccounts extends Command
             $transactionsTo = $transactionsTo->format('Y-m-d');
         }
         $budgets = Budget::whereEnabled(true)->withCurrentTallies();
-        $expenses = Expense::whereEnabled(true)->get();
+        $expectedTransactions = ExpectedTransaction::whereEnabled(true)->get();
 
         // Get API accounts and their balances
         $this->info('Fetching Investec accounts from API...');
@@ -88,12 +88,14 @@ class UpdateInvestecAccounts extends Command
             $account->save();
             $investecTransactions = collect($investecApiClient->getTransactions($account->bank_identifier, $transactionsFrom, $transactionsTo));
             foreach ($investecTransactions as $investecTransaction) {
-                $identifiedExpenseId = null;
+                $identifiedExpectedTransactionId = null;
                 $identifiedBudgetId = null;
                 $identifiedTallyId = null;
-                foreach ($expenses as $expense) {
-                    if ($expense->transactionIsForThis($investecTransaction['description'])) {
-                        $identifiedExpenseId = $expense->id;
+                $isTaxRelevant = false;
+                foreach ($expectedTransactions as $expectedTransaction) {
+                    if ($expectedTransaction->transactionIsForThis($investecTransaction['description'])) {
+                        $identifiedExpectedTransactionId = $expectedTransaction->id;
+                        $isTaxRelevant = $expectedTransaction->is_tax_relevant;
                     }
                 }
                 foreach ($budgets as $budget) {
@@ -122,13 +124,14 @@ class UpdateInvestecAccounts extends Command
                         'amount' => $investecTransaction['amount'] * 100,
                     ],
                     [
-                        'expense_id' => $identifiedExpenseId,
+                        'expected_transaction_id' => $identifiedExpectedTransactionId,
                         'budget_id' => $identifiedBudgetId,
                         'tally_id' => $identifiedTallyId,
                         'listed_balance' => $investecTransaction['runningBalance'] * 100,
                         'data' => collect($investecTransaction)
                             ->except(['transactionDate', 'transactionType', 'description', 'amount', 'runningBalance'])
                             ->toArray(),
+                        'is_tax_relevant' => $isTaxRelevant,
                     ]
                 );
             }

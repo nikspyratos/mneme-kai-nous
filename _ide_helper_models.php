@@ -28,6 +28,7 @@ namespace App\Models{
  * @property int|null $overdraft_amount
  * @property string|null $bank_identifier
  * @property array|null $data
+ * @property int $is_primary
  * @property-read mixed $debt_paid_off_percentage
  * @property-read string $formatted_balance
  * @property-read string $formatted_debt
@@ -47,6 +48,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereDebt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereHasOverdraft($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Account whereIsPrimary($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereOverdraftAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereType($value)
@@ -146,6 +148,7 @@ namespace App\Models{
  * @property array|null $data
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $is_home
  * @property-read string $today_times_formatted
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule newQuery()
@@ -154,6 +157,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereIsHome($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereRegion($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereTodayTimes($value)

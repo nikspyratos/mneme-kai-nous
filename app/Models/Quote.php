@@ -16,6 +16,11 @@ class Quote extends Model
         'author',
     ];
 
+    public function scopeShortContent($query)
+    {
+        return $query->whereRaw('length(content) < 200');
+    }
+
     public function perception(): BelongsTo
     {
         return $this->belongsTo(Perception::class);

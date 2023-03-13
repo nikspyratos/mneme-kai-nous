@@ -12,11 +12,7 @@ class LifePercentage extends PieChartWidget
     protected function getData(): array
     {
         /** @var Carbon $birthdate */
-        $birthdate = auth()->user()->birthdate;
-        $currentDate = Carbon::today();
-        $weeksPassed = $currentDate->diffInWeeks($birthdate);
-        $percentageComplete = round(($weeksPassed / 3900) * 100, 2);
-        $percentageLeft = round(((3900 - $weeksPassed) / 3900) * 100, 2);
+        [$percentageLeft, $percentageComplete] = auth()->user()->getDeathPercentage();
 
         return [
             'datasets' => [

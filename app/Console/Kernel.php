@@ -18,6 +18,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:rollover-budget-month')->daily();
         //TODO Perhaps change to hourly/every X hours schedule
         $schedule->command('app:update-investec-accounts')->daily();
+        $schedule->command('app:update-loadshedding-schedules')->daily();
+        $schedule->command('app:send-logsnag-report')->dailyAt('07:00');
     }
 
     /**

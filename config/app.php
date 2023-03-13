@@ -232,4 +232,9 @@ return [
         'base_url' => env('ESKOMSEPUSH_URL'),
         'api_token' => env('ESKOMSEPUSH_API_TOKEN'),
     ],
+    'logsnag' => [
+        'base_url' => env('LOGSNAG_API_URL'),
+        'api_token' => env('LOGSNAG_API_TOKEN'),
+    ],
+
 ];

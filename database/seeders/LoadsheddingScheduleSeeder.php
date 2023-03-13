@@ -18,12 +18,14 @@ class LoadsheddingScheduleSeeder extends Seeder
                 'zone' => '11',
                 'api_id' => 'capetown-11-kenilworth',
                 'region' => 'City of Cape Town',
+                'is_home' => true,
             ],
             [
                 'name' => 'Cape Town CBD & Atlantic Seaboard',
                 'zone' => '7',
                 'api_id' => 'capetown-7-capetowncbd',
                 'region' => 'City of Cape Town',
+                'is_home' => false,
             ],
         ];
         foreach ($data as $datum) {

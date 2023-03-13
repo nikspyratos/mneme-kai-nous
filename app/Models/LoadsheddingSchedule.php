@@ -17,6 +17,7 @@ class LoadsheddingSchedule extends Model
         'region',
         'today_times',
         'data',
+        'is_home',
     ];
 
     public $casts = [

@@ -25,6 +25,7 @@ class Account extends Model
         'has_overdraft',
         'bank_identifier',
         'data',
+        'is_primary',
     ];
 
     public $casts = [

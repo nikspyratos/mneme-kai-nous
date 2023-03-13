@@ -54,7 +54,12 @@ class SendLogSnagReport extends Command
 
         $quote = Quote::inRandomOrder()->first();
         if ($quote) {
-            $data[] = sprintf('*%s - %s*', $quote->content, $quote->author);
+            $content = '*' . $quote->content;
+            if ($quote->author) {
+                $content .= ' - ' . $quote->author;
+            }
+
+            $data[] = $content . '*';
         }
 
         (new LogSnag())->log('Daily', Arr::join($data, "\n"), true);

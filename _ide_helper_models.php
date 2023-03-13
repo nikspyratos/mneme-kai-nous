@@ -269,6 +269,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction taxRelevant(?\Carbon\Carbon $startDate = null, ?\Carbon\Carbon $endDate = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereAccountId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereBudgetId($value)

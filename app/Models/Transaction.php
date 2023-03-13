@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -32,6 +33,18 @@ class Transaction extends Model
         'date' => 'datetime',
         'data' => 'json',
     ];
+
+    public function scopeTaxRelevant($query, ?Carbon $startDate = null, ?Carbon $endDate = null)
+    {
+        $query = $query->whereIsTaxRelevant(true);
+        if ($startDate) {
+            $query = $query->where('date', '>=', $startDate);
+        }
+        if ($endDate) {
+            $query = $query->where('date', '<=', $endDate);
+        }
+        return $query;
+    }
 
     public function account(): BelongsTo
     {

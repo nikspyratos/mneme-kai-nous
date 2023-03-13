@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Account::class);
-            $table->foreignIdFor(ExpectedTransaction::class)->nullable();
+            $table->foreignId('expense_id')->nullable();
             $table->foreignIdFor(Budget::class)->nullable();
             $table->foreignIdFor(Tally::class)->nullable();
             $table->dateTime('date');
@@ -27,6 +27,8 @@ return new class extends Migration
             $table->integer('fee')->nullable();
             $table->bigInteger('listed_balance')->nullable();
             $table->timestamps();
+
+            $table->foreign('expense_id')->references('id')->on('expenses');
         });
     }
 

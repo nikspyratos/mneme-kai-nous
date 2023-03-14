@@ -4,6 +4,6 @@ namespace App\Enums;
 
 enum DuePeriods: string
 {
-    case MONTHLY = 'monthly';
-    case WEEKLY = 'weekly';
+    case MONTHLY = 'Monthly';
+    case WEEKLY = 'Weekly';
 }

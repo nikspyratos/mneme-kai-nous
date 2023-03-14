@@ -24,8 +24,8 @@ class BudgetResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $currenciesSelect = EnumHelper::enumToArray(Currencies::cases());
-        $transactionTypesSelect = EnumHelper::enumToArray(TransactionTypes::cases());
+        $currenciesSelect = EnumHelper::enumToFilamentOptionArray(Currencies::cases());
+        $transactionTypesSelect = EnumHelper::enumToFilamentOptionArray(TransactionTypes::cases());
 
         return $form
             ->schema([
@@ -36,6 +36,9 @@ class BudgetResource extends Resource
                     ->disablePlaceholderSelection()
                     ->required(),
                 TextInput::make('amount')
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state($state / 100);
+                    })
                     ->required(),
                 TextInput::make('identifier'),
                 Select::make('identifier_transaction_type')

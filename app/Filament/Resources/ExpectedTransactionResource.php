@@ -25,9 +25,9 @@ class ExpectedTransactionResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $currenciesSelect = EnumHelper::enumToArray(Currencies::cases());
-        $transactionTypesSelect = EnumHelper::enumToArray(TransactionTypes::cases());
-        $duePeriodSelect = EnumHelper::enumToArray(DuePeriods::cases());
+        $currenciesSelect = EnumHelper::enumToFilamentOptionArray(Currencies::cases());
+        $transactionTypesSelect = EnumHelper::enumToFilamentOptionArray(TransactionTypes::cases());
+        $duePeriodSelect = EnumHelper::enumToFilamentOptionArray(DuePeriods::cases());
 
         return $form
             ->schema([

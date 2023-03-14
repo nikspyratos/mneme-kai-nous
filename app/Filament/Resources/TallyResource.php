@@ -23,7 +23,7 @@ class TallyResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $currenciesSelect = EnumHelper::enumToArray(Currencies::cases());
+        $currenciesSelect = EnumHelper::enumToFilamentOptionArray(Currencies::cases());
 
         return $form
             ->schema([
@@ -38,6 +38,9 @@ class TallyResource extends Resource
                     ->disablePlaceholderSelection()
                     ->required(),
                 TextInput::make('balance')
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state($state / 100);
+                    })
                     ->required(),
                 DatePicker::make('start_date')
                     ->required(),

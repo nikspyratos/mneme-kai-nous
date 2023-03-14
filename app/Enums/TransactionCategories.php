@@ -4,17 +4,17 @@ namespace App\Enums;
 
 enum TransactionCategories: string
 {
-    case GROCERIES = 'groceries';
-    case FOOD = 'food';
-    case DEBT = 'debt';
-    case UTILITIES = 'utilities';
-    case ENTERTAINMENT = 'entertainment';
-    case PRODUCT = 'product';
-    case SERVICE = 'service';
-    case MEDICAL = 'medical';
-    case TRANSFER = 'transfer';
-    case BUSINESS = 'business';
-    case LEARNING = 'learning';
-    case HOBBY = 'hobby';
-    case VEHICLE = 'vehicle';
+    case GROCERIES = 'Groceries';
+    case FOOD = 'Food';
+    case DEBT = 'Debt';
+    case UTILITIES = 'Utilities';
+    case ENTERTAINMENT = 'Entertainment';
+    case PRODUCT = 'Product';
+    case SERVICE = 'Service';
+    case MEDICAL = 'Medical';
+    case TRANSFER = 'Transfer';
+    case BUSINESS = 'Business';
+    case LEARNING = 'Learning';
+    case HOBBY = 'Hobby';
+    case VEHICLE = 'Vehicle';
 }

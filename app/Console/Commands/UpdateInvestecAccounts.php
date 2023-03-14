@@ -23,7 +23,7 @@ class UpdateInvestecAccounts extends Command
 
     protected $description = 'Retrieves latest balance & transactions for each Investec account';
 
-    public function andle(InvestecApiClient $investecApiClient): void
+    public function handle(InvestecApiClient $investecApiClient): void
     {
         $transactionsFrom = Carbon::today()->subDay();
         $transactionsTo = Carbon::today()->addDay();

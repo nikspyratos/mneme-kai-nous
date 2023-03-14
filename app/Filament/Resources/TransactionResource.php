@@ -21,6 +21,7 @@ use Filament\Resources\Table;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Support\Str;
 
 class TransactionResource extends Resource
 {
@@ -32,9 +33,9 @@ class TransactionResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $transactionTypesSelect = EnumHelper::enumToArray(TransactionTypes::cases());
-        $categoriesSelect = EnumHelper::enumToArray(TransactionCategories::cases());
-        $currenciesSelect = EnumHelper::enumToArray(Currencies::cases());
+        $transactionTypesSelect = EnumHelper::enumToFilamentOptionArray(TransactionTypes::cases());
+        $categoriesSelect = EnumHelper::enumToFilamentOptionArray(TransactionCategories::cases());
+        $currenciesSelect = EnumHelper::enumToFilamentOptionArray(Currencies::cases());
 
         return $form
             ->schema([
@@ -51,12 +52,12 @@ class TransactionResource extends Resource
                     ->required(),
                 Select::make('type')
                     ->options($transactionTypesSelect)
-                    ->disablePlaceholderSelection()
+                    ->default(TransactionTypes::DEBIT->value)
+//                    ->disablePlaceholderSelection()
                     ->required(),
                 Select::make('category')
                     ->options($categoriesSelect)
-                    ->disablePlaceholderSelection()
-                    ->required(),
+                    ->disablePlaceholderSelection(),
                 Textarea::make('description')
                     ->required(),
                 Textarea::make('detail'),
@@ -65,11 +66,20 @@ class TransactionResource extends Resource
                     ->disablePlaceholderSelection()
                     ->required(),
                 TextInput::make('amount')
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state($state / 100);
+                    })
                     ->numeric()
                     ->required(),
                 TextInput::make('fee')
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state($state / 100);
+                    })
                     ->numeric(),
                 TextInput::make('listed_balance')
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state($state / 100);
+                    })
                     ->numeric()
                     ->required(),
                 Checkbox::make('is_tax_relevant'),

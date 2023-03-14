@@ -30,9 +30,9 @@ class AccountResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $banksSelect = EnumHelper::enumToArray(Banks::cases());
-        $currenciesSelect = EnumHelper::enumToArray(Currencies::cases());
-        $typesSelect = EnumHelper::enumToArray(AccountTypes::cases());
+        $banksSelect = EnumHelper::enumToFilamentOptionArray(Banks::cases());
+        $currenciesSelect = EnumHelper::enumToFilamentOptionArray(Currencies::cases());
+        $typesSelect = EnumHelper::enumToFilamentOptionArray(AccountTypes::cases());
 
         return $form
             ->schema([
@@ -49,9 +49,15 @@ class AccountResource extends Resource
                     ->disablePlaceholderSelection()
                     ->required(),
                 TextInput::make('balance')
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state($state / 100);
+                    })
                     ->numeric()
                     ->required(),
                 TextInput::make('debt')
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state($state / 100);
+                    })
                     ->numeric(),
                 Select::make('type')
                     ->options($typesSelect)

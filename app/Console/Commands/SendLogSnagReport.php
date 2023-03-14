@@ -2,14 +2,14 @@
 
 namespace App\Console\Commands;
 
-use App\Enums\AccountType;
+use App\Enums\AccountTypes;
 use App\Models\Account;
 use App\Models\LoadsheddingSchedule;
+use App\Models\Quote;
 use App\Models\User;
 use App\Services\LogSnag;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
-use App\Models\Quote;
 
 class SendLogSnagReport extends Command
 {
@@ -38,7 +38,7 @@ class SendLogSnagReport extends Command
         $accounts = Account::whereIsPrimary(true)->get();
         foreach ($accounts as $account) {
             $message = sprintf('**%s:** %s', $account->name, $account->formatted_balance);
-            if ($account->type == AccountType::DEBT->value) {
+            if ($account->type == AccountTypes::DEBT->value) {
                 $message .= sprintf(' | %s', $account->debt_paid_off_percentage . '%');
             }
             $data[] = $message;
@@ -50,7 +50,7 @@ class SendLogSnagReport extends Command
         }
 
         [$percentageLeft, $percentageComplete] = $user->getDeathPercentage();
-        $data[] = "**Life:** $percentageComplete%";
+        $data[] = "**Life:** {$percentageComplete}%";
 
         $quote = Quote::inRandomOrder()->first();
         if ($quote) {
@@ -62,6 +62,6 @@ class SendLogSnagReport extends Command
             $data[] = $content . '*';
         }
 
-        (new LogSnag())->log('Daily', Arr::join($data, "\n"), true);
+        (new LogSnag)->log('Daily', Arr::join($data, "\n"), true);
     }
 }

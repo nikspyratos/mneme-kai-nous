@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Enums\AccountType;
+use App\Enums\AccountTypes;
 use App\Enums\Banks;
-use Brick\Money\Money;
+use App\Models\Traits\FormatsMoneyColumns;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class Account extends Model
 {
-    use HasFactory;
+    use HasFactory, FormatsMoneyColumns;
 
     public $fillable = [
         'name',
@@ -49,7 +49,7 @@ class Account extends Model
         ],
             [
                 'name' => $accountName ?? Banks::INVESTEC->value . ' ' . $accountNumber,
-                'type' => AccountType::TRANSACTIONAL->value,
+                'type' => AccountTypes::TRANSACTIONAL->value,
                 'bank_identifier' => $bankIdentifier,
                 'data' => $data,
             ]);
@@ -62,21 +62,17 @@ class Account extends Model
 
     public function getFormattedBalanceAttribute(): string
     {
-        $amount = round($this->balance / 100, 2);
-
-        return Money::of($amount, $this->currency)->formatTo('en_ZA');
+        return $this->formatMoneyColumn('balance');
     }
 
     public function getFormattedDebtAttribute(): string
     {
-        $amount = round($this->debt / 100, 2);
-
-        return Money::of($amount, $this->currency)->formatTo('en_ZA');
+        return $this->formatMoneyColumn('debt');
     }
 
     public function getDebtPaidOffPercentageAttribute()
     {
-        if ($this->type == AccountType::DEBT->value) {
+        if ($this->type == AccountTypes::DEBT->value) {
             return round(($this->debt - $this->balance) / $this->debt, 2);
         }
 

@@ -2,10 +2,15 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Currencies;
+use App\Enums\TransactionCategories;
+use App\Enums\TransactionTypes;
 use App\Filament\Resources\TransactionResource\Pages\CreateTransaction;
 use App\Filament\Resources\TransactionResource\Pages\EditTransaction;
 use App\Filament\Resources\TransactionResource\Pages\ListTransactions;
+use App\Helpers\EnumHelper;
 use App\Models\Transaction;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -27,30 +32,47 @@ class TransactionResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $transactionTypesSelect = EnumHelper::enumToArray(TransactionTypes::cases());
+        $categoriesSelect = EnumHelper::enumToArray(TransactionCategories::cases());
+        $currenciesSelect = EnumHelper::enumToArray(Currencies::cases());
+
         return $form
             ->schema([
                 Select::make('account_id')
                     ->relationship('account', 'name')
                     ->required(),
-                DateTimePicker::make('date')
-                    ->required(),
-                Textarea::make('description')
-                    ->required(),
-                Textarea::make('detail'),
-                TextInput::make('currency')
-                    ->required(),
-                TextInput::make('amount')
-                    ->required(),
-                TextInput::make('listed_balance')
-                    ->required(),
                 Select::make('expected_transaction_id')
-                    ->relationship('expected_transaction', 'name'),
+                    ->relationship('expectedTransaction', 'name'),
                 Select::make('budget_id')
                     ->relationship('budget', 'name'),
                 Select::make('tally_id')
                     ->relationship('tally', 'name'),
-                TextInput::make('type'),
-                TextInput::make('fee'),
+                DateTimePicker::make('date')
+                    ->required(),
+                Select::make('type')
+                    ->options($transactionTypesSelect)
+                    ->disablePlaceholderSelection()
+                    ->required(),
+                Select::make('category')
+                    ->options($categoriesSelect)
+                    ->disablePlaceholderSelection()
+                    ->required(),
+                Textarea::make('description')
+                    ->required(),
+                Textarea::make('detail'),
+                Select::make('currency')
+                    ->options($currenciesSelect)
+                    ->disablePlaceholderSelection()
+                    ->required(),
+                TextInput::make('amount')
+                    ->numeric()
+                    ->required(),
+                TextInput::make('fee')
+                    ->numeric(),
+                TextInput::make('listed_balance')
+                    ->numeric()
+                    ->required(),
+                Checkbox::make('is_tax_relevant'),
             ]);
     }
 
@@ -59,22 +81,17 @@ class TransactionResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('account.name'),
-                TextColumn::make('date')
-                    ->dateTime(),
-                TextColumn::make('description'),
-                TextColumn::make('detail'),
-                TextColumn::make('currency'),
-                TextColumn::make('amount'),
-                TextColumn::make('listed_balance'),
-                TextColumn::make('created_at')
-                    ->dateTime(),
-                TextColumn::make('updated_at')
-                    ->dateTime(),
                 TextColumn::make('expected_transaction.name'),
                 TextColumn::make('budget.name'),
                 TextColumn::make('tally.name'),
+                TextColumn::make('date')->dateTime(),
                 TextColumn::make('type'),
-                TextColumn::make('fee'),
+                TextColumn::make('category'),
+                TextColumn::make('description'),
+                TextColumn::make('amount')->formatStateUsing(fn (Transaction $record): string => $record->formatted_amount),
+                TextColumn::make('fee')->formatStateUsing(fn (Transaction $record): string => $record->formatted_fee),
+                TextColumn::make('listed_balance')->formatStateUsing(fn (Transaction $record): string => $record->formatted_listed_balance),
+                TextColumn::make('is_tax_relevant')->formatStateUsing(fn (Transaction $record): string => $record->is_tax_relevant ? 'true' : 'false'),
             ])
             ->filters([
                 //

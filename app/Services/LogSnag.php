@@ -9,6 +9,7 @@ class LogSnag
 {
     private string $baseUrl;
     private string $apiToken;
+
     public function __construct()
     {
         $this->baseUrl = config('app.logsnag.base_url');

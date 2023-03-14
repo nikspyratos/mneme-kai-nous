@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\ExpectedTransactionResource\Pages;
 
 use App\Filament\Resources\ExpectedTransactionResource;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateExpectedTransaction extends CreateRecord

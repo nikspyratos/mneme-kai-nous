@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\CategorisesTransactions;
+use App\Models\Traits\FormatsMoneyColumns;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,12 +11,12 @@ use Illuminate\Support\Carbon;
 
 class ExpectedTransaction extends Model
 {
-    use HasFactory, CategorisesTransactions;
+    use HasFactory, CategorisesTransactions, FormatsMoneyColumns;
 
     public $fillable = [
         'name',
         'description',
-        'group',
+        'group', //TODO drop?
         'currency',
         'amount',
         'due_period',
@@ -43,5 +44,10 @@ class ExpectedTransaction extends Model
         }
 
         return null;
+    }
+
+    public function getFormattedAmountAttribute(): string
+    {
+        return $this->formatMoneyColumn('amount');
     }
 }

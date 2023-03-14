@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Traits\FormatsMoneyColumns;
 use App\Services\TallyRolloverDateCalculator;
-use Brick\Money\Money;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Tally extends Model
 {
-    use HasFactory;
+    use HasFactory, FormatsMoneyColumns;
 
     public $fillable = [
         'budget_id',
@@ -39,9 +39,7 @@ class Tally extends Model
 
     public function getFormattedBalanceAttribute(): string
     {
-        $amount = round($this->balance / 100, 2);
-
-        return Money::of($amount, $this->currency)->formatTo('en_ZA');
+        return $this->formatMoneyColumn('balance');
     }
 
     public function getBalancePercentageOfBudget(): int

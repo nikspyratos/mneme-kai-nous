@@ -2,12 +2,13 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\AccountType;
+use App\Enums\AccountTypes;
 use App\Enums\Banks;
 use App\Enums\Currencies;
 use App\Filament\Resources\AccountResource\Pages\CreateAccount;
 use App\Filament\Resources\AccountResource\Pages\EditAccount;
 use App\Filament\Resources\AccountResource\Pages\ListAccounts;
+use App\Helpers\EnumHelper;
 use App\Models\Account;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
@@ -29,21 +30,10 @@ class AccountResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $banksSelect = [];
-        $banks = Banks::cases();
-        foreach ($banks as $bank) {
-            $banksSelect[$bank->name] = $bank->value;
-        }
-        $currenciesSelect = [];
-        $currencies = Currencies::cases();
-        foreach ($currencies as $currency) {
-            $currenciesSelect[$currency->name] = $currency->value;
-        }
-        $typesSelect = [];
-        $types = AccountType::cases();
-        foreach ($types as $type) {
-            $typesSelect[$type->name] = $type->value;
-        }
+        $banksSelect = EnumHelper::enumToArray(Banks::cases());
+        $currenciesSelect = EnumHelper::enumToArray(Currencies::cases());
+        $typesSelect = EnumHelper::enumToArray(AccountTypes::cases());
+
         return $form
             ->schema([
                 TextInput::make('name')
@@ -81,13 +71,13 @@ class AccountResource extends Resource
                 TextColumn::make('name'),
                 TextColumn::make('bank_name'),
                 TextColumn::make('account_number'),
-                TextColumn::make('currency'),
-                TextColumn::make('balance'),
+                TextColumn::make('balance')->formatStateUsing(fn (Account $record): string => $record->formatted_balance),
+                TextColumn::make('debt')->formatStateUsing(fn (Account $record): string => $record->formatted_debt),
                 TextColumn::make('type'),
-                TextColumn::make('has_overdraft'),
+                TextColumn::make('has_overdraft')->formatStateUsing(fn (Account $record): string => $record->has_overdraft ? 'true' : 'false'),
                 TextColumn::make('bank_identifier'),
                 TextColumn::make('type'),
-                TextColumn::make('is_primary'),
+                TextColumn::make('is_primary')->formatStateUsing(fn (Account $record): string => $record->is_primary ? 'true' : 'false'),
             ])
             ->filters([
                 //

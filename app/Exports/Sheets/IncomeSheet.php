@@ -2,7 +2,7 @@
 
 namespace App\Exports\Sheets;
 
-use App\Enums\TransactionType;
+use App\Enums\TransactionTypes;
 use App\Models\Transaction;
 use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -16,7 +16,7 @@ class IncomeSheet implements FromQuery, WithTitle
 
     public function query()
     {
-        return Transaction::taxRelevant($this->startDate, $this->endDate)->whereType(TransactionType::CREDIT);
+        return Transaction::taxRelevant($this->startDate, $this->endDate)->whereType(TransactionTypes::CREDIT);
     }
 
     public function title(): string

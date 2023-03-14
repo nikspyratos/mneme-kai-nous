@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Filament\Resources\AccountResource\Pages;
+namespace App\Filament\Resources\BudgetResource\Pages;
 
-use App\Filament\Resources\AccountResource;
+use App\Filament\Resources\BudgetResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 
-class EditAccount extends EditRecord
+class EditBudget extends EditRecord
 {
-    protected static string $resource = AccountResource::class;
+    protected static string $resource = BudgetResource::class;
 
     protected function getActions(): array
     {
@@ -20,10 +20,7 @@ class EditAccount extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $data['balance'] *= 100;
-        if ($data['debt']) {
-            $data['debt'] *= 100;
-        }
+        $data['amount'] *= 100;
         $record->update($data);
 
         return $record;

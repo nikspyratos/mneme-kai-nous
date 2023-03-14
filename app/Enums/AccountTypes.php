@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum AccountType: string
+enum AccountTypes: string
 {
     case TRANSACTIONAL = 'transactional';
     case DEBT = 'debt';

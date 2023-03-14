@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Traits\CategorisesTransactions;
+use App\Models\Traits\FormatsMoneyColumns;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,13 +11,13 @@ use Illuminate\Support\Carbon;
 
 class Budget extends Model
 {
-    use HasFactory, CategorisesTransactions;
+    use HasFactory, CategorisesTransactions, FormatsMoneyColumns;
 
     public $fillable = [
         'name',
         'currency',
         'amount',
-        'period_type',
+        'period_type', //TODO drop
         'identifier',
         'identifier_transaction_type', //Ideally this should be set WITHOUT identifier
         'enabled',
@@ -39,6 +40,11 @@ class Budget extends Model
         return $query->with('tallies')
             ->where('tallies.start_date', '<=', $today)
             ->where('tallies.end_date', '>=', $today);
+    }
+
+    public function getFormattedAmountAttribute(): string
+    {
+        return $this->formatMoneyColumn('amount');
     }
 
     public function tallies(): HasMany

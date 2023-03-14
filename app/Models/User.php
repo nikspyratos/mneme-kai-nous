@@ -47,8 +47,10 @@ class User extends Authenticatable implements FilamentUser
             $weeksPassed = $currentDate->diffInWeeks($this->birthdate);
             $percentageComplete = round(($weeksPassed / 3900) * 100, 2);
             $percentageLeft = round(((3900 - $weeksPassed) / 3900) * 100, 2);
+
             return [$percentageLeft, $percentageComplete];
         }
+
         return null;
     }
 }

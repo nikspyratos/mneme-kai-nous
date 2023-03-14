@@ -3,10 +3,11 @@
 namespace App\Filament\Resources;
 
 use App\Enums\Currencies;
-use App\Filament\Resources\TallyResource\Pages;
+use App\Enums\TransactionTypes;
+use App\Filament\Resources\BudgetResource\Pages;
 use App\Helpers\EnumHelper;
-use App\Models\Tally;
-use Filament\Forms\Components\DatePicker;
+use App\Models\Budget;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
@@ -15,34 +16,32 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 
-class TallyResource extends Resource
+class BudgetResource extends Resource
 {
-    protected static ?string $model = Tally::class;
+    protected static ?string $model = Budget::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-sort-ascending';
+    protected static ?string $navigationIcon = 'heroicon-o-calculator';
 
     public static function form(Form $form): Form
     {
         $currenciesSelect = EnumHelper::enumToArray(Currencies::cases());
+        $transactionTypesSelect = EnumHelper::enumToArray(TransactionTypes::cases());
 
         return $form
             ->schema([
-                Select::make('budgetId')
-                    ->relationship('budget', 'name')
-                    ->required()
-                    ->preload(),
                 TextInput::make('name')
                     ->required(),
                 Select::make('currency')
                     ->options($currenciesSelect)
                     ->disablePlaceholderSelection()
                     ->required(),
-                TextInput::make('balance')
+                TextInput::make('amount')
                     ->required(),
-                DatePicker::make('start_date')
-                    ->required(),
-                DatePicker::make('end_date')
-                    ->required(),
+                TextInput::make('identifier'),
+                Select::make('identifier_transaction_type')
+                    ->options($transactionTypesSelect)
+                    ->disablePlaceholderSelection(),
+                Checkbox::make('enabled'),
             ]);
     }
 
@@ -50,11 +49,11 @@ class TallyResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('budget.name'),
                 TextColumn::make('name'),
-                TextColumn::make('balance')->formatStateUsing(fn (Tally $record): string => $record->formatted_balance),
-                TextColumn::make('start_date')->date(),
-                TextColumn::make('end_date')->date(),
+                TextColumn::make('amount')->formatStateUsing(fn (Budget $record): string => $record->formatted_amount),
+                TextColumn::make('identifier'),
+                TextColumn::make('identifier_transaction_type'),
+                TextColumn::make('enabled')->formatStateUsing(fn (Budget $record): string => $record->enabled ? 'true' : 'false'),
             ])
             ->filters([
                 //
@@ -77,9 +76,9 @@ class TallyResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTallies::route('/'),
-            'create' => Pages\CreateTally::route('/create'),
-            'edit' => Pages\EditTally::route('/{record}/edit'),
+            'index' => Pages\ListBudgets::route('/'),
+            'create' => Pages\CreateBudget::route('/create'),
+            'edit' => Pages\EditBudget::route('/{record}/edit'),
         ];
     }
 }

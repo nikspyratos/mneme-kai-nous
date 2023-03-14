@@ -4,22 +4,29 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PerceptionResource\Pages;
 use App\Models\Perception;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 
 class PerceptionResource extends Resource
 {
     protected static ?string $model = Perception::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name')
+                    ->required(),
+                TextInput::make('slug')
+                    ->required(),
+                TextInput::make('description')
+                    ->required(),
             ]);
     }
 
@@ -27,7 +34,9 @@ class PerceptionResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('name'),
+                TextColumn::make('slug'),
+                TextColumn::make('description'),
             ])
             ->filters([
                 //

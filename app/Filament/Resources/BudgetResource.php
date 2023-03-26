@@ -14,6 +14,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 
 class BudgetResource extends Resource
@@ -56,7 +57,7 @@ class BudgetResource extends Resource
                 TextColumn::make('amount')->formatStateUsing(fn (Budget $record): string => $record->formatted_amount),
                 TextColumn::make('identifier'),
                 TextColumn::make('identifier_transaction_type'),
-                TextColumn::make('enabled')->formatStateUsing(fn (Budget $record): string => $record->enabled ? 'true' : 'false'),
+                IconColumn::make('enabled')->boolean(),
             ])
             ->filters([
                 //

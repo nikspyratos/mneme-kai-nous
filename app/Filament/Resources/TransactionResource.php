@@ -20,6 +20,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Str;
 
@@ -101,7 +102,7 @@ class TransactionResource extends Resource
                 TextColumn::make('amount')->formatStateUsing(fn (Transaction $record): string => $record->formatted_amount),
                 TextColumn::make('fee')->formatStateUsing(fn (Transaction $record): string => $record->formatted_fee),
                 TextColumn::make('listed_balance')->formatStateUsing(fn (Transaction $record): string => $record->formatted_listed_balance),
-                TextColumn::make('is_tax_relevant')->formatStateUsing(fn (Transaction $record): string => $record->is_tax_relevant ? 'true' : 'false'),
+                IconColumn::make('is_tax_relevant')->boolean(),
             ])
             ->filters([
                 //

@@ -18,6 +18,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 
 class AccountResource extends Resource
@@ -80,10 +81,10 @@ class AccountResource extends Resource
                 TextColumn::make('balance')->formatStateUsing(fn (Account $record): string => $record->formatted_balance),
                 TextColumn::make('debt')->formatStateUsing(fn (Account $record): string => $record->formatted_debt),
                 TextColumn::make('type'),
-                TextColumn::make('has_overdraft')->formatStateUsing(fn (Account $record): string => $record->has_overdraft ? 'true' : 'false'),
+                IconColumn::make('has_overdraft')->boolean(),
                 TextColumn::make('bank_identifier'),
                 TextColumn::make('type'),
-                TextColumn::make('is_primary')->formatStateUsing(fn (Account $record): string => $record->is_primary ? 'true' : 'false'),
+                IconColumn::make('is_primary')->boolean(),
             ])
             ->filters([
                 //

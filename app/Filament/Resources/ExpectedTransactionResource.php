@@ -15,6 +15,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 
 class ExpectedTransactionResource extends Resource
@@ -72,9 +73,9 @@ class ExpectedTransactionResource extends Resource
                 TextColumn::make('due_day'),
                 TextColumn::make('identifier'),
                 TextColumn::make('identifier_transaction_type'),
-                TextColumn::make('enabled')->formatStateUsing(fn (ExpectedTransaction $record): string => $record->enabled ? 'true' : 'false'),
+                IconColumn::make('enabled')->boolean(),
                 TextColumn::make('type'),
-                TextColumn::make('is_tax_relevant')->formatStateUsing(fn (ExpectedTransaction $record): string => $record->is_tax_relevant ? 'true' : 'false'),
+                IconColumn::make('is_tax_relevant')->boolean(),
             ])
             ->filters([
                 //

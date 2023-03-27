@@ -73,7 +73,7 @@ class Account extends Model
     public function getDebtPaidOffPercentageAttribute()
     {
         if ($this->type == AccountTypes::DEBT->value) {
-            return round(($this->debt - $this->balance) / $this->debt, 2);
+            return round($this->balance / $this->debt, 2);
         }
 
         return null;
@@ -89,6 +89,11 @@ class Account extends Model
             Log::error('Overdraft exceeded on account', ['account' => $this->name, 'balance' => $this->balance, 'overdraft' => $this->overdraft_amount]);
         }
         $this->save();
+    }
+
+    public function isSyncable(): bool
+    {
+        return !is_null($this->transactions()->latest()->first()?->listed_balance);
     }
 
     public function isBalanceInSyncWithTransactions(): bool

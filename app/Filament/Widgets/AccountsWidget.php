@@ -14,9 +14,12 @@ class AccountsWidget extends BaseWidget
         $data = [];
         $accounts = Account::whereIsPrimary(true)->get();
         $accounts->each(function ($account) use (&$data) {
-            $synced = $account->isBalanceInSyncWithTransactions() ? 'true' : 'false';
             $content = $account->formatted_balance;
-            $description = $account->bank_name . " | Synced: {$synced}";
+            $description = $account->bank_name;
+            if ($account->isSyncable()) {
+            $synced = $account->isBalanceInSyncWithTransactions() ? 'true' : 'false';
+                 $description .= " | Synced: {$synced}";
+            }
             if ($account->type == AccountTypes::DEBT->value) {
                 $content .= ' / ' . $account->formattedDebt;
                 $description .= ' | Paid off: ' . $account->debtPaidOffPercentage . '%';

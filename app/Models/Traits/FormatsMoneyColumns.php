@@ -8,12 +8,12 @@ trait FormatsMoneyColumns
 {
     public function formatMoneyColumn(string $key): string
     {
-        if ($this->$key) {
+        if (isset($this->$key)) {
             $amount = round($this->$key / 100, 2);
 
             return Money::of($amount, $this->currency)->formatTo('en_ZA');
         }
 
-        return '';
+        return 'N/A';
     }
 }

@@ -10,7 +10,9 @@ use App\Filament\Resources\AccountResource\Pages\EditAccount;
 use App\Filament\Resources\AccountResource\Pages\ListAccounts;
 use App\Helpers\EnumHelper;
 use App\Models\Account;
+use Closure;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
@@ -37,38 +39,54 @@ class AccountResource extends Resource
 
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->required(),
-                Select::make('bank_name')
-                    ->options($banksSelect)
-                    ->disablePlaceholderSelection()
-                    ->required(),
-                TextInput::make('account_number')
-                    ->required(),
-                Select::make('currency')
-                    ->options($currenciesSelect)
-                    ->disablePlaceholderSelection()
-                    ->required(),
-                TextInput::make('balance')
-                    ->afterStateHydrated(function (TextInput $component, $state) {
-                        $component->state($state / 100);
-                    })
-                    ->numeric()
-                    ->required(),
-                TextInput::make('debt')
-                    ->afterStateHydrated(function (TextInput $component, $state) {
-                        $component->state($state / 100);
-                    })
-                    ->numeric(),
-                Select::make('type')
-                    ->options($typesSelect)
-                    ->disablePlaceholderSelection()
-                    ->required(),
-                Checkbox::make('has_overdraft'),
-                TextInput::make('bank_identifier')
-                   ->required(),
-                Checkbox::make('is_primary'),
-            ]);
+                Group::make([
+                    TextInput::make('name')
+                        ->required(),
+                    Select::make('bank_name')
+                        ->options($banksSelect)
+                        ->disablePlaceholderSelection(),
+                    TextInput::make('account_number'),
+                    Select::make('currency')
+                        ->options($currenciesSelect)
+                        ->default(Currencies::RANDS->value)
+                        ->disablePlaceholderSelection()
+                        ->required(),
+                    TextInput::make('balance')
+                        ->afterStateHydrated(function (TextInput $component, $state) {
+                            $component->state($state / 100)
+                                ->mask(fn (TextInput\Mask $mask) => $mask
+                                    ->numeric()
+                                    ->decimalPlaces(2) // Set the number of digits after the decimal point.
+                                    ->decimalSeparator('.') // Add a separator for decimal numbers.
+                                    ->mapToDecimalSeparator([',']) // Map additional characters to the decimal separator.
+                                    ->normalizeZeros(false) // Append or remove zeros at the end of the number.
+                                    ->padFractionalZeros(false) // Pad zeros at the end of the number to always maintain the maximum number of decimal places.
+                                    ->thousandsSeparator(',') // Add a separator for thousands.
+                                );
+                        }),
+                    Select::make('type')
+                        ->options($typesSelect)
+                        ->disablePlaceholderSelection()
+                        ->reactive()
+                        ->required(),
+                    TextInput::make('debt')
+                        ->afterStateHydrated(function (TextInput $component, $state) {
+                            $component->state($state / 100)
+                                ->mask(fn (TextInput\Mask $mask) => $mask
+                                    ->numeric()
+                                    ->decimalPlaces(2)
+                                    ->decimalSeparator('.')
+                                    ->normalizeZeros(false)
+                                    ->padFractionalZeros(false)
+                                    ->thousandsSeparator(',')
+                                );
+                        })
+                        ->visible(fn (Closure $get): bool => $get('type') == AccountTypes::DEBT->value),
+                    TextInput::make('bank_identifier'),
+                    Checkbox::make('has_overdraft'),
+                    Checkbox::make('is_primary'),
+                ])
+        ]);
     }
 
     public static function table(Table $table): Table

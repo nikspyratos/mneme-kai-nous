@@ -14,14 +14,14 @@ class AccountsWidget extends BaseWidget
         $data = [];
         $accounts = Account::whereIsPrimary(true)->get();
         $accounts->each(function ($account) use (&$data) {
-            $content = $account->formatted_balance;
+            $content = $account->formattedBalance;
             $description = $account->bank_name;
             if ($account->isSyncable()) {
                 $synced = $account->isBalanceInSyncWithTransactions() ? 'true' : 'false';
                 $description .= " | Synced: {$synced}";
             }
             if ($account->type == AccountTypes::DEBT->value) {
-                $content .= ' / ' . $account->formattedDebt;
+                $content = $account->formattedDebtBalance . ' / ' . $account->formattedDebt;
                 $description .= ' | Paid off: ' . $account->debtPaidOffPercentage . '%';
             }
             $card = Card::make($account->name, $content)

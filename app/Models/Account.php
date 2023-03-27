@@ -60,13 +60,14 @@ class Account extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function getFormattedDebtBalanceAttribute(): string
+    {
+        return $this->formatValueAsMoneyString(($this->debt - $this->balance) / 100);
+    }
+
     public function getFormattedBalanceAttribute(): string
     {
-        if ($this->type == AccountTypes::DEBT->value) {
-            return $this->formatValueAsMoneyString(($this->debt - $this->balance) / 100);
-        } else {
-            return $this->formatKeyAsMoneyString('balance');
-        }
+        return $this->formatKeyAsMoneyString('balance');
     }
 
     public function getFormattedDebtAttribute(): string
@@ -77,7 +78,7 @@ class Account extends Model
     public function getDebtPaidOffPercentageAttribute(): ?float
     {
         if ($this->type == AccountTypes::DEBT->value) {
-            return round($this->balance / $this->debt, 2);
+            return round(($this->debt - $this->balance) / $this->debt, 2);
         }
 
         return null;

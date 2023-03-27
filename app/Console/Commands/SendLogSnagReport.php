@@ -37,7 +37,7 @@ class SendLogSnagReport extends Command
 
         $accounts = Account::whereIsPrimary(true)->get();
         foreach ($accounts as $account) {
-            $message = sprintf('**%s:** %s', $account->name, $account->formatted_balance);
+            $message = sprintf('**%s:** %s', $account->name, $account->formattedBalance);
             if ($account->type == AccountTypes::DEBT->value) {
                 $message .= sprintf(' | %s', $account->debt_paid_off_percentage . '%');
             }

@@ -3,43 +3,28 @@
 namespace App\Imports;
 
 use App\Models\Account;
-use App\Models\Transaction;
-use Illuminate\Support\Carbon;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Concerns\SkipsUnknownSheets;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class BankZeroImport implements ToModel, WithMultipleSheets
+class BankZeroImport implements WithMultipleSheets, SkipsUnknownSheets, WithHeadingRow
 {
     public function __construct(
         private Account $account,
+        private string $sheetName
     ) {
     }
 
     public function sheets(): array
     {
         return [
-            1 => new BankZeroTransactionSheetImport,
+            $this->sheetName => new BankZeroTransactionSheetImport($this->account),
         ];
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function model(array $row)
+    public function onUnknownSheet($sheetName)
     {
-        return new Transaction([
-            'account_id' => $this->account->id,
-            'expected_transaction_id' => null,
-            'budget_id' => null,
-            'tally_id' => null,
-            'date' => Carbon::createFromFormat('Y-m-d H:i', $row['Date'] . ' ' . $row['Time']),
-            'type' => $row['Type'],
-            'description' => $row['Description 1'],
-            'detail' => $row['Description 2'],
-            'currency' => $this->account->currency,
-            'amount' => $row['Amount'],
-            'fee' => $row['Fee'],
-            'listed_balance' => $row['Balance'],
-        ]);
+        Log::info(self::class . ': Unknown sheet', [$sheetName]);
     }
 }

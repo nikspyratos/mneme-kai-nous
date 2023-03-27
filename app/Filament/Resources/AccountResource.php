@@ -96,7 +96,7 @@ class AccountResource extends Resource
                 TextColumn::make('name'),
                 TextColumn::make('bank_name'),
                 TextColumn::make('account_number'),
-                TextColumn::make('balance')->formatStateUsing(fn (Account $record): string => $record->formatted_balance),
+                TextColumn::make('balance')->formatStateUsing(fn (Account $record): string => $record->formattedBalance),
                 TextColumn::make('debt')->formatStateUsing(fn (Account $record): string => $record->formatted_debt),
                 TextColumn::make('type'),
                 IconColumn::make('has_overdraft')->boolean(),

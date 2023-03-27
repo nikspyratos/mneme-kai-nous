@@ -21,7 +21,7 @@ class EditAccount extends EditRecord
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
         $data['balance'] *= 100;
-        if ($data['debt']) {
+        if (isset($data['debt'])) {
             $data['debt'] *= 100;
         }
         $record->update($data);

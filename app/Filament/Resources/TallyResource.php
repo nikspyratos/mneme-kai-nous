@@ -55,7 +55,7 @@ class TallyResource extends Resource
             ->columns([
                 TextColumn::make('budget.name'),
                 TextColumn::make('name'),
-                TextColumn::make('balance')->formatStateUsing(fn (Tally $record): string => $record->formatted_balance),
+                TextColumn::make('balance')->formatStateUsing(fn (Tally $record): string => $record->formattedBalance),
                 TextColumn::make('start_date')->date(),
                 TextColumn::make('end_date')->date(),
             ])

@@ -12,7 +12,9 @@ class CreateAccount extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['balance'] *= 100;
-        $data['debt'] *= 100;
+        if (isset($data['debt'])) {
+            $data['debt'] *= 100;
+        }
 
         return $data;
     }

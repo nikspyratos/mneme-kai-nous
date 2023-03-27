@@ -3,19 +3,34 @@
 namespace App\Filament\Resources\TransactionResource\Pages;
 
 use App\Actions\ConvertTransactionsToMarkdown;
+use App\Enums\Banks;
 use App\Exports\TransactionsExport;
 use App\Filament\Resources\TransactionResource;
+use App\Imports\BankZeroImport;
+use App\Models\Account;
 use App\Models\Transaction;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Pages\Actions;
 use Filament\Pages\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ListTransactions extends ListRecords
 {
     protected static string $resource = TransactionResource::class;
+
+    public function importBankZero(array $data)
+    {
+        $monthYear = explode('_', pathinfo($data['file'], PATHINFO_FILENAME))[2];
+        $month = substr($monthYear, 0, 3);
+        $year = substr($monthYear, strlen($monthYear) - 2, 2);
+        $sheetName = "{$month} {$year} Transactions";
+        Excel::import(new BankZeroImport(Account::find($data['account']), $sheetName), Storage::path($data['file']));
+    }
 
     public function exportTaxRelated(array $data)
     {
@@ -41,6 +56,23 @@ class ListTransactions extends ListRecords
 
         return [
             Actions\CreateAction::make(),
+            Action::make('import_bankzero')
+                ->label('Import from BankZero')
+                ->color('success')
+                ->icon('heroicon-o-document-add')
+                ->action('importBankZero')
+                ->form([
+                    Select::make('account')
+                        ->label('Account')
+                        ->options(Account::whereBankName(Banks::BANKZERO->value)->pluck('name', 'id'))
+                        ->required(),
+                    FileUpload::make('file')
+                        ->label('File')
+                        ->disk(Storage::getDefaultDriver())
+                        ->preserveFilenames()
+                        ->helperText('Do not change the original downloaded filename or this will not work.')
+                        ->required(),
+                ]),
             Action::make('export_tax')
                 ->label('Export Tax-Related')
                 ->color('success')

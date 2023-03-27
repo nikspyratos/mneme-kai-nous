@@ -50,17 +50,17 @@ class Transaction extends Model
 
     public function getFormattedAmountAttribute(): string
     {
-        return $this->formatMoneyColumn('amount');
+        return $this->formatKeyAsMoneyString('amount');
     }
 
     public function getFormattedFeeAttribute(): string
     {
-        return $this->formatMoneyColumn('fee');
+        return $this->formatKeyAsMoneyString('fee');
     }
 
     public function getFormattedListedBalanceAttribute(): string
     {
-        return $this->formatMoneyColumn('listed_balance');
+        return $this->formatKeyAsMoneyString('listed_balance');
     }
 
     public function account(): BelongsTo

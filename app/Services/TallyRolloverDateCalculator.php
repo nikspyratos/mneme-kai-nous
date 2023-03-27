@@ -11,13 +11,16 @@ class TallyRolloverDateCalculator
         return config('app.financial_month_rollover_day', '25');
     }
 
-    public static function getPreviousDate()
+    public static function getPreviousDate(Carbon $date = null)
     {
         $rolloverDay = self::getRolloverDay();
-        if (Carbon::today()->day > $rolloverDay) {
-            $rolloverDate = Carbon::today()->setDay($rolloverDay);
+        if (! $date) {
+            $date = Carbon::today();
+        }
+        if ($date->day > $rolloverDay) {
+            $rolloverDate = $date->setDay($rolloverDay);
         } else {
-            $rolloverDate = Carbon::today()->subMonth()->setDay($rolloverDay);
+            $rolloverDate = $date->subMonth()->setDay($rolloverDay);
         }
         if ($rolloverDate->isWeekend()) {
             $rolloverDate = $rolloverDate->previousWeekday();
@@ -26,13 +29,16 @@ class TallyRolloverDateCalculator
         return $rolloverDate;
     }
 
-    public static function getNextDate()
+    public static function getNextDate(Carbon $date = null)
     {
         $rolloverDay = self::getRolloverDay();
-        if (Carbon::today()->day > $rolloverDay) {
-            $rolloverDate = Carbon::today()->addMonth()->setDay($rolloverDay);
+        if (! $date) {
+            $date = Carbon::today();
+        }
+        if ($date->day > $rolloverDay) {
+            $rolloverDate = $date->addMonth()->setDay($rolloverDay);
         } else {
-            $rolloverDate = Carbon::today()->setDay($rolloverDay);
+            $rolloverDate = $date->setDay($rolloverDay);
         }
         if ($rolloverDate->isWeekend()) {
             $rolloverDate = $rolloverDate->previousWeekday();

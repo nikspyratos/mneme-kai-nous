@@ -12,4 +12,16 @@ enum Currencies: string
     case BITCOIN = 'BTC';
     //Points
     case INVESTEC_REWARDS = 'INV';
+
+    public function symbol(): string
+    {
+        return match ($this) {
+            Currencies::RANDS => 'R',
+            Currencies::EURO => '€',
+            Currencies::POUNDS => '£',
+            Currencies::DOLLARS => '$',
+            Currencies::BITCOIN => 'BTC',
+            Currencies::INVESTEC_REWARDS => 'INV',
+        };
+    }
 }

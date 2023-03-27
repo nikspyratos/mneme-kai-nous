@@ -34,32 +34,32 @@ class ExpenseSheet implements FromQuery, WithTitle, WithMapping, WithHeadings, S
         return 'Expenses';
     }
 
-
     public function headings(): array
     {
         return [
             'Date',
             'Amount',
             'Description',
-            'Total'
+            'Total',
         ];
     }
 
     public function map($row): array
     {
         $this->total += $row->amount / 100;
+
         return [
             $row->date->toDateString(),
             $row->formatted_amount,
             $row->description,
-            Money::of($this->total, $row->currency)->formatTo('en_ZA')
+            Money::of($this->total, $row->currency)->formatTo('en_ZA'),
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
         return [
-            1    => ['font' => ['bold' => true, 'size' => 14]],
+            1 => ['font' => ['bold' => true, 'size' => 14]],
         ];
     }
 

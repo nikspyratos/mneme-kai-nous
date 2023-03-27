@@ -40,7 +40,7 @@ class RolloverBudgetMonth extends Command
             $budgets->each(function ($budget) use ($nextMonthDay) {
                 Tally::create([
                     'budget_id' => $budget->id,
-                    'name' => $budget->name,
+                    'name' => $budget->name . 'Spent',
                     'currency' => $budget->currency,
                     'balance' => 0,
                     'start_date' => Carbon::today(),

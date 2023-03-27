@@ -16,7 +16,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $name
- * @property string $bank_name
+ * @property string|null $bank_name
  * @property string|null $account_number
  * @property string $currency
  * @property int|null $balance
@@ -24,12 +24,12 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int|null $debt
- * @property int $has_overdraft
+ * @property bool $has_overdraft
  * @property int|null $overdraft_amount
  * @property string|null $bank_identifier
  * @property array|null $data
- * @property int $is_primary
- * @property-read mixed $debt_paid_off_percentage
+ * @property bool $is_primary
+ * @property-read float|null $debt_paid_off_percentage
  * @property-read string $formatted_balance
  * @property-read string $formatted_debt
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
@@ -71,6 +71,7 @@ namespace App\Models{
  * @property string|null $identifier
  * @property string|null $identifier_transaction_type
  * @property int $enabled
+ * @property-read string $formatted_amount
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tally> $tallies
  * @property-read int|null $tallies_count
  * @method static \Illuminate\Database\Eloquent\Builder|Budget newModelQuery()
@@ -110,6 +111,7 @@ namespace App\Models{
  * @property int $enabled
  * @property string $type
  * @property int $is_tax_relevant
+ * @property-read string $formatted_amount
  * @property-read \Illuminate\Support\Carbon|null $next_due_date
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
@@ -208,6 +210,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Quote newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Quote newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Quote query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Quote shortContent()
  * @method static \Illuminate\Database\Eloquent\Builder|Quote whereAuthor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quote whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quote whereCreatedAt($value)
@@ -298,6 +301,9 @@ namespace App\Models{
  * @property-read \App\Models\Account|null $account
  * @property-read \App\Models\Budget|null $budget
  * @property-read \App\Models\ExpectedTransaction|null $expectedTransaction
+ * @property-read string $formatted_amount
+ * @property-read string $formatted_fee
+ * @property-read string $formatted_listed_balance
  * @property-read \App\Models\Tally|null $tally
  * @method static \Database\Factories\TransactionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction newModelQuery()

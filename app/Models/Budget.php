@@ -44,7 +44,7 @@ class Budget extends Model
 
     public function getFormattedAmountAttribute(): string
     {
-        return $this->formatMoneyColumn('amount');
+        return $this->formatKeyAsMoneyString('amount');
     }
 
     public function tallies(): HasMany

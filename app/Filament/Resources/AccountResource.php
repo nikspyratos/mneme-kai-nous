@@ -85,8 +85,8 @@ class AccountResource extends Resource
                     TextInput::make('bank_identifier'),
                     Checkbox::make('has_overdraft'),
                     Checkbox::make('is_primary'),
-                ])
-        ]);
+                ]),
+            ]);
     }
 
     public static function table(Table $table): Table

@@ -62,15 +62,19 @@ class Account extends Model
 
     public function getFormattedBalanceAttribute(): string
     {
-        return $this->formatMoneyColumn('balance');
+        if ($this->type == AccountTypes::DEBT->value) {
+            return $this->formatValueAsMoneyString(($this->debt - $this->balance) / 100);
+        } else {
+            return $this->formatKeyAsMoneyString('balance');
+        }
     }
 
     public function getFormattedDebtAttribute(): string
     {
-        return $this->formatMoneyColumn('debt');
+        return $this->formatKeyAsMoneyString('debt');
     }
 
-    public function getDebtPaidOffPercentageAttribute()
+    public function getDebtPaidOffPercentageAttribute(): ?float
     {
         if ($this->type == AccountTypes::DEBT->value) {
             return round($this->balance / $this->debt, 2);
@@ -93,7 +97,7 @@ class Account extends Model
 
     public function isSyncable(): bool
     {
-        return !is_null($this->transactions()->latest()->first()?->listed_balance);
+        return ! is_null($this->transactions()->latest()->first()?->listed_balance);
     }
 
     public function isBalanceInSyncWithTransactions(): bool

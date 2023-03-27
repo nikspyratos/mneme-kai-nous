@@ -17,6 +17,8 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Illuminate\Database\Eloquent\Builder;
 
 class ExpectedTransactionResource extends Resource
 {
@@ -78,7 +80,10 @@ class ExpectedTransactionResource extends Resource
                 IconColumn::make('is_tax_relevant')->boolean(),
             ])
             ->filters([
-                //
+                Filter::make('is_recurring')
+                    ->label('Is Recurring')
+                    ->default()
+                    ->query(fn (Builder $query): Builder => $query->whereNotNull('due_period')),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

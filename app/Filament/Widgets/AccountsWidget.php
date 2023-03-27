@@ -17,8 +17,8 @@ class AccountsWidget extends BaseWidget
             $content = $account->formatted_balance;
             $description = $account->bank_name;
             if ($account->isSyncable()) {
-            $synced = $account->isBalanceInSyncWithTransactions() ? 'true' : 'false';
-                 $description .= " | Synced: {$synced}";
+                $synced = $account->isBalanceInSyncWithTransactions() ? 'true' : 'false';
+                $description .= " | Synced: {$synced}";
             }
             if ($account->type == AccountTypes::DEBT->value) {
                 $content .= ' / ' . $account->formattedDebt;

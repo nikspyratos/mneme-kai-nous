@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 class TransactionsExport implements WithMultipleSheets
 {
     use Exportable;
+
     public function __construct(private ?Carbon $startDate = null, private ?Carbon $endDate = null)
     {
     }

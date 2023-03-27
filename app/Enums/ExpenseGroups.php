@@ -9,4 +9,12 @@ enum ExpenseGroups: string
     case TT = 'Audi TT';
     case PAYMENTS = 'Payments';
     case OTHER = 'Other';
+
+    public function isRequired(): bool
+    {
+        return match ($this) {
+            self::RICHMOND_203, self::OTHER, self::PAYMENTS => true,
+            default => false,
+        };
+    }
 }

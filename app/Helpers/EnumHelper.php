@@ -2,8 +2,6 @@
 
 namespace App\Helpers;
 
-use Illuminate\Support\Str;
-
 class EnumHelper
 {
     public static function enumToArray(array $cases = []): array

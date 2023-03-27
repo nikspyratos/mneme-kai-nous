@@ -39,7 +39,7 @@ class Tally extends Model
 
     public function getFormattedBalanceAttribute(): string
     {
-        return $this->formatMoneyColumn('balance');
+        return $this->formatKeyAsMoneyString('balance');
     }
 
     public function getBalancePercentageOfBudget(): int

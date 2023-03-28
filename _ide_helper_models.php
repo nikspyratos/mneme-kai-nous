@@ -30,8 +30,9 @@ namespace App\Models{
  * @property array|null $data
  * @property bool $is_primary
  * @property-read float|null $debt_paid_off_percentage
- * @property-read string $formattedBalance
+ * @property-read string $formatted_balance
  * @property-read string $formatted_debt
+ * @property-read string $formatted_debt_balance
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
  * @method static \Database\Factories\AccountFactory factory($count = null, $state = [])
@@ -258,7 +259,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Budget|null $budget
- * @property-read string $formattedBalance
+ * @property-read string $formatted_balance
  * @method static \Illuminate\Database\Eloquent\Builder|Tally forCurrentMonth()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newQuery()

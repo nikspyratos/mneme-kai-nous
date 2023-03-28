@@ -1,4 +1,4 @@
-@servers(['localhost' => ['127.0.0.1']/*, 'prod' => ['user@ip']*/])
+@servers(['localhost' => ['127.0.0.1'], 'prod' => ['root@64.226.101.64']])
 
 @story('deploy', ['on' => 'prod'])
     cdprod
@@ -72,5 +72,5 @@
 @endtask
 
 @task('cdprod')
-    {{--  CD to prod dir  --}}
+    cd ~/mneme-kai-nous
 @endtask

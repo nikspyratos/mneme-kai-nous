@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:update-investec-accounts')->dailyAt('05:00');
         $schedule->command('app:update-loadshedding-schedules')->dailyAt('05:00');
         $schedule->command('app:send-logsnag-report')->dailyAt('07:00');
+        $schedule->command('app:prune-files')->dailyAt('04:00');
     }
 
     /**

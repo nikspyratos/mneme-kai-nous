@@ -94,5 +94,6 @@ class DatabaseSeeder extends Seeder
             ExpectedTransaction::firstOrCreate($expectedTransactionDatum);
         }
         $this->call(PerceptionSeeder::class);
+        $this->call(LoadsheddingScheduleSeeder::class);
     }
 }

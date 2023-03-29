@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Enums\Banks;
 use App\Enums\Currencies;
+use App\Enums\TransactionTypes;
 use App\Models\Account;
 use App\Models\Budget;
 use App\Models\ExpectedTransaction;
@@ -14,6 +15,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class UpdateInvestecAccounts extends Command
 {
@@ -132,6 +134,7 @@ class UpdateInvestecAccounts extends Command
                             ->except(['transactionDate', 'transactionType', 'description', 'amount', 'runningBalance'])
                             ->toArray(),
                         'is_tax_relevant' => $isTaxRelevant,
+                        'type' => TransactionTypes::from(Str::ucfirst(Str::lower($investecTransaction['transactionType'])))->value,
                     ]
                 );
             }

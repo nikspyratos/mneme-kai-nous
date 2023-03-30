@@ -17,8 +17,7 @@ class TransactionController extends Controller
 {
     public function createTransaction(Request $request)
     {
-        // NOTE: API access fetches non-card transactions,
-        // so for my purposes of budget tracking this endpoint is superfluous.
+        // NOTE: API access fetches non-card transactions
         try {
             $account = Account::firstOrCreateInvestec(
                 $request->input('accountNumber'),

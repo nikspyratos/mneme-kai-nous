@@ -119,7 +119,7 @@ class TransactionController extends Controller
                 }
 
                 if ($isTransaction) {
-                    $transaction = Transaction::create([
+                    Transaction::create([
                         'account_id' => $account->id,
                         'expected_transaction_id' => null,
                         'budget_id' => null,
@@ -134,7 +134,7 @@ class TransactionController extends Controller
                         'listed_balance' => $balance,
                         'data' => $request->all(),
                     ]);
-                    $account->updateBalance($transaction->amount, $type);
+                    $account->update(['balance' => $balance]);
                 } else {
                     Log::error('WFS SMS contents not recognised', ['content' => $request->input('content')]);
                 }
@@ -181,7 +181,7 @@ class TransactionController extends Controller
                 $date = Carbon::createFromFormat('d-M-y', "{$dateDay}-{$dateMonthYear}");
                 $balance = $this->amountInCents(explode(' ', $transactionDetails[2])[1]) * 100;
 
-                $transaction = Transaction::create([
+                Transaction::create([
                     'account_id' => $account->id,
                     'expected_transaction_id' => null,
                     'budget_id' => null,
@@ -196,7 +196,7 @@ class TransactionController extends Controller
                     'listed_balance' => $balance,
                     'data' => $request->all(),
                 ]);
-                $account->updateBalance($transaction->amount);
+                $account->update(['balance' => $balance]);
             }
         }
 

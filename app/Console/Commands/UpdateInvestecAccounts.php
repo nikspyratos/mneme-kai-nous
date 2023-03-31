@@ -138,7 +138,6 @@ class UpdateInvestecAccounts extends Command
                         'type' => $type->value,
                     ]
                 );
-                $account->updateBalance($transaction->amount, $type);
             }
         }
         $this->info('Complete!');

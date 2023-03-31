@@ -51,6 +51,7 @@ class Account extends Model
             [
                 'name' => $accountName ?? Banks::INVESTEC->value . ' ' . $accountNumber,
                 'type' => AccountTypes::TRANSACTIONAL->value,
+                'balance' => $balance,
                 'bank_identifier' => $bankIdentifier,
                 'data' => $data,
             ]);

@@ -22,6 +22,8 @@ use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 
 class TransactionResource extends Resource
@@ -93,11 +95,20 @@ class TransactionResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('account.name'),
-                TextColumn::make('expected_transaction.name'),
-                TextColumn::make('budget.name'),
-                TextColumn::make('tally.name'),
-                TextColumn::make('date')->dateTime(),
+                TextColumn::make('account.name')
+                    ->sortable(),
+                TextColumn::make('expected_transaction.name')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('budget.name')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('tally.name')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('date')->dateTime()
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('type'),
                 TextColumn::make('category'),
                 TextColumn::make('description'),
@@ -106,8 +117,19 @@ class TransactionResource extends Resource
                 TextColumn::make('listed_balance')->formatStateUsing(fn (Transaction $record): string => $record->formatted_listed_balance),
                 IconColumn::make('is_tax_relevant')->boolean(),
             ])
+            ->defaultSort('date', 'desc')
             ->filters([
-                //
+                SelectFilter::make('account_id')
+                    ->relationship('account', 'name'),
+                SelectFilter::make('expected_transaction_id')
+                    ->relationship('expectedTransaction', 'name'),
+                SelectFilter::make('budget_id')
+                    ->relationship('budget', 'name'),
+                SelectFilter::make('tally_id')
+                    ->relationship('tally', 'name', fn (Builder $query) => $query->forCurrentMonth()),
+                SelectFilter::make('type')
+                    ->options(EnumHelper::enumToFilamentOptionArray(TransactionTypes::cases()))
+                    ->attribute('type'),
             ])
             ->actions([
                 EditAction::make(),

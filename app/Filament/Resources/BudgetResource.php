@@ -15,7 +15,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Columns\TextColumn;
 
 class BudgetResource extends Resource
@@ -65,7 +65,7 @@ class BudgetResource extends Resource
                 TextColumn::make('period_type'),
                 TextColumn::make('identifier'),
                 TextColumn::make('identifier_transaction_type'),
-                IconColumn::make('enabled')->boolean(),
+                ToggleColumn::make('enabled'),
             ])
             ->filters([
                 //

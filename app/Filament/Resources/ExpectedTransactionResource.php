@@ -7,6 +7,7 @@ use App\Enums\DuePeriods;
 use App\Enums\TransactionTypes;
 use App\Filament\Resources\ExpectedTransactionResource\Pages;
 use App\Helpers\EnumHelper;
+use App\Models\Budget;
 use App\Models\ExpectedTransaction;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
@@ -15,7 +16,8 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
@@ -36,6 +38,8 @@ class ExpectedTransactionResource extends Resource
 
         return $form
             ->schema([
+                Select::make('budget_id')
+                    ->relationship('budget', 'name'),
                 TextInput::make('name')
                     ->required(),
                 TextInput::make('description'),
@@ -69,20 +73,25 @@ class ExpectedTransactionResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $budgetSelect = Budget::all()->pluck('name', 'id')->toArray();
+
         return $table
             ->columns([
+                SelectColumn::make('budget_id')
+                    ->label('Budget')
+                    ->options($budgetSelect)
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('name'),
                 TextColumn::make('description')->limit(20),
                 TextColumn::make('group'),
                 TextColumn::make('amount')->formatStateUsing(fn (ExpectedTransaction $record): string => $record->formatted_amount),
                 TextColumn::make('due_period'),
                 TextColumn::make('due_day'),
-                TextColumn::make('next_due_date')->formatStateUsing(fn (ExpectedTransaction $record): string => $record->next_due_date?->toDateString() ?? ''),
-                TextColumn::make('identifier'),
-                TextColumn::make('identifier_transaction_type'),
-                IconColumn::make('enabled')->boolean(),
+                TextColumn::make('next_due_date')->date(),
+                ToggleColumn::make('enabled'),
                 TextColumn::make('type'),
-                IconColumn::make('is_tax_relevant')->boolean(),
+                ToggleColumn::make('is_tax_relevant'),
             ])
             ->filters([
                 Filter::make('is_recurring')

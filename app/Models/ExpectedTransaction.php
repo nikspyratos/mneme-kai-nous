@@ -7,6 +7,7 @@ use App\Models\Traits\CategorisesTransactions;
 use App\Models\Traits\FormatsMoneyColumns;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
@@ -15,6 +16,7 @@ class ExpectedTransaction extends Model
     use HasFactory, CategorisesTransactions, FormatsMoneyColumns;
 
     public $fillable = [
+        'budget_id',
         'name',
         'description',
         'group',
@@ -33,6 +35,11 @@ class ExpectedTransaction extends Model
     public $casts = [
         'next_due_date' => 'date',
     ];
+
+    public function budget(): BelongsTo
+    {
+        return $this->belongsTo(Budget::class);
+    }
 
     public function transactions(): HasMany
     {

@@ -97,7 +97,7 @@ class TransactionResource extends Resource
             ->columns([
                 TextColumn::make('account.name')
                     ->sortable(),
-                TextColumn::make('expected_transaction.name')
+                TextColumn::make('expectedTransaction.name')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('budget.name')

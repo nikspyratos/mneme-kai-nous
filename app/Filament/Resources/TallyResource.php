@@ -43,11 +43,13 @@ class TallyResource extends Resource
                     ->afterStateHydrated(function (TextInput $component, $state) {
                         $component->state($state / 100);
                     })
+                    ->numeric()
                     ->required(),
                 TextInput::make('limit')
                     ->afterStateHydrated(function (TextInput $component, $state) {
                         $component->state($state / 100);
                     })
+                    ->numeric()
                     ->required(),
                 DatePicker::make('start_date')
                     ->required(),

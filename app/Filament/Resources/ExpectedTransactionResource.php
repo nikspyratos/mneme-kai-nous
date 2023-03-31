@@ -47,10 +47,10 @@ class ExpectedTransactionResource extends Resource
                     ->afterStateHydrated(function (TextInput $component, $state) {
                         $component->state($state / 100);
                     })
+                    ->numeric()
                     ->required(),
                 Select::make('due_period')
-                    ->options($duePeriodSelect)
-                    ->disablePlaceholderSelection(),
+                    ->options($duePeriodSelect),
                 TextInput::make('due_day')
                     ->numeric()
                     ->minValue(1)

@@ -84,6 +84,15 @@ class Account extends Model
         return null;
     }
 
+    public function getAvailableCreditPercentageAttribute(): ?float
+    {
+        if ($this->type == AccountTypes::CREDIT->value) {
+            return round($this->balance / $this->debt * 100, 2);
+        }
+
+        return null;
+    }
+
     public function updateBalance(int $amount)
     {
         $this->balance -= $amount;

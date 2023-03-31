@@ -20,13 +20,24 @@ class AccountsWidget extends BaseWidget
                 $synced = $account->isBalanceInSyncWithTransactions() ? 'true' : 'false';
                 $description .= " | Synced: {$synced}";
             }
+            $color = 'success';
             if ($account->type == AccountTypes::DEBT->value) {
                 $content = $account->formatted_debt_balance . ' / ' . $account->formatted_debt;
                 $description .= ' | Paid off: ' . $account->debt_paid_off_percentage . '%';
+                $color = 'success';
+            } elseif ($account->type == AccountTypes::CREDIT->value) {
+                $availableCreditPercentage = $account->available_credit_percentage;
+                $content = $account->formatted_balance . ' / ' . $account->formatted_debt;
+                $description .= ' | Available: ' . $availableCreditPercentage . '%';
+                if ($availableCreditPercentage <= 75 && $availableCreditPercentage > 50) {
+                    $color = 'warning';
+                } elseif ($availableCreditPercentage < 50) {
+                    $color = 'danger';
+                }
             }
             $card = Card::make($account->name, $content)
                 ->description($description)
-                ->color('success');
+                ->color($color);
             $data[] = $card;
         });
 

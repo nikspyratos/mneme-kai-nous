@@ -54,7 +54,7 @@ class Transaction extends Model
         return $query->whereBetween(
             'date',
             [
-                TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate()
+                TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
             ]
         );
     }

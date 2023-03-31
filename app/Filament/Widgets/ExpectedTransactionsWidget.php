@@ -7,14 +7,13 @@ use App\Models\ExpectedTransaction;
 use App\Services\TallyRolloverDateCalculator;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Widgets\TableWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Card;
+use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Carbon;
 
 class ExpectedTransactionsWidget extends BaseWidget
 {
-    protected int | string | array $columnSpan = 'full';
+    protected int|string|array $columnSpan = 'full';
 
     protected function getTableQuery(): Builder
     {
@@ -22,7 +21,7 @@ class ExpectedTransactionsWidget extends BaseWidget
             ->whereBetween(
                 'next_due_date',
                 [
-                    TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate()
+                    TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
                 ]
             );
     }
@@ -36,7 +35,7 @@ class ExpectedTransactionsWidget extends BaseWidget
             IconColumn::make('is_paid')
                 ->label('Is Paid')
                 ->boolean()
-                ->getStateUsing(fn (ExpectedTransaction $record): bool => $record->transactions()->inCurrentBudgetMonth()->exists())
+                ->getStateUsing(fn (ExpectedTransaction $record): bool => $record->transactions()->inCurrentBudgetMonth()->exists()),
         ];
     }
 

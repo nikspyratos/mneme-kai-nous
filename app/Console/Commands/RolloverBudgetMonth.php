@@ -3,14 +3,11 @@
 namespace App\Console\Commands;
 
 use App\Enums\BudgetPeriodTypes;
-use App\Enums\TransactionTypes;
 use App\Models\Budget;
-use App\Models\ExpectedTransaction;
 use App\Models\Tally;
 use App\Services\LogSnag;
 use App\Services\TallyRolloverDateCalculator;
 use Illuminate\Console\Command;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 
 class RolloverBudgetMonth extends Command
@@ -47,13 +44,13 @@ class RolloverBudgetMonth extends Command
             if ($budget->tallies()->forCurrentMonth()->count() == 0) {
                 $startDate = TallyRolloverDateCalculator::getPreviousDate();
                 $shouldCreateTally = true;
-            } else if (Carbon::today()->day == $nextRolloverDate->day) {
+            } elseif (Carbon::today()->day == $nextRolloverDate->day) {
                 $shouldCreateTally = true;
             }
             if ($shouldCreateTally) {
                 $tally = Tally::create([
                     'budget_id' => $budget->id,
-                    'name' => $budget->name . ' Spent ' . $startDate->toDateString() .  ' - ' . $nextMonthDay->toDateString(),
+                    'name' => $budget->name . ' Spent ' . $startDate->toDateString() . ' - ' . $nextMonthDay->toDateString(),
                     'currency' => $budget->currency,
                     'balance' => 0,
                     'limit' => $budget->amount,

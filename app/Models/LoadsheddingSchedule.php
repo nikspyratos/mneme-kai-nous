@@ -27,6 +27,6 @@ class LoadsheddingSchedule extends Model
 
     public function getTodayTimesFormattedAttribute(): string
     {
-        return !empty($this->today_times) ? Arr::join($this->today_times, ', ') : 'N/A';
+        return ! empty($this->today_times) ? Arr::join($this->today_times, ', ') : 'N/A';
     }
 }

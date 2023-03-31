@@ -10,6 +10,7 @@ class QuoteCards
     public static function getCards(): array
     {
         $quote = Quote::inRandomOrder()->first();
+
         return [Card::make('Quote', $quote->content)->description($quote->author)->color('primary')];
     }
 }

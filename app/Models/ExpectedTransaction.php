@@ -34,7 +34,6 @@ class ExpectedTransaction extends Model
         'next_due_date' => 'date',
     ];
 
-
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
@@ -60,6 +59,5 @@ class ExpectedTransaction extends Model
 
     public function getTransactionsDue()
     {
-
     }
 }

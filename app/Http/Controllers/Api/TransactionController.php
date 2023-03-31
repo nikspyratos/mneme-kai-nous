@@ -6,15 +6,12 @@ use App\Enums\AccountTypes;
 use App\Enums\Banks;
 use App\Enums\Currencies;
 use App\Enums\InvestecTransactionTypes;
-use App\Enums\TransactionCategories;
 use App\Enums\TransactionTypes;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Models\Transaction;
-use Brick\Money\Money;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -65,7 +62,7 @@ class TransactionController extends Controller
 
     public function createTransactionFromSms(Request $request)
     {
-        $this->validate($request, [
+        request()->validate($request, [
             'content' => 'required',
             'timestamp' => 'required',
         ]);
@@ -78,12 +75,12 @@ class TransactionController extends Controller
                 $accountIdentifier = explode('; ', $request->input('content'))[1];
 
                 $account = Account::where('name', 'LIKE', '%Woolworths%')
-                    ->orWhere(function($query) use ($accountIdentifier) {
+                    ->orWhere(function ($query) use ($accountIdentifier) {
                         $query->where('name', 'LIKE', '%Woolworths%')
-                            ->where('name', 'LIKE', "%$accountIdentifier");
+                            ->where('name', 'LIKE', "%{$accountIdentifier}");
                     })
                     ->first();
-                if (!$account) {
+                if (! $account) {
                     $account = Account::create(
                         [
                             'account_number' => null,
@@ -92,7 +89,7 @@ class TransactionController extends Controller
                             'name' => 'Woolworths Credit ' . $accountIdentifier,
                             'type' => AccountTypes::CREDIT->value,
                             'balance' => 50000_00,
-                            'debt' => 50000_00
+                            'debt' => 50000_00,
                         ],
                     );
                 }
@@ -108,13 +105,13 @@ class TransactionController extends Controller
                     $amount = $this->amountInCents(Str::substr($smsDetails[4], 1));
                     //e.g. Total Avail Bal R42,350.00.
                     $balance = $this->amountInCents(explode(' ', $smsDetails[5])[3]);
-                } else if (Str::contains($smsDetails[1], 'Transf.')) {
+                } elseif (Str::contains($smsDetails[1], 'Transf.')) {
                     $isTransaction = true;
                     $type = TransactionTypes::CREDIT->value;
                     //e.g. Transf. 19/03/23 INTERNAL FUNDS TRANSFER
                     $dateAndDescription = explode(' ', $smsDetails[1]);
                     $date = Carbon::parse($dateAndDescription[1]);
-                    $description = join(' ', array_slice($dateAndDescription, 2));
+                    $description = implode(' ', array_slice($dateAndDescription, 2));
                     //e.g. R468.00
                     $amount = $this->amountInCents($smsDetails[3]);
                     //e.g. Total Avail Bal R42,350.00.
@@ -147,21 +144,20 @@ class TransactionController extends Controller
 
     public function createTransactionFromPush(Request $request)
     {
-        $this->validate($request, [
+        request()->validate($request, [
             'title' => 'required',
             'message' => 'required',
             'timestamp' => 'required',
-            'bank' => 'required|in:'. join(',', array_column(Banks::cases(), 'value')),
+            'bank' => 'required|in:' . implode(',', array_column(Banks::cases(), 'value')),
         ]);
-
 
         if ($request->input('bank') == Banks::BANKZERO->value) {
             $bankZeroTransactionPushTitles = [
-                'Nik: Card Online'
+                'Nik: Card Online',
             ];
             if (in_array($request->input('title'), $bankZeroTransactionPushTitles)) {
                 $account = Account::firstWhere('bank_name', Banks::BANKZERO->value);
-                if (!$account) {
+                if (! $account) {
                     $account = Account::create([
                         'account_number' => null,
                         'bank_name' => Banks::BANKZERO->value,
@@ -169,7 +165,7 @@ class TransactionController extends Controller
                         'name' => 'Bank Zero',
                         'type' => AccountTypes::TRANSACTIONAL->value,
                         'balance' => 0,
-                        'debt' => 0
+                        'debt' => 0,
                     ]);
                 }
 
@@ -180,7 +176,7 @@ class TransactionController extends Controller
                 $description = $amountAndFirstDescriptionHalf[1] . ' ' . $secondDescriptionHalfAndDate[0];
                 $dateDay = $secondDescriptionHalfAndDate[2];
                 $dateMonthYear = $secondDescriptionHalfAndDate[3];
-                $date = Carbon::createFromFormat('d-M-y', "$dateDay-$dateMonthYear");
+                $date = Carbon::createFromFormat('d-M-y', "{$dateDay}-{$dateMonthYear}");
                 $balance = $this->amountInCents(explode(' ', $transactionDetails[2])[1]) * 100;
 
                 $transaction = Transaction::create([

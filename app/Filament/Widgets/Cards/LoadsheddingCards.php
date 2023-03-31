@@ -13,8 +13,9 @@ class LoadsheddingCards
         $schedules = LoadsheddingSchedule::whereNotNull('today_times')->get();
         $content = '';
         foreach ($schedules as $schedule) {
-            $cards[] = Card::make($schedule->name. ' Loadshedding', $schedule->today_times_formatted);
+            $cards[] = Card::make($schedule->name . ' Loadshedding', $schedule->today_times_formatted);
         }
+
         return $cards;
     }
 }

@@ -6,7 +6,6 @@ use App\Filament\Widgets\AccountsWidget;
 use App\Filament\Widgets\ExpectedTransactionsWidget;
 use App\Filament\Widgets\GeneralWidget;
 use App\Filament\Widgets\LoadsheddingWidget;
-use App\Filament\Widgets\QuoteWidget;
 use App\Filament\Widgets\TalliesWidget;
 use Filament\Pages\Dashboard as BasePage;
 use Illuminate\Support\Facades\Storage;
@@ -27,11 +26,11 @@ class Dashboard extends BasePage
     protected function getActions(): array
     {
         return [
-//            Filament\Pages\Actions\Action::make('download_database')
-//                ->label('Download Database')
-//                ->color('success')
-//                ->icon('heroicon-o-database')
-//                ->action('downloadDatabase'),
+            //            Filament\Pages\Actions\Action::make('download_database')
+            //                ->label('Download Database')
+            //                ->color('success')
+            //                ->icon('heroicon-o-database')
+            //                ->action('downloadDatabase'),
         ];
     }
 
@@ -42,7 +41,7 @@ class Dashboard extends BasePage
             TalliesWidget::class,
             ExpectedTransactionsWidget::class,
             GeneralWidget::class,
-//            LoadsheddingWidget::class,
+            //            LoadsheddingWidget::class,
         ];
     }
 }

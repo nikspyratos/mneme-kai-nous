@@ -6,7 +6,6 @@ use App\Filament\Widgets\Cards\LifePercentageCards;
 use App\Filament\Widgets\Cards\LoadsheddingCards;
 use App\Filament\Widgets\Cards\QuoteCards;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
-use Illuminate\Support\Facades\Cache;
 
 class GeneralWidget extends BaseWidget
 {

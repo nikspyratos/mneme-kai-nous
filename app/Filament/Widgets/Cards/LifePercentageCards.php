@@ -9,6 +9,7 @@ class LifePercentageCards
     public static function getCards(): array
     {
         [$percentageLeft, $percentageComplete] = auth()->user()->getDeathPercentage();
-        return [Card::make('Life Percentage', "Lived: $percentageComplete% | Left: $percentageLeft%")];
+
+        return [Card::make('Life Percentage', "Lived: {$percentageComplete}% | Left: {$percentageLeft}%")];
     }
 }

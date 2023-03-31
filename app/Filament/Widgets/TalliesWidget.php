@@ -5,7 +5,6 @@ namespace App\Filament\Widgets;
 use App\Models\Tally;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Card;
-use Illuminate\Support\Facades\Cache;
 
 class TalliesWidget extends BaseWidget
 {
@@ -26,7 +25,7 @@ class TalliesWidget extends BaseWidget
                 $tally->name . ' Balance',
                 $tally->formatted_balance . ' / ' . $tally->formatted_limit
             )
-            ->description("$percentage%")
+            ->description("{$percentage}%")
             ->color($color);
             $data[] = $card;
         });

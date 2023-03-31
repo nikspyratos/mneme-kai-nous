@@ -77,7 +77,7 @@ class ExpectedTransactionResource extends Resource
                 TextColumn::make('amount')->formatStateUsing(fn (ExpectedTransaction $record): string => $record->formatted_amount),
                 TextColumn::make('due_period'),
                 TextColumn::make('due_day'),
-                TextColumn::make('next_due_date')->formatStateUsing(fn (ExpectedTransaction $record): string => $record->next_due_date->toDateString()),
+                TextColumn::make('next_due_date')->formatStateUsing(fn (ExpectedTransaction $record): string => $record->next_due_date?->toDateString()),
                 TextColumn::make('identifier'),
                 TextColumn::make('identifier_transaction_type'),
                 IconColumn::make('enabled')->boolean(),

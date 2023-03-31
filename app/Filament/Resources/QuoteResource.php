@@ -19,7 +19,7 @@ class QuoteResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-annotation';
 
-    protected static ?string $navigationGroup = 'General';
+    protected static ?string $navigationGroup = 'Perceptions';
 
     public static function form(Form $form): Form
     {

@@ -31,6 +31,9 @@ class AppServiceProvider extends ServiceProvider
                    ->label('Finance')
                    ->collapsed(),
                 NavigationGroup::make()
+                   ->label('Perceptions')
+                   ->collapsed(),
+                NavigationGroup::make()
                    ->label('General')
                    ->collapsed(),
             ]);

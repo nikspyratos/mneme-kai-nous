@@ -39,13 +39,20 @@ class RolloverBudgetMonth extends Command
         $budgets = Budget::wherePeriodType(BudgetPeriodTypes::MONTHLY->value);
         $hasCreatedTally = false;
         $budgets->each(function (Budget $budget) use ($nextRolloverDate, $nextMonthDay, &$hasCreatedTally) {
+            $this->info('Processing budget: ' . $budget->name);
             $shouldCreateTally = false;
             $startDate = Carbon::today();
             if ($budget->tallies()->forCurrentMonth()->count() == 0) {
                 $startDate = TallyRolloverDateCalculator::getPreviousDate();
                 $shouldCreateTally = true;
+                $this->info('Should create because there is a missing tally.');
             } elseif (Carbon::today()->day == $nextRolloverDate->day) {
                 $shouldCreateTally = true;
+                $this->info('Should create because today is the rollover day.');
+            } else {
+                $this->info('Will not create tally.');
+                $this->info('Existing tallies: '. $budget->tallies()->forCurrentMonth()->count());
+                $this->info('Rollover day: ' . $nextRolloverDate->day . ', today: ' . Carbon::today()->day . '.');
             }
             if ($shouldCreateTally) {
                 $tally = Tally::create([
@@ -60,6 +67,7 @@ class RolloverBudgetMonth extends Command
                 $this->info('Created Tally: ' . $tally->name);
                 $hasCreatedTally = true;
             }
+            $this->info('---');
         });
         if ($hasCreatedTally) {
             (new LogSnag)->log('Rollover', 'Budgets rolled over', true);

@@ -112,8 +112,8 @@ namespace App\Models{
  * @property int $enabled
  * @property string $type
  * @property int $is_tax_relevant
+ * @property \Illuminate\Support\Carbon|null $next_due_date
  * @property-read string $formatted_amount
- * @property-read \Illuminate\Support\Carbon|null $next_due_date
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction newModelQuery()
@@ -132,6 +132,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereIdentifierTransactionType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereIsTaxRelevant($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereNextDueDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereUpdatedAt($value)
  */
@@ -258,8 +259,10 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon $end_date
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $limit
  * @property-read \App\Models\Budget|null $budget
  * @property-read string $formatted_balance
+ * @property-read string $formatted_limit
  * @method static \Illuminate\Database\Eloquent\Builder|Tally forCurrentMonth()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newQuery()
@@ -270,6 +273,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereCurrency($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereEndDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally whereLimit($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereUpdatedAt($value)
@@ -307,6 +311,7 @@ namespace App\Models{
  * @property-read string $formatted_listed_balance
  * @property-read \App\Models\Tally|null $tally
  * @method static \Database\Factories\TransactionFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction inCurrentBudgetMonth()
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction query()

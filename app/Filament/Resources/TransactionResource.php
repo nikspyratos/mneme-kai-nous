@@ -22,12 +22,15 @@ use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
 
 class TransactionResource extends Resource
 {
     protected static ?string $model = Transaction::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cash';
+
+    protected static ?string $navigationGroup = 'Finance';
 
     protected static ?string $recordTitleAttribute = 'description';
 
@@ -47,7 +50,7 @@ class TransactionResource extends Resource
                 Select::make('budget_id')
                     ->relationship('budget', 'name'),
                 Select::make('tally_id')
-                    ->relationship('tally', 'name'),
+                    ->relationship('tally', 'name', fn (Builder $query) => $query->forCurrentMonth()),
                 DateTimePicker::make('date')
                     ->required(),
                 Select::make('type')

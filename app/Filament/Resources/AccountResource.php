@@ -27,7 +27,9 @@ class AccountResource extends Resource
 {
     protected static ?string $model = Account::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-library';
+    protected static ?string $navigationIcon = 'heroicon-o-key';
+
+    protected static ?string $navigationGroup = 'Finance';
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -96,7 +98,7 @@ class AccountResource extends Resource
                 TextColumn::make('name'),
                 TextColumn::make('bank_name'),
                 TextColumn::make('account_number'),
-                TextColumn::make('balance')->formatStateUsing(fn (Account $record): string => $record->formattedBalance),
+                TextColumn::make('balance')->formatStateUsing(fn (Account $record): string => $record->formatted_balance),
                 TextColumn::make('debt')->formatStateUsing(fn (Account $record): string => $record->formatted_debt),
                 TextColumn::make('type'),
                 IconColumn::make('has_overdraft')->boolean(),

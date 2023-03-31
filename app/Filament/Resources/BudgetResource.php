@@ -23,6 +23,8 @@ class BudgetResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-calculator';
 
+    protected static ?string $navigationGroup = 'Finance';
+
     public static function form(Form $form): Form
     {
         $currenciesSelect = EnumHelper::enumToFilamentOptionArray(Currencies::cases());

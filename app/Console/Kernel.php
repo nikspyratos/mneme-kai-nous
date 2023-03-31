@@ -14,13 +14,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('app:prune-files')->dailyAt('04:00');
+        $schedule->command('app:update-expected-transactions-due-dates')->dailyAt('04:30');
+        $schedule->command('app:update-loadshedding-schedules')->dailyAt('04:30');
+        $schedule->command('app:update-investec-accounts')->dailyAt('05:00');
+        $schedule->command('app:send-logsnag-report')->dailyAt('06:00');
+
         $schedule->command('telescope:prune --hours=48')->monthly();
         $schedule->command('app:rollover-budget-month')->monthlyOn(config('app.financial_month_rollover_day'));
-        //TODO Perhaps change to hourly/every X hours schedule
-        $schedule->command('app:update-investec-accounts')->dailyAt('05:00');
-        $schedule->command('app:update-loadshedding-schedules')->dailyAt('05:00');
-        $schedule->command('app:send-logsnag-report')->dailyAt('07:00');
-        $schedule->command('app:prune-files')->dailyAt('04:00');
     }
 
     /**

@@ -21,6 +21,8 @@ class TallyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-sort-ascending';
 
+    protected static ?string $navigationGroup = 'Finance';
+
     public static function form(Form $form): Form
     {
         $currenciesSelect = EnumHelper::enumToFilamentOptionArray(Currencies::cases());
@@ -55,7 +57,7 @@ class TallyResource extends Resource
             ->columns([
                 TextColumn::make('budget.name'),
                 TextColumn::make('name'),
-                TextColumn::make('balance')->formatStateUsing(fn (Tally $record): string => $record->formattedBalance),
+                TextColumn::make('balance')->formatStateUsing(fn (Tally $record): string => $record->formatted_balance),
                 TextColumn::make('start_date')->date(),
                 TextColumn::make('end_date')->date(),
             ])

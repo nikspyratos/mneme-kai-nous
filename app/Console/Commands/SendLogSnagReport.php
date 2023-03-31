@@ -37,7 +37,7 @@ class SendLogSnagReport extends Command
 
         $accounts = Account::whereIsPrimary(true)->get();
         foreach ($accounts as $account) {
-            $message = sprintf('**%s:** %s', $account->name, $account->formattedBalance);
+            $message = sprintf('**%s:** %s', $account->name, $account->formatted_balance);
             if ($account->type == AccountTypes::DEBT->value) {
                 $message .= sprintf(' | %s', $account->debt_paid_off_percentage . '%');
             }
@@ -46,7 +46,7 @@ class SendLogSnagReport extends Command
 
         $loadsheddingSchedule = LoadsheddingSchedule::whereIsHome(true)->first();
         if ($loadsheddingSchedule) {
-            $data[] = '**Loadshedding:** ' . $loadsheddingSchedule->todayTimesFormatted;
+            $data[] = '**Loadshedding:** ' . $loadsheddingSchedule->today_times_formatted;
         }
 
         [$percentageLeft, $percentageComplete] = $user->getDeathPercentage();

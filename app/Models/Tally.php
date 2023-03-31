@@ -17,6 +17,7 @@ class Tally extends Model
         'name',
         'currency',
         'balance',
+        'limit',
         'start_date',
         'end_date',
     ];
@@ -42,8 +43,13 @@ class Tally extends Model
         return $this->formatKeyAsMoneyString('balance');
     }
 
+    public function getFormattedLimitAttribute(): string
+    {
+        return $this->formatKeyAsMoneyString('limit');
+    }
+
     public function getBalancePercentageOfBudget(): int
     {
-        return $this->balance / $this->budget->balance * 100;
+        return $this->balance / $this->limit * 100;
     }
 }

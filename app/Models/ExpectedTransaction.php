@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\DuePeriods;
 use App\Models\Traits\CategorisesTransactions;
 use App\Models\Traits\FormatsMoneyColumns;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,11 +17,12 @@ class ExpectedTransaction extends Model
     public $fillable = [
         'name',
         'description',
-        'group', //TODO drop?
+        'group',
         'currency',
         'amount',
         'due_period',
         'due_day',
+        'next_due_date',
         'identifier',
         'identifier_transaction_type', //Ideally this should be set WITHOUT identifier
         'enabled',
@@ -28,18 +30,23 @@ class ExpectedTransaction extends Model
         'is_tax_relevant',
     ];
 
+    public $casts = [
+        'next_due_date' => 'date',
+    ];
+
+
     public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }
 
-    public function getNextDueDateAttribute(): ?Carbon
+    public function getNextDueDate(): ?Carbon
     {
         if (Carbon::today()->day > $this->due_day) {
-            if ($this->due_period == 'monthly') {
-                return Carbon::today()->addMonth()->setDay($this->due_day);
-            } elseif ($this->due_period == 'weekly') {
-                return Carbon::today()->addWeek()->setDay($this->due_day);
+            if ($this->due_period == DuePeriods::MONTHLY->value) {
+                return Carbon::today()->startOfMonth()->addMonth()->setDay($this->due_day);
+            } elseif ($this->due_period == DuePeriods::WEEKLY->value) {
+                return Carbon::today()->startofWeek()->addWeek()->setDay($this->due_day);
             }
         }
 
@@ -49,5 +56,10 @@ class ExpectedTransaction extends Model
     public function getFormattedAmountAttribute(): string
     {
         return $this->formatKeyAsMoneyString('amount');
+    }
+
+    public function getTransactionsDue()
+    {
+
     }
 }

@@ -3,7 +3,7 @@
 @if (count($budgets) > 0)
 ### Budgets
 @foreach ($budgets as $budget)
-{{ $budget->formattedAmount }} {{ $budget->name }}
+{{ $budget->formatted_amount }} {{ $budget->name }}
 @endforeach
 @endif
 @if (count($expectedExpensesGroups) > 0)
@@ -13,9 +13,9 @@
 **{{ $expectedExpensesGroup['title'] }}**
 @foreach ($expectedExpensesGroup['transactions'] as $expectedTransaction)
 @if ($expectedTransaction->type == \App\Enums\TransactionTypes::CREDIT)
-+{{ $expectedTransaction->formattedAmount }} {{ $expectedTransaction->name }}
++{{ $expectedTransaction->formatted_amount }} {{ $expectedTransaction->name }}
 @else
-{{ $expectedTransaction->formattedAmount }} {{ $expectedTransaction->name }}
+{{ $expectedTransaction->formatted_amount }} {{ $expectedTransaction->name }}
 @endif
 @endforeach
 *Total: {{ $expectedExpensesGroup['total'] }}*
@@ -33,14 +33,14 @@
 
 ### Expected expenses (one-off):
 @foreach ($onceOffExpectedExpenses as $expectedTransaction)
-{{ $expectedTransaction->formattedAmount }} {{ $expectedTransaction->name }}
+{{ $expectedTransaction->formatted_amount }} {{ $expectedTransaction->name }}
 @endforeach
 @endif
 @if (count($expectedIncomes) > 0)
 
 ### Expected income/contributions:
 @foreach ($expectedIncomes as $expectedIncome)
-{{ $expectedIncome->formattedAmount }} {{ $expectedIncome->name }}
+{{ $expectedIncome->formatted_amount }} {{ $expectedIncome->name }}
 @endforeach
 *Total: {{ $expectedIncomesSum }}*
 @endif
@@ -55,7 +55,7 @@
 
 ### Balances
 @foreach ($accounts as $account)
-*{{ $account->name }}: {{ $account->formattedBalance }}*
+*{{ $account->name }}: {{ $account->formatted_balance }}*
 @endforeach
 @endif
 @if (count($tallies) > 0)

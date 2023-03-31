@@ -3,10 +3,14 @@
 namespace App\Console\Commands;
 
 use App\Enums\BudgetPeriodTypes;
+use App\Enums\TransactionTypes;
 use App\Models\Budget;
+use App\Models\ExpectedTransaction;
 use App\Models\Tally;
+use App\Services\LogSnag;
 use App\Services\TallyRolloverDateCalculator;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 
 class RolloverBudgetMonth extends Command
@@ -31,23 +35,37 @@ class RolloverBudgetMonth extends Command
     public function handle(): void
     {
         $nextRolloverDate = TallyRolloverDateCalculator::getNextDate();
-        if (Carbon::today()->day == $nextRolloverDate->day) {
-            $budgets = Budget::wherePeriodType(BudgetPeriodTypes::MONTHLY);
-            $nextMonthDay = Carbon::today()->addMonth()->setDay(TallyRolloverDateCalculator::getRolloverDay());
-            if ($nextMonthDay->isWeekend()) {
-                $nextMonthDay = $nextMonthDay->previousWeekday();
+        $nextMonthDay = Carbon::today()->startOfMonth()->addMonth()->setDay(TallyRolloverDateCalculator::getRolloverDay());
+        if ($nextMonthDay->isWeekend()) {
+            $nextMonthDay = $nextMonthDay->previousWeekday();
+        }
+        $budgets = Budget::wherePeriodType(BudgetPeriodTypes::MONTHLY->value);
+        $hasCreatedTally = false;
+        $budgets->each(function (Budget $budget) use ($nextRolloverDate, $nextMonthDay, &$hasCreatedTally) {
+            $shouldCreateTally = false;
+            $startDate = Carbon::today();
+            if ($budget->tallies()->forCurrentMonth()->count() == 0) {
+                $startDate = TallyRolloverDateCalculator::getPreviousDate();
+                $shouldCreateTally = true;
+            } else if (Carbon::today()->day == $nextRolloverDate->day) {
+                $shouldCreateTally = true;
             }
-            $budgets->each(function ($budget) use ($nextMonthDay) {
-                Tally::create([
+            if ($shouldCreateTally) {
+                $tally = Tally::create([
                     'budget_id' => $budget->id,
-                    'name' => $budget->name . 'Spent',
+                    'name' => $budget->name . ' Spent ' . $startDate->toDateString() .  ' - ' . $nextMonthDay->toDateString(),
                     'currency' => $budget->currency,
                     'balance' => 0,
-                    'start_date' => Carbon::today(),
+                    'limit' => $budget->amount,
+                    'start_date' => $startDate,
                     'end_date' => $nextMonthDay,
                 ]);
-            });
-            //TODO: LogSnag notification of rollover
+                $this->info('Created Tally: ' . $tally->name);
+                $hasCreatedTally = true;
+            }
+        });
+        if ($hasCreatedTally) {
+            (new LogSnag)->log('Rollover', 'Budgets rolled over', true);
         }
     }
 }

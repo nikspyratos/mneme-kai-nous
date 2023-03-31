@@ -2,6 +2,12 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\AccountsWidget;
+use App\Filament\Widgets\ExpectedTransactionsWidget;
+use App\Filament\Widgets\GeneralWidget;
+use App\Filament\Widgets\LoadsheddingWidget;
+use App\Filament\Widgets\QuoteWidget;
+use App\Filament\Widgets\TalliesWidget;
 use Filament\Pages\Dashboard as BasePage;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,6 +32,17 @@ class Dashboard extends BasePage
 //                ->color('success')
 //                ->icon('heroicon-o-database')
 //                ->action('downloadDatabase'),
+        ];
+    }
+
+    protected function getWidgets(): array
+    {
+        return [
+            AccountsWidget::class,
+            TalliesWidget::class,
+            ExpectedTransactionsWidget::class,
+            GeneralWidget::class,
+//            LoadsheddingWidget::class,
         ];
     }
 }

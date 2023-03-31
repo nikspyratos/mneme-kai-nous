@@ -113,7 +113,8 @@ class UpdateInvestecAccounts extends Command
                         }
                     }
                 }
-                Transaction::updateOrCreate(
+                $type = TransactionTypes::from(Str::ucfirst(Str::lower($investecTransaction['type'])));
+                $transaction = Transaction::updateOrCreate(
                     [
                         'account_id' => $account->id,
                         'date' => Carbon::createFromFormat('Y-m-d', $investecTransaction['transactionDate'])
@@ -134,9 +135,10 @@ class UpdateInvestecAccounts extends Command
                             ->except(['transactionDate', 'transactionType', 'description', 'amount', 'runningBalance'])
                             ->toArray(),
                         'is_tax_relevant' => $isTaxRelevant,
-                        'type' => TransactionTypes::from(Str::ucfirst(Str::lower($investecTransaction['type'])))->value,
+                        'type' => $type->value,
                     ]
                 );
+                $account->updateBalance($transaction->amount, $type);
             }
         }
         $this->info('Complete!');

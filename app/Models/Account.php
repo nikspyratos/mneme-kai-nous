@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\AccountTypes;
 use App\Enums\Banks;
+use App\Enums\TransactionTypes;
 use App\Models\Traits\FormatsMoneyColumns;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -93,9 +94,13 @@ class Account extends Model
         return null;
     }
 
-    public function updateBalance(int $amount)
+    public function updateBalance(int $amount, TransactionTypes $transactionType = TransactionTypes::DEBIT)
     {
-        $this->balance -= $amount;
+        if ($transactionType->value == TransactionTypes::DEBIT->value) {
+            $this->balance -= $amount;
+        } else {
+            $this->balance += $amount;
+        }
         if ($this->balance < 0 && ! $this->has_overdraft) {
             Log::error('Non-overdraft account has negative balance', ['account' => $this->name, 'balance' => $this->balance]);
         }

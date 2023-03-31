@@ -62,13 +62,13 @@ class TransactionController extends Controller
 
     public function createTransactionFromSms(Request $request)
     {
-        $this->validate($request, [
+        request()->validate([
             'content' => 'required',
             'timestamp' => 'required',
-        ]);
+        ], $request->all());
         Log::debug('Incoming SMS', ['content' => $request->input('content'), 'timestamp' => $request->input('timestamp')]);
 
-        if (Str::startsWith($request->input('content'), 'WFS:')) {
+        if (Str::startsWith($request->input('content'), 'WFS :')) {
             $smsDetails = explode(', ', $request->input('content'));
             if (count($smsDetails) >= 5) {
                 //e.g. SPYRAN 003
@@ -97,9 +97,9 @@ class TransactionController extends Controller
                 $isTransaction = false;
                 if ($smsDetails[1] == 'Pur') {
                     $isTransaction = true;
-                    $type = TransactionTypes::DEBIT->value;
+                    $type = TransactionTypes::DEBIT;
                     //e.g. 29/03/23 - d/m/Y
-                    $date = Carbon::parse(explode(' ', $smsDetails[2])[0]);
+                    $date = Carbon::createFromFormat('d/m/y', explode(' ', $smsDetails[2])[0]);
                     $description = $smsDetails[3];
                     //e.g. R468.00
                     $amount = $this->amountInCents(Str::substr($smsDetails[4], 1));
@@ -107,10 +107,10 @@ class TransactionController extends Controller
                     $balance = $this->amountInCents(explode(' ', $smsDetails[5])[3]);
                 } elseif (Str::contains($smsDetails[1], 'Transf.')) {
                     $isTransaction = true;
-                    $type = TransactionTypes::CREDIT->value;
+                    $type = TransactionTypes::CREDIT;
                     //e.g. Transf. 19/03/23 INTERNAL FUNDS TRANSFER
                     $dateAndDescription = explode(' ', $smsDetails[1]);
-                    $date = Carbon::parse($dateAndDescription[1]);
+                    $date = Carbon::createFromFormat('d/m/y', $dateAndDescription[1]);
                     $description = implode(' ', array_slice($dateAndDescription, 2));
                     //e.g. R468.00
                     $amount = $this->amountInCents($smsDetails[3]);
@@ -125,7 +125,7 @@ class TransactionController extends Controller
                         'budget_id' => null,
                         'tally_id' => null,
                         'date' => $date,
-                        'type' => $type,
+                        'type' => $type->value,
                         'category' => null,
                         'description' => $description,
                         'currency' => $account->currency,
@@ -134,23 +134,24 @@ class TransactionController extends Controller
                         'listed_balance' => $balance,
                         'data' => $request->all(),
                     ]);
-                    $account->updateBalance($transaction->amount);
+                    $account->updateBalance($transaction->amount, $type);
                 } else {
                     Log::error('WFS SMS contents not recognised', ['content' => $request->input('content')]);
                 }
             }
         }
+
         return response()->json();
     }
 
     public function createTransactionFromPush(Request $request)
     {
-        $this->validate($request, [
+        request()->validate([
             'title' => 'required',
             'message' => 'required',
             'timestamp' => 'required',
             'bank' => 'required|in:' . implode(',', array_column(Banks::cases(), 'value')),
-        ]);
+        ], $request->all());
 
         if ($request->input('bank') == Banks::BANKZERO->value) {
             $bankZeroTransactionPushTitles = [
@@ -198,6 +199,7 @@ class TransactionController extends Controller
                 $account->updateBalance($transaction->amount);
             }
         }
+
         return response()->json();
     }
 

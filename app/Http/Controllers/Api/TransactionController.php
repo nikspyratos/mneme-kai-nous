@@ -62,7 +62,7 @@ class TransactionController extends Controller
 
     public function createTransactionFromSms(Request $request)
     {
-        request()->validate($request, [
+        $this->validate($request, [
             'content' => 'required',
             'timestamp' => 'required',
         ]);
@@ -140,11 +140,12 @@ class TransactionController extends Controller
                 }
             }
         }
+        return response()->json();
     }
 
     public function createTransactionFromPush(Request $request)
     {
-        request()->validate($request, [
+        $this->validate($request, [
             'title' => 'required',
             'message' => 'required',
             'timestamp' => 'required',
@@ -197,6 +198,7 @@ class TransactionController extends Controller
                 $account->updateBalance($transaction->amount);
             }
         }
+        return response()->json();
     }
 
     private function amountInCents(string $money): int

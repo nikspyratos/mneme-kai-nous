@@ -14,5 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('transactions', [TransactionController::class, 'createTransaction']);
+    Route::post('transactions/investec', [TransactionController::class, 'createTransactionFromInvestec']);
+    Route::post('transactions/sms', [TransactionController::class, 'createTransactionFromSms']);
+    Route::post('transactions/push', [TransactionController::class, 'createTransactionFromPush']);
 });

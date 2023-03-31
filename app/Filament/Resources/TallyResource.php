@@ -44,6 +44,11 @@ class TallyResource extends Resource
                         $component->state($state / 100);
                     })
                     ->required(),
+                TextInput::make('limit')
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        $component->state($state / 100);
+                    })
+                    ->required(),
                 DatePicker::make('start_date')
                     ->required(),
                 DatePicker::make('end_date')
@@ -58,6 +63,7 @@ class TallyResource extends Resource
                 TextColumn::make('budget.name'),
                 TextColumn::make('name'),
                 TextColumn::make('balance')->formatStateUsing(fn (Tally $record): string => $record->formatted_balance),
+                TextColumn::make('limit')->formatStateUsing(fn (Tally $record): string => $record->formatted_limit),
                 TextColumn::make('start_date')->date(),
                 TextColumn::make('end_date')->date(),
             ])

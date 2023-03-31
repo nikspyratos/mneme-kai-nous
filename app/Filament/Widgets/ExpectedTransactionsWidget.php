@@ -7,13 +7,14 @@ use App\Models\ExpectedTransaction;
 use App\Services\TallyRolloverDateCalculator;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Widgets\StatsOverviewWidget\Card;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
 
 class ExpectedTransactionsWidget extends BaseWidget
 {
-    protected int|string|array $columnSpan = 'full';
+    protected static ?string $heading = 'Expected Expenses';
+
+    protected int|string|array $columnSpan = 2;
 
     protected function getTableQuery(): Builder
     {
@@ -38,21 +39,4 @@ class ExpectedTransactionsWidget extends BaseWidget
                 ->getStateUsing(fn (ExpectedTransaction $record): bool => $record->transactions()->inCurrentBudgetMonth()->exists()),
         ];
     }
-
-//    protected function getCards(): array
-//    {
-//        $data = [];
-//
-//
-//        $expectedTransactions->each(function ($expectedTransaction) use (&$data) {
-//            $card = Card::make(
-//                $expectedTransaction->name
-//            )
-//            ->description($expectedTransaction->getBalancePercentageOfBudget() . '%')
-//            ->color('success');
-//            $data[] = $card;
-//        });
-//
-//        return $data;
-//    }
 }

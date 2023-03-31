@@ -5,8 +5,7 @@ namespace App\Filament\Pages;
 use App\Filament\Widgets\AccountsWidget;
 use App\Filament\Widgets\ExpectedTransactionsWidget;
 use App\Filament\Widgets\GeneralWidget;
-use App\Filament\Widgets\LoadsheddingWidget;
-use App\Filament\Widgets\TalliesWidget;
+use App\Filament\Widgets\TalliesTableWidget;
 use Filament\Pages\Dashboard as BasePage;
 use Illuminate\Support\Facades\Storage;
 
@@ -38,10 +37,9 @@ class Dashboard extends BasePage
     {
         return [
             AccountsWidget::class,
-            TalliesWidget::class,
             ExpectedTransactionsWidget::class,
+            TalliesTableWidget::class,
             GeneralWidget::class,
-            //            LoadsheddingWidget::class,
         ];
     }
 }

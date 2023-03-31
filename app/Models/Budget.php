@@ -17,7 +17,7 @@ class Budget extends Model
         'name',
         'currency',
         'amount',
-        'period_type', //TODO drop
+        'period_type',
         'identifier',
         'identifier_transaction_type', //Ideally this should be set WITHOUT identifier
         'enabled',

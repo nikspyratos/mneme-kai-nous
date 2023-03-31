@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\BudgetPeriodTypes;
 use App\Enums\Currencies;
 use App\Enums\TransactionTypes;
 use App\Filament\Resources\BudgetResource\Pages;
@@ -29,6 +30,7 @@ class BudgetResource extends Resource
     {
         $currenciesSelect = EnumHelper::enumToFilamentOptionArray(Currencies::cases());
         $transactionTypesSelect = EnumHelper::enumToFilamentOptionArray(TransactionTypes::cases());
+        $periodTypesSelect = EnumHelper::enumToFilamentOptionArray(BudgetPeriodTypes::cases());
 
         return $form
             ->schema([
@@ -42,6 +44,9 @@ class BudgetResource extends Resource
                     ->afterStateHydrated(function (TextInput $component, $state) {
                         $component->state($state / 100);
                     })
+                    ->required(),
+                Select::make('transaction_type')
+                    ->options($periodTypesSelect)
                     ->required(),
                 TextInput::make('identifier'),
                 Select::make('identifier_transaction_type')
@@ -57,6 +62,7 @@ class BudgetResource extends Resource
             ->columns([
                 TextColumn::make('name'),
                 TextColumn::make('amount')->formatStateUsing(fn (Budget $record): string => $record->formatted_amount),
+                TextColumn::make('period_type'),
                 TextColumn::make('identifier'),
                 TextColumn::make('identifier_transaction_type'),
                 IconColumn::make('enabled')->boolean(),

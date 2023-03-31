@@ -83,7 +83,7 @@ class AccountResource extends Resource
                                     ->thousandsSeparator(',')
                                 );
                         })
-                        ->visible(fn (Closure $get): bool => $get('type') == AccountTypes::DEBT->value),
+                        ->visible(fn (Closure $get): bool => in_array($get('type'), [AccountTypes::DEBT->value, AccountTypes::CREDIT->value])),
                     TextInput::make('bank_identifier'),
                     Checkbox::make('has_overdraft'),
                     Checkbox::make('is_primary'),

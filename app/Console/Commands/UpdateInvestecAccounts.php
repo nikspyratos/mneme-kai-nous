@@ -134,7 +134,7 @@ class UpdateInvestecAccounts extends Command
                             ->except(['transactionDate', 'transactionType', 'description', 'amount', 'runningBalance'])
                             ->toArray(),
                         'is_tax_relevant' => $isTaxRelevant,
-                        'type' => TransactionTypes::from(Str::ucfirst(Str::lower($investecTransaction['transactionType'])))->value,
+                        'type' => TransactionTypes::from(Str::ucfirst(Str::lower($investecTransaction['type'])))->value,
                     ]
                 );
             }

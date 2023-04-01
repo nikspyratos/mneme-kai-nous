@@ -14,10 +14,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('app:update-investec-accounts')->hourlyAt(30);
+
         $schedule->command('app:prune-files')->dailyAt('04:00');
         $schedule->command('app:update-expected-transactions-due-dates')->dailyAt('04:30');
         $schedule->command('app:update-loadshedding-schedules')->dailyAt('04:30');
-        $schedule->command('app:update-investec-accounts')->dailyAt('05:00');
         $schedule->command('app:send-logsnag-report')->dailyAt('06:00');
 
         $schedule->command('telescope:prune --hours=48')->monthly();

@@ -26,7 +26,7 @@ class TallyRolloverDateCalculator
             $rolloverDate = $rolloverDate->previousWeekday();
         }
 
-        return $rolloverDate;
+        return $rolloverDate->startOfDay();
     }
 
     public static function getNextDate(Carbon $date = null)
@@ -44,6 +44,6 @@ class TallyRolloverDateCalculator
             $rolloverDate = $rolloverDate->previousWeekday();
         }
 
-        return $rolloverDate;
+        return $rolloverDate->startOfDay();
     }
 }

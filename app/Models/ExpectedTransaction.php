@@ -34,6 +34,7 @@ class ExpectedTransaction extends Model
 
     public $casts = [
         'next_due_date' => 'date',
+        'identifier' => 'collection',
     ];
 
     public function budget(): BelongsTo

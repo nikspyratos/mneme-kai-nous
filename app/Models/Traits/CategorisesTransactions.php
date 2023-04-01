@@ -17,4 +17,11 @@ trait CategorisesTransactions
             && Str::contains($transactionDescription, $this->identifier_transaction_type)
         );
     }
+
+    public function getIdentifierStringAttribute(): string
+    {
+        return $this->identifier
+            ? implode(', ', $this->identifier->pluck('identifier')->toArray())
+            : '';
+    }
 }

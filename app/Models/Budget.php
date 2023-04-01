@@ -23,6 +23,10 @@ class Budget extends Model
         'enabled',
     ];
 
+    public $casts = [
+        'identifier' => 'collection',
+    ];
+
     public function currentTally(): ?Tally
     {
         $today = Carbon::today();

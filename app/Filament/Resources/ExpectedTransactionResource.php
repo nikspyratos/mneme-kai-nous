@@ -10,6 +10,7 @@ use App\Helpers\EnumHelper;
 use App\Models\Budget;
 use App\Models\ExpectedTransaction;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
@@ -63,7 +64,11 @@ class ExpectedTransactionResource extends Resource
                 Select::make('type')
                     ->options($transactionTypesSelect)
                     ->disablePlaceholderSelection(),
-                TextInput::make('identifier'),
+                Repeater::make('identifier')
+                    ->schema([
+                        TextInput::make('identifier')->required(),
+                    ])
+                    ->columns(1),
                 Select::make('identifier_transaction_type')
                     ->options($transactionTypesSelect)
                     ->disablePlaceholderSelection(),

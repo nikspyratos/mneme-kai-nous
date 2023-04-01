@@ -9,6 +9,7 @@ use App\Filament\Resources\BudgetResource\Pages;
 use App\Helpers\EnumHelper;
 use App\Models\Budget;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
@@ -48,7 +49,11 @@ class BudgetResource extends Resource
                 Select::make('transaction_type')
                     ->options($periodTypesSelect)
                     ->required(),
-                TextInput::make('identifier'),
+                Repeater::make('identifier')
+                    ->schema([
+                        TextInput::make('identifier')->required(),
+                    ])
+                    ->columns(1),
                 Select::make('identifier_transaction_type')
                     ->options($transactionTypesSelect)
                     ->disablePlaceholderSelection(),
@@ -63,7 +68,8 @@ class BudgetResource extends Resource
                 TextColumn::make('name'),
                 TextColumn::make('amount')->formatStateUsing(fn (Budget $record): string => $record->formatted_amount),
                 TextColumn::make('period_type'),
-                TextColumn::make('identifier'),
+                TextColumn::make('identifier')
+                    ->formatStateUsing(fn (Budget $record): string => $record->identifier_string),
                 TextColumn::make('identifier_transaction_type'),
                 ToggleColumn::make('enabled'),
             ])

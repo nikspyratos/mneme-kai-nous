@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\Tally;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,6 +16,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('app:update-investec-accounts')->hourlyAt(30);
+        $schedule->call(function() {
+            Tally::forCurrentBudgetMonth()->get()->each->calculateBalance();
+        })->hourlyAt(35);
 
         $schedule->command('app:prune-files')->dailyAt('04:00');
         $schedule->command('app:update-expected-transactions-due-dates')->dailyAt('04:30');

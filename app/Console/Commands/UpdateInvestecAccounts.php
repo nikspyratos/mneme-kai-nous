@@ -90,24 +90,25 @@ class UpdateInvestecAccounts extends Command
             $account->save();
             $investecTransactions = collect($investecApiClient->getTransactions($account->bank_identifier, $transactionsFrom, $transactionsTo));
             foreach ($investecTransactions as $investecTransaction) {
-                $identifiedExpectedTransactionId = null;
-                $isTaxRelevant = false;
-                foreach ($expectedTransactions as $expectedTransaction) {
-                    if ($expectedTransaction->transactionIsForThis($investecTransaction['description'])) {
-                        $identifiedExpectedTransactionId = $expectedTransaction->id;
-                        $isTaxRelevant = $expectedTransaction->is_tax_relevant;
-                    }
-                }
                 $type = TransactionTypes::from(Str::ucfirst(Str::lower($investecTransaction['type'])));
                 $data = [
-                    'expected_transaction_id' => $identifiedExpectedTransactionId,
                     'listed_balance' => $investecTransaction['runningBalance'] * 100,
                     'data' => collect($investecTransaction)
                         ->except(['transactionDate', 'transactionType', 'description', 'amount', 'runningBalance'])
                         ->toArray(),
-                    'is_tax_relevant' => $isTaxRelevant,
                     'type' => $type->value,
                 ];
+
+                /** @var ExpectedTransaction $expectedTransaction */
+                foreach ($expectedTransactions as $expectedTransaction) {
+                    if ($expectedTransaction->transactionIsForThis($investecTransaction['description'])) {
+                        $data = array_merge($data, [
+                            'expected_transaction_id' => $expectedTransaction->id,
+                            'is_tax_relevant' => $expectedTransaction->is_tax_relevant,
+                        ]);
+                    }
+                }
+
                 /** @var Budget $budget */
                 foreach ($budgets as $budget) {
                     if ($budget->transactionIsForThis($investecTransaction['description'])) {

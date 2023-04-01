@@ -60,6 +60,9 @@ class ExpectedTransactionResource extends Resource
                     ->minValue(1)
                     ->maxValue(31),
                 TextInput::make('group'),
+                Select::make('type')
+                    ->options($transactionTypesSelect)
+                    ->disablePlaceholderSelection(),
                 TextInput::make('identifier'),
                 Select::make('identifier_transaction_type')
                     ->options($transactionTypesSelect)

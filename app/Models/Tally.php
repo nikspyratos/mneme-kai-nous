@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TransactionTypes;
 use App\Models\Traits\FormatsMoneyColumns;
 use App\Services\TallyRolloverDateCalculator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,5 +52,15 @@ class Tally extends Model
     public function getBalancePercentageOfBudget(): int
     {
         return $this->balance / $this->limit * 100;
+    }
+
+    public function updateBalance(int $amountInCents, TransactionTypes $transactionType)
+    {
+        if ($transactionType == TransactionTypes::DEBIT) {
+            $this->balance += $amountInCents;
+        } else {
+            $this->balance -= $amountInCents;
+        }
+        $this->save();
     }
 }

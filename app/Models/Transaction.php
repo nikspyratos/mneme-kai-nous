@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TransactionTypes;
 use App\Models\Traits\FormatsMoneyColumns;
 use App\Services\TallyRolloverDateCalculator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -35,6 +36,22 @@ class Transaction extends Model
         'date' => 'datetime',
         'data' => 'json',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::updating(function ($transaction) {
+            if (! empty($transaction->tally_id)) {
+                Tally::find($transaction->tally_id)
+                    ->updateBalance($transaction->amount, TransactionTypes::from($transaction->type));
+            } else {
+                //Reverse the balance calculation
+                Tally::find($transaction->getOriginal('tally_id'))
+                    ->updateBalance($transaction->amount * -1, TransactionTypes::from($transaction->type));
+            }
+        });
+    }
 
     public function scopeTaxRelevant($query, ?Carbon $startDate = null, ?Carbon $endDate = null)
     {

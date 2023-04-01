@@ -91,8 +91,6 @@ class UpdateInvestecAccounts extends Command
             $investecTransactions = collect($investecApiClient->getTransactions($account->bank_identifier, $transactionsFrom, $transactionsTo));
             foreach ($investecTransactions as $investecTransaction) {
                 $identifiedExpectedTransactionId = null;
-                $identifiedBudgetId = null;
-                $identifiedTallyId = null;
                 $isTaxRelevant = false;
                 foreach ($expectedTransactions as $expectedTransaction) {
                     if ($expectedTransaction->transactionIsForThis($investecTransaction['description'])) {
@@ -100,21 +98,36 @@ class UpdateInvestecAccounts extends Command
                         $isTaxRelevant = $expectedTransaction->is_tax_relevant;
                     }
                 }
+                $type = TransactionTypes::from(Str::ucfirst(Str::lower($investecTransaction['type'])));
+                $data = [
+                    'expected_transaction_id' => $identifiedExpectedTransactionId,
+                    'listed_balance' => $investecTransaction['runningBalance'] * 100,
+                    'data' => collect($investecTransaction)
+                        ->except(['transactionDate', 'transactionType', 'description', 'amount', 'runningBalance'])
+                        ->toArray(),
+                    'is_tax_relevant' => $isTaxRelevant,
+                    'type' => $type->value,
+                ];
+                /** @var Budget $budget */
                 foreach ($budgets as $budget) {
                     if ($budget->transactionIsForThis($investecTransaction['description'])) {
                         $identifiedBudgetId = $budget->id;
+
                         $tally = $budget->currentTally();
                         if ($tally) {
                             $identifiedTallyId = $tally->id;
-                            $tally->balance += $investecTransaction['amount'] * 100;
-                            $tally->save();
+                            $data = array_merge($data, [
+                                'budget_id' => $identifiedBudgetId,
+                                'tally_id' => $identifiedTallyId,
+                            ]);
+                            $tally->updateBalance($investecTransaction['amount'] * 100, $type);
                         } else {
                             Log::error('Current tally does not exist for budget ' . $identifiedBudgetId);
                         }
                     }
                 }
-                $type = TransactionTypes::from(Str::ucfirst(Str::lower($investecTransaction['type'])));
-                $transaction = Transaction::updateOrCreate(
+
+                Transaction::updateOrCreate(
                     [
                         'account_id' => $account->id,
                         'date' => Carbon::createFromFormat('Y-m-d', $investecTransaction['transactionDate'])
@@ -126,17 +139,7 @@ class UpdateInvestecAccounts extends Command
                         'currency' => $account->currency,
                         'amount' => $investecTransaction['amount'] * 100,
                     ],
-                    [
-                        'expected_transaction_id' => $identifiedExpectedTransactionId,
-                        'budget_id' => $identifiedBudgetId,
-                        'tally_id' => $identifiedTallyId,
-                        'listed_balance' => $investecTransaction['runningBalance'] * 100,
-                        'data' => collect($investecTransaction)
-                            ->except(['transactionDate', 'transactionType', 'description', 'amount', 'runningBalance'])
-                            ->toArray(),
-                        'is_tax_relevant' => $isTaxRelevant,
-                        'type' => $type->value,
-                    ]
+                    $data
                 );
             }
         }

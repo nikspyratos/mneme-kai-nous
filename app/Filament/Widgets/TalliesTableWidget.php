@@ -15,7 +15,7 @@ class TalliesTableWidget extends BaseWidget
 
     protected function getTableQuery(): Builder
     {
-        return Tally::forCurrentMonth();
+        return Tally::forCurrentBudgetMonth();
     }
 
     protected function getTableColumns(): array

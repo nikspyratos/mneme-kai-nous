@@ -6,6 +6,8 @@ use App\Filament\Widgets\AccountsWidget;
 use App\Filament\Widgets\ExpectedTransactionsWidget;
 use App\Filament\Widgets\GeneralWidget;
 use App\Filament\Widgets\TalliesTableWidget;
+use App\Models\Tally;
+use Filament\Pages\Actions\Action;
 use Filament\Pages\Dashboard as BasePage;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,8 +15,12 @@ class Dashboard extends BasePage
 {
     public function downloadDatabase()
     {
-        //TODO Find a way to make this work
         return Storage::disk('database')->download('database.sqlite');
+    }
+
+    public function recalculateTallyBalances()
+    {
+        Tally::forCurrentBudgetMonth()->get()->each->calculateBalance();
     }
 
     protected function getColumns(): int|array
@@ -25,11 +31,16 @@ class Dashboard extends BasePage
     protected function getActions(): array
     {
         return [
-            //            Filament\Pages\Actions\Action::make('download_database')
-            //                ->label('Download Database')
-            //                ->color('success')
-            //                ->icon('heroicon-o-database')
-            //                ->action('downloadDatabase'),
+            Action::make('download_database')
+                ->label('Download Database')
+                ->color('success')
+                ->icon('heroicon-o-database')
+                ->action('downloadDatabase'),
+            Action::make('recalculate_tallies')
+                ->label('Recalculate Tally Balances')
+                ->color('success')
+                ->icon('heroicon-o-calculator')
+                ->action('recalculateTallyBalances'),
         ];
     }
 

@@ -110,14 +110,4 @@ class Account extends Model
         }
         $this->save();
     }
-
-    public function isSyncable(): bool
-    {
-        return ! is_null($this->transactions()->latest()->first()?->listed_balance);
-    }
-
-    public function isBalanceInSyncWithTransactions(): bool
-    {
-        return $this->transactions()->latest()->first()?->listed_balance !== $this->balance;
-    }
 }

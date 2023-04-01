@@ -41,16 +41,18 @@ class Transaction extends Model
     {
         parent::boot();
 
-        static::updating(function ($transaction) {
-            if (! empty($transaction->tally_id)) {
+        $tallyUpdateFunction = function ($transaction) {
+            if (! empty($transaction->tally_id) && empty($transaction->getOriginal('tally_id'))) {
                 Tally::find($transaction->tally_id)
                     ->updateBalance($transaction->amount, TransactionTypes::from($transaction->type));
-            } else if (!empty($transaction->getOriginal('tally_id')) && empty($transaction->tally_id)){
+            } elseif (! empty($transaction->getOriginal('tally_id')) && empty($transaction->tally_id)) {
                 //Reverse the balance calculation
                 Tally::find($transaction->getOriginal('tally_id'))
                     ->updateBalance($transaction->amount * -1, TransactionTypes::from($transaction->type));
             }
-        });
+        };
+        static::creating($tallyUpdateFunction);
+        static::updating($tallyUpdateFunction);
     }
 
     public function scopeTaxRelevant($query, ?Carbon $startDate = null, ?Carbon $endDate = null)

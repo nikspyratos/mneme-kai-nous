@@ -29,6 +29,7 @@ namespace App\Models{
  * @property string|null $bank_identifier
  * @property array|null $data
  * @property bool $is_primary
+ * @property-read float|null $available_credit_percentage
  * @property-read float|null $debt_paid_off_percentage
  * @property-read string $formatted_balance
  * @property-read string $formatted_debt
@@ -113,6 +114,8 @@ namespace App\Models{
  * @property string $type
  * @property int $is_tax_relevant
  * @property \Illuminate\Support\Carbon|null $next_due_date
+ * @property int|null $budget_id
+ * @property-read \App\Models\Budget|null $budget
  * @property-read string $formatted_amount
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
@@ -120,6 +123,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction query()
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereBudgetId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereCurrency($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereDescription($value)
@@ -263,7 +267,9 @@ namespace App\Models{
  * @property-read \App\Models\Budget|null $budget
  * @property-read string $formatted_balance
  * @property-read string $formatted_limit
- * @method static \Illuminate\Database\Eloquent\Builder|Tally forCurrentMonth()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
+ * @property-read int|null $transactions_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally forCurrentBudgetMonth()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally query()

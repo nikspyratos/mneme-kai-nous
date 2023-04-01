@@ -16,10 +16,6 @@ class AccountsWidget extends BaseWidget
         $accounts->each(function ($account) use (&$data) {
             $content = $account->formatted_balance;
             $description = $account->bank_name;
-            if ($account->isSyncable()) {
-                $synced = $account->isBalanceInSyncWithTransactions() ? 'true' : 'false';
-                $description .= " | Synced: {$synced}";
-            }
             $color = 'success';
             if ($account->type == AccountTypes::DEBT->value) {
                 $content = $account->formatted_debt_balance . ' / ' . $account->formatted_debt;
@@ -28,7 +24,7 @@ class AccountsWidget extends BaseWidget
             } elseif ($account->type == AccountTypes::CREDIT->value) {
                 $availableCreditPercentage = $account->available_credit_percentage;
                 $content = $account->formatted_balance . ' / ' . $account->formatted_debt;
-                $description .= ' | Available: ' . $availableCreditPercentage . '%';
+                $description .= ' | Available: ' . $availableCreditPercentage . '% | Pay: ' . $account->formatted_debt_balance;
                 if ($availableCreditPercentage <= 75 && $availableCreditPercentage > 50) {
                     $color = 'warning';
                 } elseif ($availableCreditPercentage < 50) {

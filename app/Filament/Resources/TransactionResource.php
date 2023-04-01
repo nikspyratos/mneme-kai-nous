@@ -22,9 +22,9 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -53,7 +53,7 @@ class TransactionResource extends Resource
                 Select::make('expected_transaction_id')
                     ->relationship('expectedTransaction', 'name'),
                 Select::make('tally_id')
-                    ->relationship('tally', 'name', fn (Builder $query) => $query->forCurrentMonth()),
+                    ->relationship('tally', 'name', fn (Builder $query) => $query->forCurrentBudgetMonth()),
                 DateTimePicker::make('date')
                     ->required(),
                 Select::make('type')
@@ -133,7 +133,7 @@ class TransactionResource extends Resource
                 SelectFilter::make('expected_transaction_id')
                     ->relationship('expectedTransaction', 'name'),
                 SelectFilter::make('tally_id')
-                    ->relationship('tally', 'name', fn (Builder $query) => $query->forCurrentMonth()),
+                    ->relationship('tally', 'name', fn (Builder $query) => $query->forCurrentBudgetMonth()),
                 SelectFilter::make('type')
                     ->options(EnumHelper::enumToFilamentOptionArray(TransactionTypes::cases()))
                     ->attribute('type'),

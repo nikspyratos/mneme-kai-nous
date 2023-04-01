@@ -8,6 +8,7 @@ use App\Services\TallyRolloverDateCalculator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Tally extends Model
 {
@@ -33,7 +34,12 @@ class Tally extends Model
         return $this->belongsTo(Budget::class);
     }
 
-    public function scopeForCurrentMonth($query)
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function scopeForCurrentBudgetMonth($query)
     {
         return $query->where('start_date', '>=', TallyRolloverDateCalculator::getPreviousDate())
             ->where('end_date', '<=', TallyRolloverDateCalculator::getNextDate());
@@ -62,5 +68,15 @@ class Tally extends Model
             $this->balance -= $amountInCents;
         }
         $this->save();
+    }
+
+    public function calculateBalance(): int
+    {
+        $this->balance = 0;
+        $this->balance += $this->transactions()->inCurrentBudgetMonth()->where('type', TransactionTypes::DEBIT->value)->sum('amount');
+        $this->balance -= $this->transactions()->inCurrentBudgetMonth()->where('type', TransactionTypes::CREDIT->value)->sum('amount');
+        $this->save();
+
+        return $this->balance;
     }
 }

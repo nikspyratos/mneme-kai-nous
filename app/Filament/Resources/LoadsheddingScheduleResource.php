@@ -29,6 +29,8 @@ class LoadsheddingScheduleResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('region')
                     ->required(),
+                Forms\Components\Checkbox::make('is_home')
+                    ->required(),
             ]);
     }
 
@@ -52,6 +54,7 @@ class LoadsheddingScheduleResource extends Resource
                     ->formatStateUsing(fn (LoadsheddingSchedule $record): string => $record->today_times_formatted)
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\ToggleColumn::make('is_home')
             ])
             ->filters([
                 //

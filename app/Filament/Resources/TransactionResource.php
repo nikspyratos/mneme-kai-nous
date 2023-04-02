@@ -129,8 +129,6 @@ class TransactionResource extends Resource
             ->filters([
                 SelectFilter::make('account_id')
                     ->relationship('account', 'name'),
-                SelectFilter::make('expected_transaction_id')
-                    ->relationship('expectedTransaction', 'name'),
                 SelectFilter::make('tally_id')
                     ->relationship('tally', 'name', fn (Builder $query) => $query->forCurrentBudgetMonth()),
                 SelectFilter::make('type')
@@ -140,9 +138,13 @@ class TransactionResource extends Resource
                     ->options(EnumHelper::enumToFilamentOptionArray(TransactionCategories::cases()))
                     ->attribute('category'),
                 Filter::make('No Tally')->query(fn (Builder $query) => $query->whereNull('tally_id')),
-                Filter::make('No Expected Transaction')->query(fn (Builder $query) => $query->whereNull('expected_transaction_id')),
+                Filter::make('Has Expected Transaction(s)')->query(fn (Builder $query) => $query->whereHas('expectedTransactions')),
+                Filter::make('No Expected Transaction(s)')->query(fn (Builder $query) => $query->whereDoesntHave('expectedTransactions')),
+                Filter::make('Has Category')->query(fn (Builder $query) => $query->whereIn('category', TransactionCategories::values())),
                 Filter::make('No Category')->query(fn (Builder $query) => $query->whereNull('category')->orWhereNotIn('category', TransactionCategories::values())),
                 Filter::make('Tax Relevant')->query(fn (Builder $query) => $query->where('is_tax_relevant', true)),
+                Filter::make('Tax Irrelevant')->query(fn (Builder $query) => $query->where('is_tax_relevant', false)),
+                Filter::make('Current Budget Month')->query(fn (Builder $query) => $query->inCurrentBudgetMonth()),
             ])
             ->actions([
                 EditAction::make(),

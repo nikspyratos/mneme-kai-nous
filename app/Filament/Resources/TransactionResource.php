@@ -136,6 +136,9 @@ class TransactionResource extends Resource
                 SelectFilter::make('type')
                     ->options(EnumHelper::enumToFilamentOptionArray(TransactionTypes::cases()))
                     ->attribute('type'),
+                SelectFilter::make('category')
+                    ->options(EnumHelper::enumToFilamentOptionArray(TransactionCategories::cases()))
+                    ->attribute('category'),
                 Filter::make('No Tally')->query(fn (Builder $query) => $query->whereNull('tally_id')),
                 Filter::make('No Expected Transaction')->query(fn (Builder $query) => $query->whereNull('expected_transaction_id')),
                 Filter::make('Tax Relevant')->query(fn (Builder $query) => $query->where('is_tax_relevant', true)),

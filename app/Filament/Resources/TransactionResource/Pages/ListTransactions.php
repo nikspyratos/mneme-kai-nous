@@ -8,6 +8,7 @@ use App\Exports\TransactionsExport;
 use App\Filament\Resources\TransactionResource;
 use App\Imports\BankZeroImport;
 use App\Models\Account;
+use App\Models\ExpectedTransaction;
 use App\Models\Transaction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
@@ -52,6 +53,7 @@ class ListTransactions extends ListRecords
     public function updateExpectedTransactions(Transaction $record, array $data)
     {
         $record->expectedTransactions()->sync($data['expected_transactions']);
+        ExpectedTransaction::whereId($data['expected_transactions'])->update(['is_paid' => true]);
     }
 
     protected function getActions(): array

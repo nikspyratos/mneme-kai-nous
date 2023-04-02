@@ -5,7 +5,6 @@ namespace App\Filament\Widgets;
 use App\Enums\TransactionTypes;
 use App\Models\ExpectedTransaction;
 use App\Services\TallyRolloverDateCalculator;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\Filter;
@@ -45,6 +44,9 @@ class ExpectedTransactionsWidget extends BaseWidget
         return [
             Filter::make('is_paid')
                 ->query(fn (Builder $query): Builder => $query->where('is_paid', true)),
+            Filter::make('unpaid')
+                ->query(fn (Builder $query): Builder => $query->where('is_paid', false))
+                ->default(),
         ];
     }
 }

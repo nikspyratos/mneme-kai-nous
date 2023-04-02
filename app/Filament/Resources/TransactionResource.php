@@ -141,6 +141,7 @@ class TransactionResource extends Resource
                     ->attribute('category'),
                 Filter::make('No Tally')->query(fn (Builder $query) => $query->whereNull('tally_id')),
                 Filter::make('No Expected Transaction')->query(fn (Builder $query) => $query->whereNull('expected_transaction_id')),
+                Filter::make('No Category')->query(fn (Builder $query) => $query->whereNull('category')->orWhereNotIn('category', TransactionCategories::values())),
                 Filter::make('Tax Relevant')->query(fn (Builder $query) => $query->where('is_tax_relevant', true)),
             ])
             ->actions([

@@ -20,7 +20,12 @@ class EditTally extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $data['amount'] *= 100;
+        if (isset($data['balance'])) {
+            $data['balance'] *= 100;
+        }
+        if (isset($data['limit'])) {
+            $data['limit'] *= 100;
+        }
         $record->update($data);
 
         return $record;

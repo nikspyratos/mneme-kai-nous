@@ -11,7 +11,7 @@ class TalliesTableWidget extends BaseWidget
 {
     protected static ?string $heading = 'Tallies';
 
-    protected int|string|array $columnSpan = 2;
+    protected int|string|array $columnSpan = 1;
 
     protected function getTableQuery(): Builder
     {
@@ -21,11 +21,8 @@ class TalliesTableWidget extends BaseWidget
     protected function getTableColumns(): array
     {
         return [
-            TextColumn::make('name')->label('Name'),
-            TextColumn::make('balance')->formatStateUsing(fn (Tally $record): string => $record->formatted_balance),
-            TextColumn::make('limit')->formatStateUsing(fn (Tally $record): string => $record->formatted_limit),
-            TextColumn::make('percentage')
-                ->formatStateUsing(fn (Tally $record): string => $record->getBalancePercentageOfBudget() . '%')
+            TextColumn::make('tally')->label('Tally')
+                ->formatStateUsing(fn (Tally $record): string => $record->name . ': ' . $record->formatted_balance . ' / ' . $record->formatted_limit . ' - ' . $record->getBalancePercentageOfBudget() . '%')
                 ->color(fn (Tally $record): string => $this->getPercentageColor($record)),
         ];
     }

@@ -17,4 +17,9 @@ enum TransactionCategories: string
     case LEARNING = 'Learning';
     case HOBBY = 'Hobby';
     case VEHICLE = 'Vehicle';
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 }

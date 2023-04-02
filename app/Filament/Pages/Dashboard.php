@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Filament\Widgets\AccountsWidget;
 use App\Filament\Widgets\ExpectedTransactionsWidget;
 use App\Filament\Widgets\GeneralWidget;
+use App\Filament\Widgets\SpendingAnalysisWidget;
 use App\Filament\Widgets\TalliesTableWidget;
 use App\Models\Tally;
 use Filament\Pages\Actions\Action;
@@ -50,6 +51,7 @@ class Dashboard extends BasePage
             AccountsWidget::class,
             ExpectedTransactionsWidget::class,
             TalliesTableWidget::class,
+            SpendingAnalysisWidget::class,
             GeneralWidget::class,
         ];
     }

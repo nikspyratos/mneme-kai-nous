@@ -4,7 +4,6 @@ namespace App\Enums;
 
 enum TransactionCategories: string
 {
-    case GROCERIES = 'Groceries';
     case FOOD = 'Food';
     case DEBT = 'Debt';
     case UTILITIES = 'Utilities';

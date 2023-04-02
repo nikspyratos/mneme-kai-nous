@@ -54,7 +54,7 @@ class LoadsheddingScheduleResource extends Resource
                     ->formatStateUsing(fn (LoadsheddingSchedule $record): string => $record->today_times_formatted)
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ToggleColumn::make('is_home')
+                Tables\Columns\ToggleColumn::make('is_home'),
             ])
             ->filters([
                 //

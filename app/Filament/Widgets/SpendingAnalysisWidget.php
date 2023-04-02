@@ -18,9 +18,12 @@ class SpendingAnalysisWidget extends BaseWidget
 
     protected function getTableQuery(): Builder
     {
+        //Remove groceries from the list
+        $categories = TransactionCategories::values();
+        unset($categories[0]);
         return Transaction::selectRaw('id, currency, category, SUM(amount) as total')
             ->where('type', TransactionTypes::DEBIT->value)
-            ->whereIn('category', TransactionCategories::values())
+            ->whereIn('category', $categories)
             ->whereBetween('date', [TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate()])
             ->groupBy('category');
     }

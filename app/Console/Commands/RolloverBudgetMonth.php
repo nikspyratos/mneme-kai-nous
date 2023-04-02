@@ -57,7 +57,7 @@ class RolloverBudgetMonth extends Command
             if ($shouldCreateTally) {
                 $tally = Tally::create([
                     'budget_id' => $budget->id,
-                    'name' => $budget->name . ' ' . $startDate->toDateString() . ' - ' . $nextMonthDay->toDateString(),
+                    'name' => $budget->name,
                     'currency' => $budget->currency,
                     'balance' => 0,
                     'limit' => $budget->amount,

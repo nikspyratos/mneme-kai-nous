@@ -18,6 +18,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Pages\Actions\DeleteAction;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -141,6 +142,7 @@ class TransactionResource extends Resource
             ])
             ->actions([
                 EditAction::make(),
+                DeleteAction::make(),
                 Action::make('Expected Transactions')
                     ->mountUsing((fn (ComponentContainer $form, Transaction $record) => $form->fill([
                         'expected_transactions' => $record->expectedTransactions->pluck('id')->toArray(),

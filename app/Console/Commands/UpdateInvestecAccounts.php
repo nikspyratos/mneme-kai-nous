@@ -136,13 +136,15 @@ class UpdateInvestecAccounts extends Command
                             ->setHour(0)
                             ->setMinute(0)
                             ->setSecond(0),
-                        'category' => $investecTransaction['transactionType'],
                         'description' => $investecTransaction['description'],
                         'currency' => $account->currency,
                         'amount' => $investecTransaction['amount'] * 100,
                     ],
                     $data
                 );
+                if (! $transaction->category) {
+                    $transaction->update(['category' => $investecTransaction['transactionType']]);
+                }
                 $transaction->expectedTransactions()->sync($matchedExpectedTransactions->pluck('id'));
                 $matchedExpectedTransactions->each->update(['is_paid' => true]);
             }

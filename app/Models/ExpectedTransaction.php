@@ -25,6 +25,7 @@ class ExpectedTransaction extends Model
         'due_period',
         'due_day',
         'next_due_date',
+        'is_paid',
         'identifier',
         'identifier_transaction_type', //Ideally this should be set WITHOUT identifier
         'enabled',
@@ -34,6 +35,7 @@ class ExpectedTransaction extends Model
 
     public $casts = [
         'next_due_date' => 'date',
+        'is_paid' => 'boolean',
         'identifier' => 'collection',
     ];
 

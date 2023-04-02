@@ -78,6 +78,8 @@ class ExpectedTransactionResource extends Resource
                     ->default(true),
                 Checkbox::make('is_tax_relevant')
                     ->default(false),
+                Checkbox::make('is_paid')
+                    ->default(false),
             ]);
     }
 
@@ -102,12 +104,19 @@ class ExpectedTransactionResource extends Resource
                 ToggleColumn::make('enabled'),
                 TextColumn::make('type'),
                 ToggleColumn::make('is_tax_relevant'),
+                ToggleColumn::make('is_paid'),
             ])
             ->filters([
                 Filter::make('is_recurring')
                     ->label('Is Recurring')
                     ->default()
                     ->query(fn (Builder $query): Builder => $query->whereNotNull('due_period')),
+                Filter::make('is_paid')
+                    ->label('Is Paid')
+                    ->query(fn (Builder $query): Builder => $query->where('is_paid', true)),
+                Filter::make('unpaid')
+                    ->label('Unpaid')
+                    ->query(fn (Builder $query): Builder => $query->where('is_paid', false)),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

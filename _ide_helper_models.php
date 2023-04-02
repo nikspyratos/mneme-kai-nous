@@ -116,6 +116,7 @@ namespace App\Models{
  * @property int $is_tax_relevant
  * @property \Illuminate\Support\Carbon|null $next_due_date
  * @property int|null $budget_id
+ * @property bool $is_paid
  * @property-read \App\Models\Budget|null $budget
  * @property-read string $formatted_amount
  * @property-read string $identifier_string
@@ -136,6 +137,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereIdentifier($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereIdentifierTransactionType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereIsPaid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereIsTaxRelevant($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereNextDueDate($value)
@@ -295,8 +297,6 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $account_id
- * @property int|null $expected_transaction_id
- * @property int|null $budget_id
  * @property int|null $tally_id
  * @property \Illuminate\Support\Carbon $date
  * @property string|null $type
@@ -328,7 +328,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction taxRelevant(?\Illuminate\Support\Carbon $startDate = null, ?\Illuminate\Support\Carbon $endDate = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereAccountId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereBudgetId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereCategory($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereCurrency($value)
@@ -336,7 +335,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereDetail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereExpectedTransactionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereFee($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereIsTaxRelevant($value)

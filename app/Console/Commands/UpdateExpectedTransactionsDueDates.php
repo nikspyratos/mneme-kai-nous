@@ -5,8 +5,8 @@ namespace App\Console\Commands;
 use App\Enums\DuePeriods;
 use App\Enums\TransactionTypes;
 use App\Models\ExpectedTransaction;
+use App\Services\TallyRolloverDateCalculator;
 use Illuminate\Console\Command;
-use Illuminate\Support\Carbon;
 
 class UpdateExpectedTransactionsDueDates extends Command
 {
@@ -16,16 +16,21 @@ class UpdateExpectedTransactionsDueDates extends Command
 
     public function handle(): void
     {
-        ExpectedTransaction::whereDuePeriod(DuePeriods::MONTHLY->value)
+        $expectedTransactions = ExpectedTransaction::whereDuePeriod(DuePeriods::MONTHLY->value)
             ->where(function ($query) {
                 $query->whereNull('next_due_date')
-                    ->orWhere('next_due_date', '<', Carbon::today());
+                    ->orWhere('next_due_date', '<', TallyRolloverDateCalculator::getNextDate());
             })
             ->where('type', '=', TransactionTypes::DEBIT->value)
-            ->each(function (ExpectedTransaction $expectedTransaction) {
+            ->get();
+        /** @var ExpectedTransaction $expectedTransaction */
+        foreach ($expectedTransactions as $expectedTransaction) {
+            if ($expectedTransaction->transactions()->inCurrentBudgetMonth()->doesntExist()) {
                 $expectedTransaction->update([
                     'next_due_date' => $expectedTransaction->getNextDueDate()->toDateString(),
+                    'is_paid' => false,
                 ]);
-            });
+            }
+        }
     }
 }

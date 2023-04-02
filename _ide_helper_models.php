@@ -70,10 +70,11 @@ namespace App\Models{
  * @property string $period_type
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string|null $identifier
+ * @property \Illuminate\Support\Collection|null $identifier
  * @property string|null $identifier_transaction_type
  * @property int $enabled
  * @property-read string $formatted_amount
+ * @property-read string $identifier_string
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tally> $tallies
  * @property-read int|null $tallies_count
  * @method static \Illuminate\Database\Eloquent\Builder|Budget newModelQuery()
@@ -108,7 +109,7 @@ namespace App\Models{
  * @property int|null $due_day
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string|null $identifier
+ * @property \Illuminate\Support\Collection|null $identifier
  * @property string|null $identifier_transaction_type
  * @property int $enabled
  * @property string $type
@@ -117,6 +118,7 @@ namespace App\Models{
  * @property int|null $budget_id
  * @property-read \App\Models\Budget|null $budget
  * @property-read string $formatted_amount
+ * @property-read string $identifier_string
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction newModelQuery()
@@ -312,6 +314,8 @@ namespace App\Models{
  * @property-read \App\Models\Account|null $account
  * @property-read \App\Models\Budget|null $budget
  * @property-read \App\Models\ExpectedTransaction|null $expectedTransaction
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExpectedTransaction> $expectedTransactions
+ * @property-read int|null $expected_transactions_count
  * @property-read string $formatted_amount
  * @property-read string $formatted_fee
  * @property-read string $formatted_listed_balance

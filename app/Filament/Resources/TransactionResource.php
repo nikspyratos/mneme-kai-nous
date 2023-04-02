@@ -12,6 +12,7 @@ use App\Helpers\EnumHelper;
 use App\Models\ExpectedTransaction;
 use App\Models\Tally;
 use App\Models\Transaction;
+use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
@@ -20,6 +21,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\SelectColumn;
@@ -50,8 +52,10 @@ class TransactionResource extends Resource
                 Select::make('account_id')
                     ->relationship('account', 'name')
                     ->required(),
-                Select::make('expected_transaction_id')
-                    ->relationship('expectedTransaction', 'name'),
+                Select::make('expected_transactions')
+                    ->multiple()
+                    ->relationship('expectedTransactions', 'name')
+                    ->preload(),
                 Select::make('tally_id')
                     ->relationship('tally', 'name', fn (Builder $query) => $query->forCurrentBudgetMonth()),
                 DateTimePicker::make('date')
@@ -59,7 +63,6 @@ class TransactionResource extends Resource
                 Select::make('type')
                     ->options($transactionTypesSelect)
                     ->default(TransactionTypes::DEBIT->value)
-//                    ->disablePlaceholderSelection()
                     ->required(),
                 Select::make('category')
                     ->options($categoriesSelect)
@@ -108,11 +111,6 @@ class TransactionResource extends Resource
                     ->sortable()
                     ->limit(20),
                 TextColumn::make('amount')->formatStateUsing(fn (Transaction $record): string => $record->formatted_amount),
-                SelectColumn::make('expected_transaction_id')
-                    ->label('Expected Transaction')
-                    ->options($expectedTransactionSelect)
-                    ->sortable()
-                    ->searchable(),
                 SelectColumn::make('tally_id')
                     ->label('Tally')
                     ->options($talliesSelect)
@@ -143,6 +141,21 @@ class TransactionResource extends Resource
             ])
             ->actions([
                 EditAction::make(),
+                Action::make('Expected Transactions')
+                    ->mountUsing((fn (ComponentContainer $form, Transaction $record) => $form->fill([
+                        'expected_transactions' => $record->expectedTransactions->pluck('id')->toArray(),
+                    ])))
+                    ->form([
+                        Select::make('expected_transactions')
+                            ->label('Expected Transactions')
+                            ->options($expectedTransactionSelect)
+                            ->multiple()
+                            ->searchable()
+                            ->rules('required'),
+                    ])
+                    ->action('updateExpectedTransactions')
+                    ->icon('heroicon-o-clipboard')
+                    ->color('success'),
             ])
             ->bulkActions([
                 DeleteBulkAction::make(),

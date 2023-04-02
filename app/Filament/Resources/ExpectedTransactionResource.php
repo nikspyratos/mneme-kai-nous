@@ -10,6 +10,7 @@ use App\Helpers\EnumHelper;
 use App\Models\Budget;
 use App\Models\ExpectedTransaction;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -60,13 +61,14 @@ class ExpectedTransactionResource extends Resource
                     ->numeric()
                     ->minValue(1)
                     ->maxValue(31),
+                DatePicker::make('next_due_date'),
                 TextInput::make('group'),
                 Select::make('type')
                     ->options($transactionTypesSelect)
                     ->disablePlaceholderSelection(),
                 Repeater::make('identifier')
                     ->schema([
-                        TextInput::make('identifier')->required(),
+                        TextInput::make('identifier'),
                     ])
                     ->columns(1),
                 Select::make('identifier_transaction_type')

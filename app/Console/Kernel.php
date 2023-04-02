@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('app:update-investec-accounts')->hourlyAt(30);
-        $schedule->call(function() {
+        $schedule->call(function () {
             Tally::forCurrentBudgetMonth()->get()->each->calculateBalance();
         })->hourlyAt(35);
 

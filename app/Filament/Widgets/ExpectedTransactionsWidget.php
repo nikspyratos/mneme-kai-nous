@@ -7,6 +7,7 @@ use App\Models\ExpectedTransaction;
 use App\Services\TallyRolloverDateCalculator;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -35,8 +36,15 @@ class ExpectedTransactionsWidget extends BaseWidget
             TextColumn::make('next_due_date')->label('Next Due')->formatStateUsing(fn (ExpectedTransaction $record): string => $record->next_due_date->toDateString()),
             IconColumn::make('is_paid')
                 ->label('Is Paid')
-                ->boolean()
-                ->getStateUsing(fn (ExpectedTransaction $record): bool => $record->transactions()->inCurrentBudgetMonth()->exists()),
+                ->boolean(),
+        ];
+    }
+
+    protected function getTableFilters(): array
+    {
+        return [
+            Filter::make('is_paid')
+                ->query(fn (Builder $query): Builder => $query->where('is_paid', true)),
         ];
     }
 }

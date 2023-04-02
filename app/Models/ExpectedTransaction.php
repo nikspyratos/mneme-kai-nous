@@ -8,7 +8,7 @@ use App\Models\Traits\FormatsMoneyColumns;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 
 class ExpectedTransaction extends Model
@@ -42,9 +42,9 @@ class ExpectedTransaction extends Model
         return $this->belongsTo(Budget::class);
     }
 
-    public function transactions(): HasMany
+    public function transactions(): BelongsToMany
     {
-        return $this->hasMany(Transaction::class);
+        return $this->belongsToMany(Transaction::class);
     }
 
     public function getNextDueDate(): ?Carbon

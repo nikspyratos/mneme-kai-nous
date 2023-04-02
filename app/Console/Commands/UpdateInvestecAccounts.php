@@ -100,10 +100,11 @@ class UpdateInvestecAccounts extends Command
                 ];
 
                 /** @var ExpectedTransaction $expectedTransaction */
+                $matchedExpectedTransactions = collect();
                 foreach ($expectedTransactions as $expectedTransaction) {
                     if ($expectedTransaction->transactionIsForThis($investecTransaction['description'])) {
+                        $matchedExpectedTransactions->push($expectedTransaction);
                         $data = array_merge($data, [
-                            'expected_transaction_id' => $expectedTransaction->id,
                             'is_tax_relevant' => $expectedTransaction->is_tax_relevant,
                         ]);
                     }
@@ -128,7 +129,7 @@ class UpdateInvestecAccounts extends Command
                     }
                 }
 
-                Transaction::updateOrCreate(
+                $transaction = Transaction::updateOrCreate(
                     [
                         'account_id' => $account->id,
                         'date' => Carbon::createFromFormat('Y-m-d', $investecTransaction['transactionDate'])
@@ -142,6 +143,8 @@ class UpdateInvestecAccounts extends Command
                     ],
                     $data
                 );
+                $transaction->expectedTransactions()->sync($matchedExpectedTransactions->pluck('id'));
+                $matchedExpectedTransactions->each->update(['is_paid' => true]);
             }
         }
         $this->info('Complete!');

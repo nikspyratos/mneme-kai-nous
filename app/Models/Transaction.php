@@ -8,6 +8,7 @@ use App\Services\TallyRolloverDateCalculator;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 
 class Transaction extends Model
@@ -16,8 +17,6 @@ class Transaction extends Model
 
     public $fillable = [
         'account_id',
-        'expected_transaction_id',
-        'budget_id',
         'tally_id',
         'date',
         'type',
@@ -96,6 +95,11 @@ class Transaction extends Model
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class);
+    }
+
+    public function expectedTransactions(): BelongsToMany
+    {
+        return $this->belongsToMany(ExpectedTransaction::class);
     }
 
     public function expectedTransaction(): BelongsTo

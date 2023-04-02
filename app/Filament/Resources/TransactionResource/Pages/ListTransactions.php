@@ -49,6 +49,11 @@ class ListTransactions extends ListRecords
         return Storage::disk('local')->download($filename);
     }
 
+    public function updateExpectedTransactions(Transaction $record, array $data)
+    {
+        $record->expectedTransactions()->sync($data['expected_transactions']);
+    }
+
     protected function getActions(): array
     {
         $firstTransactionDate = Transaction::orderBy('date')->first()->date;

@@ -103,7 +103,11 @@ class AccountResource extends Resource
                     Checkbox::make('is_primary'),
                     Checkbox::make('is_main')->rules([function (Account $record) {
                         return function (string $attribute, $value, Closure $fail) use ($record) {
-                            Account::where('id', '!=', $record->id)->whereIsMain(true)->doesntExist() ?: $fail('There is already a main account.');
+                            if ($value) {
+                                Account::where('id', '!=', $record->id)->whereIsMain(true)->doesntExist() ?: $fail(
+                                    'There is already a main account.'
+                                );
+                            }
                         };
                     }]),
                 ]),

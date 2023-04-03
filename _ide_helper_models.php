@@ -35,6 +35,7 @@ namespace App\Models{
  * @property-read string $formatted_balance
  * @property-read string $formatted_debt
  * @property-read string $formatted_debt_balance
+ * @property-read string $formatted_overdraft_amount
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
  * @method static \Database\Factories\AccountFactory factory($count = null, $state = [])

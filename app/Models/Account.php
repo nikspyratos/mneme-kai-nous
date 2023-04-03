@@ -24,6 +24,7 @@ class Account extends Model
         'debt',
         'type',
         'has_overdraft',
+        'overdraft_amount',
         'bank_identifier',
         'data',
         'is_primary',
@@ -77,6 +78,11 @@ class Account extends Model
     public function getFormattedDebtAttribute(): string
     {
         return $this->formatKeyAsMoneyString('debt');
+    }
+
+    public function getFormattedOverdraftAmountAttribute(): string
+    {
+        return $this->formatKeyAsMoneyString('overdraft_amount');
     }
 
     public function getDebtPaidOffPercentageAttribute(): ?float

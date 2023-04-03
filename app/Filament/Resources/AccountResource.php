@@ -86,11 +86,24 @@ class AccountResource extends Resource
                         })
                         ->visible(fn (Closure $get): bool => in_array($get('type'), [AccountTypes::DEBT->value, AccountTypes::CREDIT->value])),
                     TextInput::make('bank_identifier'),
-                    Checkbox::make('has_overdraft'),
+                    Checkbox::make('has_overdraft')->reactive(),
+                    TextInput::make('overdraft_amount')
+                        ->afterStateHydrated(function (TextInput $component, $state) {
+                            $component->state($state / 100)
+                                ->mask(fn (TextInput\Mask $mask) => $mask
+                                    ->numeric()
+                                    ->decimalPlaces(2) // Set the number of digits after the decimal point.
+                                    ->decimalSeparator('.') // Add a separator for decimal numbers.
+                                    ->mapToDecimalSeparator([',']) // Map additional characters to the decimal separator.
+                                    ->normalizeZeros(false) // Append or remove zeros at the end of the number.
+                                    ->padFractionalZeros(false) // Pad zeros at the end of the number to always maintain the maximum number of decimal places.
+                                    ->thousandsSeparator(',') // Add a separator for thousands.
+                                );
+                        })->hidden(fn (Closure $get) => $get('has_overdraft') == false),
                     Checkbox::make('is_primary'),
-                    Checkbox::make('is_main')->rules([function () {
-                        return function (string $attribute, $value, Closure $fail) {
-                            Account::whereIsMain(true)->doesntExist() ?: $fail('There is already a main account.');
+                    Checkbox::make('is_main')->rules([function (Account $record) {
+                        return function (string $attribute, $value, Closure $fail) use ($record) {
+                            Account::where('id', '!=', $record->id)->whereIsMain(true)->doesntExist() ?: $fail('There is already a main account.');
                         };
                     }]),
                 ]),
@@ -108,6 +121,7 @@ class AccountResource extends Resource
                 TextColumn::make('debt')->formatStateUsing(fn (Account $record): string => $record->formatted_debt),
                 TextColumn::make('type'),
                 ToggleColumn::make('has_overdraft'),
+                TextColumn::make('overdraft_amount')->formatStateUsing(fn (Account $record): string => $record->formatted_overdraft_amount),
                 TextColumn::make('bank_identifier'),
                 TextColumn::make('type'),
                 ToggleColumn::make('is_primary'),

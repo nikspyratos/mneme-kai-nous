@@ -38,6 +38,12 @@ class AccountsWidget extends BaseWidget
                     $color = 'danger';
                 }
             }
+            if ($account->has_overdraft) {
+                $description .= ' | Overdraft: ' . $account->formatted_overdraft_amount;
+                if ($account->balance <= 0 && abs($account->balance) > $account->overdraft_amount) {
+                    $color = 'danger';
+                }
+            }
             if ($account->is_main) {
                 $name = 'Main ' . $name;
                 $description .= ' | Total spend due: ' . Money::of($this->getTotalSpendDueInCents() / 100, Currencies::RANDS->value)->formatTo('en_ZA');

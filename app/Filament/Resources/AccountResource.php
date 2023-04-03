@@ -87,6 +87,11 @@ class AccountResource extends Resource
                     TextInput::make('bank_identifier'),
                     Checkbox::make('has_overdraft'),
                     Checkbox::make('is_primary'),
+                    Checkbox::make('is_main')->rules([function () {
+                        return function (string $attribute, $value, Closure $fail) {
+                            Account::whereIsMain(true)->doesntExist() ?: $fail('There is already a main account.');
+                        };
+                    }]),
                 ]),
             ]);
     }

@@ -27,12 +27,14 @@ class Account extends Model
         'bank_identifier',
         'data',
         'is_primary',
+        'is_main',
     ];
 
     public $casts = [
         'has_overdraft' => 'boolean',
         'data' => 'json',
         'is_primary' => 'boolean',
+        'is_main' => 'boolean',
     ];
 
     public static function firstOrCreateInvestec(

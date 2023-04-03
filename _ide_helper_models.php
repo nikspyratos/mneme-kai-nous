@@ -29,6 +29,7 @@ namespace App\Models{
  * @property string|null $bank_identifier
  * @property array|null $data
  * @property bool $is_primary
+ * @property bool|null $is_main
  * @property-read float|null $available_credit_percentage
  * @property-read float|null $debt_paid_off_percentage
  * @property-read string $formatted_balance
@@ -50,6 +51,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereDebt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereHasOverdraft($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Account whereIsMain($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereIsPrimary($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereOverdraftAmount($value)

@@ -16,7 +16,7 @@ class GeneralWidget extends BaseWidget
         return array_merge(
             LifePercentageCards::getCards(),
             QuoteCards::getCards(),
-            LoadsheddingCards::getCards()
+            LoadsheddingCards::getCards(),
         );
     }
 }

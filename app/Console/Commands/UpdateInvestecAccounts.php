@@ -145,7 +145,9 @@ class UpdateInvestecAccounts extends Command
                 if (! $transaction->category) {
                     $transaction->update(['category' => $investecTransaction['transactionType']]);
                 }
-                $transaction->expectedTransactions()->sync($matchedExpectedTransactions->pluck('id'));
+                if ($matchedExpectedTransactions->isNotEmpty() && $transaction->expectedTransactions()->count() > 0) {
+                    $transaction->expectedTransactions()->sync($matchedExpectedTransactions->pluck('id'));
+                }
                 $matchedExpectedTransactions->each->update(['is_paid' => true]);
             }
         }

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PerceptionResource\Pages;
+use App\Filament\Resources\PerceptionResource\RelationManagers\QuotesRelationManager;
 use App\Models\Perception;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
@@ -54,7 +55,7 @@ class PerceptionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            QuotesRelationManager::class,
         ];
     }
 

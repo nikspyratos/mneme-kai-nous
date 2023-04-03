@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\Currencies;
 use App\Filament\Resources\TallyResource\Pages;
+use App\Filament\Resources\TallyResource\RelationManagers\TransactionsRelationManager;
 use App\Helpers\EnumHelper;
 use App\Models\Tally;
 use Filament\Forms\Components\DatePicker;
@@ -83,7 +84,7 @@ class TallyResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TransactionsRelationManager::class,
         ];
     }
 

@@ -8,6 +8,7 @@ use App\Enums\Currencies;
 use App\Filament\Resources\AccountResource\Pages\CreateAccount;
 use App\Filament\Resources\AccountResource\Pages\EditAccount;
 use App\Filament\Resources\AccountResource\Pages\ListAccounts;
+use App\Filament\Resources\AccountResource\RelationManagers\TransactionsRelationManager;
 use App\Helpers\EnumHelper;
 use App\Models\Account;
 use Closure;
@@ -125,7 +126,7 @@ class AccountResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TransactionsRelationManager::class,
         ];
     }
 

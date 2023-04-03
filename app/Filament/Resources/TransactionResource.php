@@ -138,8 +138,8 @@ class TransactionResource extends Resource
                     ->options(EnumHelper::enumToFilamentOptionArray(TransactionCategories::cases()))
                     ->attribute('category'),
                 Filter::make('No Tally')->query(fn (Builder $query) => $query->whereNull('tally_id')),
-                Filter::make('Has Expected Transaction(s)')->query(fn (Builder $query) => $query->whereHas('expectedTransactions')),
-                Filter::make('No Expected Transaction(s)')->query(fn (Builder $query) => $query->whereDoesntHave('expectedTransactions')),
+//                Filter::make('Has Expected Transaction(s)')->query(fn (Builder $query) => $query->whereHas('expectedTransactions')),
+//                Filter::make('No Expected Transaction(s)')->query(fn (Builder $query) => $query->whereDoesntHave('expectedTransactions')),
                 Filter::make('Has Category')->query(fn (Builder $query) => $query->whereIn('category', TransactionCategories::values())),
                 Filter::make('No Category')->query(fn (Builder $query) => $query->whereNull('category')->orWhereNotIn('category', TransactionCategories::values())),
                 Filter::make('Tax Relevant')->query(fn (Builder $query) => $query->where('is_tax_relevant', true)),

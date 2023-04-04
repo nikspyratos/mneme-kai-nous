@@ -17,6 +17,7 @@ class UpdateExpectedTransactionsDueDates extends Command
     public function handle(): void
     {
         $expectedTransactions = ExpectedTransaction::whereDuePeriod(DuePeriods::MONTHLY->value)
+            ->whereIsPaid(true)
             ->where(function ($query) {
                 $query->whereNull('next_due_date')
                     ->orWhere('next_due_date', '<', TallyRolloverDateCalculator::getNextDate());

@@ -27,7 +27,6 @@ class AccountsWidget extends BaseWidget
             if ($account->type == AccountTypes::DEBT->value) {
                 $content = $account->formatted_debt_balance . ' / ' . $account->formatted_debt;
                 $description .= ' | Paid off: ' . $account->debt_paid_off_percentage . '%';
-                $color = 'success';
             } elseif ($account->type == AccountTypes::CREDIT->value) {
                 $availableCreditPercentage = $account->available_credit_percentage;
                 $content = $account->formatted_balance . ' / ' . $account->formatted_debt;
@@ -69,18 +68,12 @@ class AccountsWidget extends BaseWidget
                     TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
                 ]
             )
-            ->whereIsPaid(false);
-        $amount = 0;
-        foreach ($tallies as $tally) {
-            $amount += $tally->limit - $tally->balance;
-        }
-        foreach ($creditAccounts as $creditAccount) {
-            $amount += $creditAccount->debt - $creditAccount->balance;
-        }
-        foreach ($expectedExpenses as $expectedExpense) {
-            $amount += $expectedExpense->amount;
-        }
+            ->whereIsPaid(false)
+            ->get();
+        $talliesTotal = ($tallies->sum('limit') - $tallies->sum('balance'));
+        $creditTotal = ($creditAccounts->sum('debt') - $creditAccounts->sum('balance'));
+        $expectedExpensesTotal = $expectedExpenses->sum('amount');
 
-        return $amount;
+        return $talliesTotal + $creditTotal + $expectedExpensesTotal;
     }
 }

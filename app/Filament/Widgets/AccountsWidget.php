@@ -2,13 +2,10 @@
 
 namespace App\Filament\Widgets;
 
+use App\Actions\CalculateTotalSpendDue;
 use App\Enums\AccountTypes;
 use App\Enums\Currencies;
-use App\Enums\TransactionTypes;
 use App\Models\Account;
-use App\Models\ExpectedTransaction;
-use App\Models\Tally;
-use App\Services\TallyRolloverDateCalculator;
 use Brick\Money\Money;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Card;
@@ -45,7 +42,7 @@ class AccountsWidget extends BaseWidget
             }
             if ($account->is_main) {
                 $name = 'Main ' . $name;
-                $description .= ' | Total spend due: ' . Money::of($this->getTotalSpendDueInCents() / 100, Currencies::RANDS->value)->formatTo('en_ZA');
+                $description .= ' | Total spend due: ' . Money::of(CalculateTotalSpendDue::run() / 100, Currencies::RANDS->value)->formatTo('en_ZA');
             }
             $card = Card::make($name, $content)
                 ->description($description)
@@ -54,26 +51,5 @@ class AccountsWidget extends BaseWidget
         });
 
         return $data;
-    }
-
-    private function getTotalSpendDueInCents()
-    {
-        $tallies = Tally::forCurrentBudgetMonth()->whereCurrency(Currencies::RANDS->value)->get();
-        $creditAccounts = Account::whereType(AccountTypes::CREDIT->value)->whereCurrency(Currencies::RANDS->value)->get();
-        $expectedExpenses = ExpectedTransaction::whereType(TransactionTypes::DEBIT->value)
-            ->whereCurrency(Currencies::RANDS->value)
-            ->whereBetween(
-                'next_due_date',
-                [
-                    TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
-                ]
-            )
-            ->whereIsPaid(false)
-            ->get();
-        $talliesTotal = ($tallies->sum('limit') - $tallies->sum('balance'));
-        $creditTotal = ($creditAccounts->sum('debt') - $creditAccounts->sum('balance'));
-        $expectedExpensesTotal = $expectedExpenses->sum('amount');
-
-        return $talliesTotal + $creditTotal + $expectedExpensesTotal;
     }
 }

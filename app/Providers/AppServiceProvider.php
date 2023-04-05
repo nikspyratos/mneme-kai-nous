@@ -5,6 +5,7 @@ namespace App\Providers;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationGroup;
 use Illuminate\Support\ServiceProvider;
+use Log;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Filament::registerViteTheme('resources/css/app.css');
-        \Log::info(Filament::getThemeLink()->toHtml());
+        Log::info(Filament::getThemeLink()->toHtml());
         Filament::serving(function () {
             Filament::registerNavigationGroups([
                 NavigationGroup::make()

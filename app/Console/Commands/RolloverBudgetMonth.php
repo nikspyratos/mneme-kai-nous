@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Enums\BudgetPeriodTypes;
 use App\Models\Budget;
+use App\Models\Summary;
 use App\Models\Tally;
 use App\Services\LogSnag;
 use App\Services\TallyRolloverDateCalculator;
@@ -71,6 +72,7 @@ class RolloverBudgetMonth extends Command
         });
         if ($hasCreatedTally) {
             (new LogSnag)->log('Rollover', 'Budgets rolled over', true);
+            Summary::createForPeriod(TallyRolloverDateCalculator::getPreviousDate(), $nextRolloverDate);
         }
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 class Tally extends Model
 {
@@ -39,10 +40,15 @@ class Tally extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function scopeForPeriod($query, Carbon $startDate, Carbon $endDate)
+    {
+        return $query->where('start_date', '>=', $startDate)
+            ->where('end_date', '<=', $endDate);
+    }
+
     public function scopeForCurrentBudgetMonth($query)
     {
-        return $query->where('start_date', '>=', TallyRolloverDateCalculator::getPreviousDate())
-            ->where('end_date', '<=', TallyRolloverDateCalculator::getNextDate());
+        return $this->scopeForPeriod($query, TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate());
     }
 
     public function getFormattedBalanceAttribute(): string

@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationGroup;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
-use Log;
 
 class AppServiceProvider extends ServiceProvider
 {

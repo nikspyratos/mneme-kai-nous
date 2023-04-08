@@ -83,17 +83,17 @@ class Tally extends Model
         $this->balance += $this->transactions()->inCurrentBudgetMonth()->where('type', TransactionTypes::DEBIT->value)->sum('amount');
         $this->balance -= $this->transactions()->inCurrentBudgetMonth()->where('type', TransactionTypes::CREDIT->value)->sum('amount');
         ExpectedTransaction::where(function ($query) {
-            $query->where('next_due_date', null)
-                ->orWhereBetween(
-                    'next_due_date',
-                    [
-                        TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
-                    ]
-                );
-        })
+                $query->where('next_due_date', null)
+                    ->orWhereBetween(
+                        'next_due_date',
+                        [
+                            TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
+                        ]
+                    );
+            })
             ->where('enabled', true)
-            ->where('is_paid', false)
             ->where('type', TransactionTypes::CREDIT->value)
+            ->whereBetween('created_at', [$this->start_date, $this->end_date])
             ->with('transactions', function ($query) {
                 return $query->where('tally_id', $this->id);
             })

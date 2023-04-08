@@ -82,20 +82,32 @@ class Tally extends Model
         $this->balance = 0;
         $this->balance += $this->transactions()->inCurrentBudgetMonth()->where('type', TransactionTypes::DEBIT->value)->sum('amount');
         $this->balance -= $this->transactions()->inCurrentBudgetMonth()->where('type', TransactionTypes::CREDIT->value)->sum('amount');
-        $this->transactions->each->expectedTransactions
-            ->where(function ($query) {
-                $query->where('next_due_date', null)
-                    ->orWhereBetween(
-                        'next_due_date',
-                        [
-                            TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
-                        ]
-                    );
-            })
+        ExpectedTransaction::where(function ($query) {
+            $query->where('next_due_date', null)
+                ->orWhereBetween(
+                    'next_due_date',
+                    [
+                        TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
+                    ]
+                );
+        })
             ->where('enabled', true)
             ->where('is_paid', false)
-            ->where('type', TransactionTypes::CREDIT->value)->each(function ($expectedTransaction) use (&$expectedTransactionsSum) {
-                $expectedTransactionsSum -= $expectedTransaction->amount;
+            ->where('type', TransactionTypes::CREDIT->value)
+            ->with('transactions', function ($query) {
+                return $query->where('tally_id', $this->id);
+            })
+            ->get()
+            ->each(function ($expectedTransaction) use (&$expectedTransactionsSum) {
+                $isForThisTally = $expectedTransaction->transactions->whereBetween(
+                    'date',
+                    [
+                        TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
+                    ]
+                )->count() > 0;
+                if ($isForThisTally) {
+                    $expectedTransactionsSum += $expectedTransaction->amount;
+                }
             });
         $this->balance -= $expectedTransactionsSum;
 

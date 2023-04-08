@@ -45,6 +45,7 @@ class TransactionResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $expectedTransactionSelect = ExpectedTransaction::all()->pluck('name', 'id')->toArray();
         $transactionTypesSelect = EnumHelper::enumToFilamentOptionArray(TransactionTypes::cases());
         $categoriesSelect = EnumHelper::enumToFilamentOptionArray(TransactionCategories::cases());
         $currenciesSelect = EnumHelper::enumToFilamentOptionArray(Currencies::cases());
@@ -55,9 +56,11 @@ class TransactionResource extends Resource
                     ->relationship('account', 'name')
                     ->required(),
                 Select::make('expected_transactions')
+                    ->label('Expected Transactions')
+                    ->options($expectedTransactionSelect)
                     ->multiple()
-                    ->relationship('expectedTransactions', 'name')
-                    ->preload(),
+                    ->searchable()
+                    ->required(),
                 Select::make('tally_id')
                     ->relationship('tally', 'name', fn (Builder $query) => $query->forCurrentBudgetMonth()),
                 DateTimePicker::make('date')
@@ -159,7 +162,7 @@ class TransactionResource extends Resource
                             ->options($expectedTransactionSelect)
                             ->multiple()
                             ->searchable()
-                            ->rules('required'),
+                            ->required(),
                     ])
                     ->action('updateExpectedTransactions')
                     ->icon('heroicon-o-clipboard')

@@ -19,14 +19,16 @@ class ExpectedTransactionsWidget extends BaseWidget
 
     protected function getTableQuery(): Builder
     {
-        return ExpectedTransaction::whereNextDueDate(null)
-            ->whereEnabled(true)
-            ->orWhereBetween(
-                'next_due_date',
-                [
-                    TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
-                ]
-            );
+        return ExpectedTransaction::whereEnabled(true)
+            ->where(function ($query) {
+                $query->where('next_due_date', null)
+                    ->orWhereBetween(
+                        'next_due_date',
+                        [
+                            TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
+                        ]
+                    );
+            });
     }
 
     protected function getTableColumns(): array

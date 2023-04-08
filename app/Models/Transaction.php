@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 class Transaction extends Model
@@ -16,6 +17,7 @@ class Transaction extends Model
     use HasFactory, FormatsMoneyColumns;
 
     public $fillable = [
+        'parent_id',
         'account_id',
         'tally_id',
         'date',
@@ -41,10 +43,11 @@ class Transaction extends Model
         parent::boot();
 
         $tallyUpdateFunction = function ($transaction) {
-            if (! empty($transaction->tally_id) && empty($transaction->getOriginal('tally_id'))) {
+            $isNotChild = empty($transaction->parent_id);
+            if ($isNotChild && ! empty($transaction->tally_id) && empty($transaction->getOriginal('tally_id'))) {
                 Tally::find($transaction->tally_id)
                     ->updateBalance($transaction->amount, TransactionTypes::from($transaction->type));
-            } elseif (! empty($transaction->getOriginal('tally_id')) && empty($transaction->tally_id)) {
+            } elseif ($isNotChild && ! empty($transaction->getOriginal('tally_id')) && empty($transaction->tally_id)) {
                 //Reverse the balance calculation
                 Tally::find($transaction->getOriginal('tally_id'))
                     ->updateBalance($transaction->amount * -1, TransactionTypes::from($transaction->type));
@@ -90,6 +93,16 @@ class Transaction extends Model
     public function getFormattedListedBalanceAttribute(): string
     {
         return $this->formatKeyAsMoneyString('listed_balance');
+    }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Transaction::class, 'parent_id', 'id');
+    }
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'parent_id', 'id');
     }
 
     public function account(): BelongsTo

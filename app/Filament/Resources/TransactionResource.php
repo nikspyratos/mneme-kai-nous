@@ -22,6 +22,7 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
@@ -147,9 +148,8 @@ class TransactionResource extends Resource
                 Filter::make('Current Budget Month')->query(fn (Builder $query) => $query->inCurrentBudgetMonth()),
             ])
             ->actions([
-                EditAction::make(),
-                DeleteAction::make(),
-                Action::make('Expected Transactions')
+                ActionGroup::make([
+                    Action::make('Expected')
                     ->mountUsing((fn (ComponentContainer $form, Transaction $record) => $form->fill([
                         'expected_transactions' => $record->expectedTransactions->pluck('id')->toArray(),
                     ])))
@@ -164,6 +164,38 @@ class TransactionResource extends Resource
                     ->action('updateExpectedTransactions')
                     ->icon('heroicon-o-clipboard')
                     ->color('success'),
+                    Action::make('Split')
+                        ->form([
+                            TextInput::make('detail')
+                                ->label('Detail')
+                                ->rules('required'),
+                            TextInput::make('amount')
+                            ->afterStateHydrated(function (TextInput $component, $state) {
+                                $component->state($state / 100);
+                            })
+                            ->numeric()
+                            ->required(),
+                        ])
+                        ->action('splitTransaction')
+                        ->icon('heroicon-o-view-grid-add')
+                        ->color('success'),
+                    Action::make('Owed')
+                        ->form([
+                            TextInput::make('amount')
+                                ->afterStateHydrated(function (TextInput $component, $state) {
+                                    $component->state($state / 100);
+                                })
+                            ->numeric()
+                            ->required(),
+                            Checkbox::make('is_paid'),
+                        ])
+                        ->action('owedTransaction')
+                        ->visible(fn (Transaction $record) => ! is_null($record->tally_id))
+                        ->icon('heroicon-o-scale')
+                        ->color('success'),
+                ]),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 DeleteBulkAction::make(),

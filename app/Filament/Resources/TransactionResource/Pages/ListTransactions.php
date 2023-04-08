@@ -4,6 +4,7 @@ namespace App\Filament\Resources\TransactionResource\Pages;
 
 use App\Actions\ConvertTransactionsToMarkdown;
 use App\Enums\Banks;
+use App\Enums\TransactionTypes;
 use App\Exports\TransactionsExport;
 use App\Filament\Resources\TransactionResource;
 use App\Imports\BankZeroImport;
@@ -54,6 +55,50 @@ class ListTransactions extends ListRecords
     {
         $record->expectedTransactions()->sync($data['expected_transactions']);
         ExpectedTransaction::whereId($data['expected_transactions'])->update(['is_paid' => true]);
+    }
+
+    public function splitTransaction(Transaction $record, array $data)
+    {
+        $amount = $data['amount'] * 100;
+        Transaction::create([
+            'parent_id' => $record->id,
+            'account_id' => $record->account_id,
+            'tally_id' => $record->tally_id,
+            'date' => $record->date,
+            'type' => $record->type,
+            'category' => $record->category,
+            'description' => $record->description,
+            'detail' => $data['detail'],
+            'currency' => $record->currency,
+            'amount' => $amount,
+            'fee' => $record->fee,
+            'listed_balance' => $record->listed_balance,
+            'data' => $record->data,
+            'is_tax_relevant' => $record->is_tax_relevant,
+        ]);
+        $record->update([
+            'amount' => $record->amount - $amount,
+        ]);
+    }
+
+    public function owedTransaction(Transaction $record, array $data)
+    {
+        $amount = $data['amount'] * 100;
+        $expectedTransaction = ExpectedTransaction::create([
+            'name' => 'Owed for transaction ' . $record->id,
+            'description' => $record->detail,
+            'group' => 'Owed',
+            'currency' => $record->currency,
+            'amount' => $amount,
+            'is_paid' => $data['is_paid'],
+            'date' => $record->date,
+            'type' => TransactionTypes::getOppositeType(TransactionTypes::from($record->type)),
+            'is_tax_relevant' => $record->is_tax_relevant,
+        ]);
+        $record->expectedTransactions()->attach($expectedTransaction->id);
+        $record->tally->update([
+            'balance' => $record->tally->balance - $amount,
+        ]);
     }
 
     protected function getActions(): array

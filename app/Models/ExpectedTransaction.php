@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\DuePeriods;
+use App\Enums\TransactionTypes;
 use App\Models\Traits\CategorisesTransactions;
 use App\Models\Traits\FormatsMoneyColumns;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
+use Log;
 
 class ExpectedTransaction extends Model
 {
@@ -38,6 +40,26 @@ class ExpectedTransaction extends Model
         'is_paid' => 'boolean',
         'identifier' => 'collection',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        $tallyUpdateFunction = function ($expectedTransaction) {
+            Log::info('Updating tally for expected transaction');
+            if ($expectedTransaction->getOriginal('enabled') && ! $expectedTransaction->enabled) {
+                Log::info('Expected transaction was enabled, now disabled');
+                $tallyIds = $expectedTransaction->transactions->pluck('tally_id');
+                $tallies = Tally::whereIn('id', $tallyIds)->get();
+                foreach ($tallies as $tally) {
+                    $tally->updateBalance($expectedTransaction->amount * -1, TransactionTypes::from($expectedTransaction->type));
+                }
+            } else {
+                Log::info('Expected transaction was not enabled, or is still enabled');
+            }
+        };
+        static::updating($tallyUpdateFunction);
+    }
 
     public function budget(): BelongsTo
     {

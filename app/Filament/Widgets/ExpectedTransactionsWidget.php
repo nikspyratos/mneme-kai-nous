@@ -19,8 +19,9 @@ class ExpectedTransactionsWidget extends BaseWidget
 
     protected function getTableQuery(): Builder
     {
-        return ExpectedTransaction::whereType(TransactionTypes::DEBIT->value)
-            ->whereBetween(
+        return ExpectedTransaction::whereNextDueDate(null)
+            ->whereEnabled(true)
+            ->orWhereBetween(
                 'next_due_date',
                 [
                     TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
@@ -32,10 +33,16 @@ class ExpectedTransactionsWidget extends BaseWidget
     {
         return [
             TextColumn::make('name')->label('Name'),
-            TextColumn::make('amount')->formatStateUsing(fn (ExpectedTransaction $record): string => $record->formatted_amount),
-            TextColumn::make('next_due_date')->label('Next Due')->formatStateUsing(fn (ExpectedTransaction $record): string => $record->next_due_date->toDateString()),
+            TextColumn::make('amount')
+                ->formatStateUsing(function (ExpectedTransaction $record): string {
+                    $typePrefix = $record->type === TransactionTypes::DEBIT->value ? '-' : '+';
+
+                    return $typePrefix . $record->formatted_amount;
+                }),
+            TextColumn::make('next_due_date')->label('Next Due')->formatStateUsing(fn (ExpectedTransaction $record): string => $record->next_due_date?->toDateString() ?? ''),
             ToggleColumn::make('is_paid')
                 ->label('Is Paid'),
+            ToggleColumn::make('enabled'),
         ];
     }
 

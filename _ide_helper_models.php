@@ -240,16 +240,14 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $name
- * @property string $currency
- * @property int|null $amount
+ * @property array $data
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Summary newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Summary newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Summary query()
- * @method static \Illuminate\Database\Eloquent\Builder|Summary whereAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Summary whereCurrency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Summary whereData($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereUpdatedAt($value)
@@ -277,6 +275,7 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
  * @method static \Illuminate\Database\Eloquent\Builder|Tally forCurrentBudgetMonth()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally forPeriod(\Illuminate\Support\Carbon $startDate, \Illuminate\Support\Carbon $endDate)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally query()
@@ -314,14 +313,18 @@ namespace App\Models{
  * @property string|null $category
  * @property array|null $data
  * @property int $is_tax_relevant
+ * @property int|null $parent_id
  * @property-read \App\Models\Account|null $account
  * @property-read \App\Models\Budget|null $budget
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Transaction> $children
+ * @property-read int|null $children_count
  * @property-read \App\Models\ExpectedTransaction|null $expectedTransaction
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExpectedTransaction> $expectedTransactions
  * @property-read int|null $expected_transactions_count
  * @property-read string $formatted_amount
  * @property-read string $formatted_fee
  * @property-read string $formatted_listed_balance
+ * @property-read Transaction|null $parent
  * @property-read \App\Models\Tally|null $tally
  * @method static \Database\Factories\TransactionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction inCurrentBudgetMonth()
@@ -342,6 +345,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereIsTaxRelevant($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereListedBalance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereParentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereTallyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereUpdatedAt($value)

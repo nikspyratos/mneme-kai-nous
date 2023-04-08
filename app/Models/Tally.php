@@ -78,9 +78,27 @@ class Tally extends Model
 
     public function calculateBalance(): int
     {
+        $expectedTransactionsSum = 0;
         $this->balance = 0;
         $this->balance += $this->transactions()->inCurrentBudgetMonth()->where('type', TransactionTypes::DEBIT->value)->sum('amount');
         $this->balance -= $this->transactions()->inCurrentBudgetMonth()->where('type', TransactionTypes::CREDIT->value)->sum('amount');
+        $this->transactions->each->expectedTransactions
+            ->where(function ($query) {
+                $query->where('next_due_date', null)
+                    ->orWhereBetween(
+                        'next_due_date',
+                        [
+                            TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
+                        ]
+                    );
+            })
+            ->where('enabled', true)
+            ->where('is_paid', false)
+            ->where('type', TransactionTypes::CREDIT->value)->each(function ($expectedTransaction) use (&$expectedTransactionsSum) {
+                $expectedTransactionsSum -= $expectedTransaction->amount;
+            });
+        $this->balance -= $expectedTransactionsSum;
+
         $this->save();
 
         return $this->balance;

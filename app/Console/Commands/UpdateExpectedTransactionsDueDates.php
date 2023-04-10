@@ -28,7 +28,7 @@ class UpdateExpectedTransactionsDueDates extends Command
         foreach ($expectedTransactions as $expectedTransaction) {
             if ($expectedTransaction->transactions()->inCurrentBudgetMonth()->exists()) {
                 $expectedTransaction->update([
-                    'next_due_date' => $expectedTransaction->getNextDueDate()->toDateString(),
+                    'next_due_date' => $expectedTransaction->getNextDueDate()?->toDateString(),
                     'is_paid' => false,
                 ]);
             }

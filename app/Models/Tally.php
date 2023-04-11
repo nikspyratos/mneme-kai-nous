@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\TransactionTypes;
 use App\Models\Traits\FormatsMoneyColumns;
 use App\Services\TallyRolloverDateCalculator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,6 +29,7 @@ use Illuminate\Support\Carbon;
  * @property-read string $formatted_limit
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Tally forCurrentBudgetMonth()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally forPeriod(\Illuminate\Support\Carbon $startDate, \Illuminate\Support\Carbon $endDate)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newModelQuery()
@@ -45,6 +45,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Tally extends Model
@@ -119,14 +120,14 @@ class Tally extends Model
         $this->balance += $this->transactions()->inCurrentBudgetMonth()->where('type', TransactionTypes::DEBIT->value)->sum('amount');
         $this->balance -= $this->transactions()->inCurrentBudgetMonth()->where('type', TransactionTypes::CREDIT->value)->sum('amount');
         ExpectedTransaction::where(function ($query) {
-                $query->where('next_due_date', null)
-                    ->orWhereBetween(
-                        'next_due_date',
-                        [
-                            TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
-                        ]
-                    );
-            })
+            $query->where('next_due_date', null)
+                ->orWhereBetween(
+                    'next_due_date',
+                    [
+                        TallyRolloverDateCalculator::getPreviousDate(), TallyRolloverDateCalculator::getNextDate(),
+                    ]
+                );
+        })
             ->where('enabled', true)
             ->where('type', TransactionTypes::CREDIT->value)
             ->whereBetween('created_at', [$this->start_date, $this->end_date])

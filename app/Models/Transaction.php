@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\TransactionTypes;
 use App\Models\Traits\FormatsMoneyColumns;
 use App\Services\TallyRolloverDateCalculator;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -45,6 +44,7 @@ use Illuminate\Support\Carbon;
  * @property-read string $formatted_listed_balance
  * @property-read Transaction|null $parent
  * @property-read \App\Models\Tally|null $tally
+ *
  * @method static \Database\Factories\TransactionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction inCurrentBudgetMonth()
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction newModelQuery()
@@ -68,6 +68,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereTallyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Transaction extends Model

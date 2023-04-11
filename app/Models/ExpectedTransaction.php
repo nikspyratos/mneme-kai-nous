@@ -39,6 +39,7 @@ use Illuminate\Support\Facades\Log;
  * @property-read string $identifier_string
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction query()
@@ -60,6 +61,7 @@ use Illuminate\Support\Facades\Log;
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereNextDueDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class ExpectedTransaction extends Model

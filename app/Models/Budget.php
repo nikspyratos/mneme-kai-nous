@@ -26,6 +26,7 @@ use Illuminate\Support\Carbon;
  * @property-read string $identifier_string
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tally> $tallies
  * @property-read int|null $tallies_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Budget newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Budget newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Budget query()
@@ -40,6 +41,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Budget wherePeriodType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget withCurrentTallies()
+ *
  * @mixin \Eloquent
  */
 class Budget extends Model

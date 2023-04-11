@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
  * @property array $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Summary newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Summary newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Summary query()
@@ -24,6 +25,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Summary extends Model

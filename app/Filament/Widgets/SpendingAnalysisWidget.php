@@ -31,6 +31,7 @@ class SpendingAnalysisWidget extends BaseWidget
     {
         return [
             TextColumn::make('category')->label('Name'),
+            /** @phpstan-ignore-next-line */
             TextColumn::make('total')->label('Total')->formatStateUsing(fn (Transaction $record): string => $record->formatValueAsMoneyString($record->total / 100)),
         ];
     }

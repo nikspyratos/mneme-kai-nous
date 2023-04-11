@@ -51,7 +51,7 @@ class TransactionController extends Controller
             Log::debug(
                 'Transaction create request',
                 [
-                    'account' => $account ?? $account?->name,
+                    'account' => !empty($account) ? $account->name : 'Unknown',
                     'data' => $request->all(),
                 ]
             );

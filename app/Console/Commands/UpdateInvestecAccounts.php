@@ -44,7 +44,7 @@ class UpdateInvestecAccounts extends Command
             $transactionsFrom = $transactionsFrom->format('Y-m-d');
             $transactionsTo = $transactionsTo->format('Y-m-d');
         }
-        $budgets = Budget::whereEnabled(true)->withCurrentTallies();
+        $budgets = Budget::whereEnabled(true)->withCurrentTallies()->get();
         $expectedTransactions = ExpectedTransaction::whereEnabled(true)->get();
 
         // Get API accounts and their balances

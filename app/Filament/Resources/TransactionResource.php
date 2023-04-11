@@ -32,6 +32,7 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TransactionResource extends Resource
 {
@@ -62,6 +63,7 @@ class TransactionResource extends Resource
                     ->searchable()
                     ->required(),
                 Select::make('tally_id')
+                    /** @phpstan-ignore-next-line */ //https://github.com/nunomaduro/larastan/issues/1110
                     ->relationship('tally', 'name', fn (Builder $query) => $query->forCurrentBudgetMonth()),
                 DateTimePicker::make('date')
                     ->required(),
@@ -134,6 +136,7 @@ class TransactionResource extends Resource
                 SelectFilter::make('account_id')
                     ->relationship('account', 'name'),
                 SelectFilter::make('tally_id')
+                    /** @phpstan-ignore-next-line */ //https://github.com/nunomaduro/larastan/issues/1110
                     ->relationship('tally', 'name', fn (Builder $query) => $query->forCurrentBudgetMonth()),
                 SelectFilter::make('type')
                     ->options(EnumHelper::enumToFilamentOptionArray(TransactionTypes::cases()))
@@ -148,6 +151,7 @@ class TransactionResource extends Resource
                 Filter::make('No Category')->query(fn (Builder $query) => $query->whereNull('category')->orWhereNotIn('category', TransactionCategories::values())),
                 Filter::make('Tax Relevant')->query(fn (Builder $query) => $query->where('is_tax_relevant', true)),
                 Filter::make('Tax Irrelevant')->query(fn (Builder $query) => $query->where('is_tax_relevant', false)),
+                /** @phpstan-ignore-next-line */ //https://github.com/nunomaduro/larastan/issues/1110
                 Filter::make('Current Budget Month')->query(fn (Builder $query) => $query->inCurrentBudgetMonth()),
             ])
             ->actions([

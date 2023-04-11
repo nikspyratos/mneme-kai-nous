@@ -5,12 +5,48 @@ namespace App\Models;
 use App\Enums\TransactionTypes;
 use App\Models\Traits\FormatsMoneyColumns;
 use App\Services\TallyRolloverDateCalculator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
+/**
+ * App\Models\Tally
+ *
+ * @property int $id
+ * @property int $budget_id
+ * @property string $name
+ * @property string $currency
+ * @property int|null $balance
+ * @property Carbon $start_date
+ * @property Carbon $end_date
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property int $limit
+ * @property-read \App\Models\Budget|null $budget
+ * @property-read string $formatted_balance
+ * @property-read string $formatted_limit
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
+ * @property-read int|null $transactions_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally forCurrentBudgetMonth()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally forPeriod(\Illuminate\Support\Carbon $startDate, \Illuminate\Support\Carbon $endDate)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally whereBalance($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally whereBudgetId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally whereCurrency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally whereEndDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally whereLimit($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally whereStartDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Tally extends Model
 {
     use HasFactory, FormatsMoneyColumns;

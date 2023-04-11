@@ -8,6 +8,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
+/**
+ * App\Models\Summary
+ *
+ * @property int $id
+ * @property string $name
+ * @property array $data
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Summary newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Summary newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Summary query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Summary whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Summary whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Summary whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Summary whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Summary whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Summary extends Model
 {
     use HasFactory;

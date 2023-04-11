@@ -31,7 +31,7 @@ class TalliesTableWidget extends BaseWidget
     {
         $percentage = $tally->getBalancePercentageOfBudget();
         $color = 'success';
-        if ($percentage >= 65) {
+        if ($percentage >= 65 && $percentage < 85) {
             $color = 'warning';
         } elseif ($percentage >= 85) {
             $color = 'danger';

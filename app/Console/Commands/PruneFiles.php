@@ -30,10 +30,7 @@ class PruneFiles extends Command
     {
         $files = Storage::disk('local')->allFiles();
         foreach ($files as $file) {
-            if (
-                ! Str::contains($file, '.gitignore')
-                && Carbon::createFromTimestamp(Storage::disk('local')->lastModified($file))
-            ) {
+            if (! Str::contains($file, '.gitignore')) {
                 Storage::disk('local')->delete($file);
             }
         }

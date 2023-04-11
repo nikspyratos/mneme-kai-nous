@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\ExpectedTransaction;
 use App\Models\Transaction;
 use Illuminate\Database\Migrations\Migration;

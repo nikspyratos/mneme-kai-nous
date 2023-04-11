@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\TransactionTypes;
@@ -100,7 +102,7 @@ class Tally extends Model
 
     public function getBalancePercentageOfBudget(): int
     {
-        return $this->balance / $this->limit * 100;
+        return (int)($this->balance / $this->limit * 100);
     }
 
     public function updateBalance(int $amountInCents, TransactionTypes $transactionType)

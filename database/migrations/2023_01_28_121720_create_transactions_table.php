@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Account;
 use App\Models\Budget;
 use App\Models\Tally;

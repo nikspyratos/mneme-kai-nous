@@ -76,11 +76,12 @@ class Budget extends Model
 
     public function scopeWithCurrentTallies($query)
     {
-        $today = Carbon::today();
+        return $query->with('tallies', function ($query) {
+            $today = Carbon::today();
 
-        return $query->with('tallies')
-            ->where('tallies.start_date', '<=', $today)
-            ->where('tallies.end_date', '>=', $today);
+            return $query->where('tallies.start_date', '<=', $today)
+                ->where('tallies.end_date', '>=', $today);
+        });
     }
 
     public function getFormattedAmountAttribute(): string

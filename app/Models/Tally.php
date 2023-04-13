@@ -102,7 +102,7 @@ class Tally extends Model
 
     public function getBalancePercentageOfBudget(): int
     {
-        return (int)($this->balance / $this->limit * 100);
+        return (int) ($this->balance / $this->limit * 100);
     }
 
     public function updateBalance(int $amountInCents, TransactionTypes $transactionType)

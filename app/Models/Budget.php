@@ -61,7 +61,7 @@ class Budget extends Model
     ];
 
     public $casts = [
-        'identifier' => 'collection',
+        'identifier' => 'array',
     ];
 
     public function currentTally(): ?Tally

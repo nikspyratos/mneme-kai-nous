@@ -91,7 +91,7 @@ class ExpectedTransaction extends Model
     public $casts = [
         'next_due_date' => 'date',
         'is_paid' => 'boolean',
-        'identifier' => 'collection',
+        'identifier' => 'array',
     ];
 
     public static function boot()
@@ -140,9 +140,5 @@ class ExpectedTransaction extends Model
     public function getFormattedAmountAttribute(): string
     {
         return $this->formatKeyAsMoneyString('amount');
-    }
-
-    public function getTransactionsDue()
-    {
     }
 }

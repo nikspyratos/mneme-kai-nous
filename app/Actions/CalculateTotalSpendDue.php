@@ -31,7 +31,12 @@ class CalculateTotalSpendDue
             )
             ->whereIsPaid(false)
             ->get();
-        $talliesTotal = ($tallies->sum('limit') - $tallies->sum('balance'));
+        $talliesTotal = 0;
+        foreach ($tallies as $tally) {
+            if ($tally->balance < $tally->limit) {
+                $talliesTotal += $tally->limit - $tally->balance;
+            }
+        }
         $creditTotal = ($creditAccounts->sum('debt') - $creditAccounts->sum('balance'));
         $expectedExpensesTotal = $expectedExpenses->sum('amount');
 

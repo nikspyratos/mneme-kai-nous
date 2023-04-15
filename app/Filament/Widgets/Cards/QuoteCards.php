@@ -13,6 +13,11 @@ class QuoteCards
     {
         $quote = Quote::inRandomOrder()->first();
 
-        return [Card::make('Quote', $quote->content)->description($quote->author)->color('primary')];
+        return [
+            Card::make('Quote', $quote->content)
+                ->description($quote->author)
+                ->color('primary')
+                ->icon('heroicon-o-annotation'),
+        ];
     }
 }

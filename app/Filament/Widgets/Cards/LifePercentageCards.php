@@ -10,8 +10,16 @@ class LifePercentageCards
 {
     public static function getCards(): array
     {
-        [$percentageLeft, $percentageComplete] = auth()->user()->getDeathPercentage();
+        $data = [];
+        foreach ([30, 50, 75, 85] as $year) {
+            [$percentageLeft, $percentageComplete] = auth()->user()->getDeathPercentage($year);
+            $data[] = "{$year}y: {$percentageComplete}%";
+        }
 
-        return [Card::make('Life Percentage', "Lived: {$percentageComplete}% | Left: {$percentageLeft}%")];
+        return [
+            Card::make('Life Percentage', implode(' | ', $data))
+                ->color('primary')
+                ->icon('heroicon-o-clock'),
+        ];
     }
 }

@@ -75,13 +75,14 @@ class User extends Authenticatable implements FilamentUser
         return true;
     }
 
-    public function getDeathPercentage(): ?array
+    public function getDeathPercentage(int $year = 75): ?array
     {
         if ($this->birthdate) {
+            $totalWeeks = $year * 52;
             $currentDate = Carbon::today();
             $weeksPassed = $currentDate->diffInWeeks($this->birthdate);
-            $percentageComplete = round(($weeksPassed / 3900) * 100, 2);
-            $percentageLeft = round(((3900 - $weeksPassed) / 3900) * 100, 2);
+            $percentageComplete = round(($weeksPassed / $totalWeeks) * 100, 2);
+            $percentageLeft = round((($totalWeeks - $weeksPassed) / $totalWeeks) * 100, 2);
 
             return [$percentageLeft, $percentageComplete];
         }

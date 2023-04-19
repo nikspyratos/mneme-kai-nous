@@ -58,10 +58,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereOverdraftAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @mixin \Eloquent
+ * @mixin IdeHelperAccount
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  */
-	class IdeHelperAccount {}
+	class Account extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -97,10 +98,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Budget whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget withCurrentTallies()
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tally> $tallies
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tally> $tallies
  * @mixin \Eloquent
+ * @mixin IdeHelperBudget
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tally> $tallies
  */
-	class IdeHelperBudget {}
+	class Budget extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -152,10 +154,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @mixin \Eloquent
+ * @mixin IdeHelperExpectedTransaction
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  */
-	class IdeHelperExpectedTransaction {}
+	class ExpectedTransaction extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -187,8 +190,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereZone($value)
  * @mixin \Eloquent
+ * @mixin IdeHelperLoadsheddingSchedule
  */
-	class IdeHelperLoadsheddingSchedule {}
+	class LoadsheddingSchedule extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -214,10 +218,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Perception whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Perception whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Quote> $quotes
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Quote> $quotes
  * @mixin \Eloquent
+ * @mixin IdeHelperPerception
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Quote> $quotes
  */
-	class IdeHelperPerception {}
+	class Perception extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -243,8 +248,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Quote wherePerceptionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quote whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @mixin IdeHelperQuote
  */
-	class IdeHelperQuote {}
+	class Quote extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -265,8 +271,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @mixin IdeHelperSummary
  */
-	class IdeHelperSummary {}
+	class Summary extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -304,10 +311,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @mixin \Eloquent
+ * @mixin IdeHelperTally
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  */
-	class IdeHelperTally {}
+	class Tally extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -368,11 +376,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Transaction> $children
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExpectedTransaction> $expectedTransactions
+ * @mixin \Eloquent
+ * @mixin IdeHelperTransaction
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Transaction> $children
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExpectedTransaction> $expectedTransactions
- * @mixin \Eloquent
  */
-	class IdeHelperTransaction {}
+	class Transaction extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -407,10 +416,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
+ * @mixin \Eloquent
+ * @mixin IdeHelperUser
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
- * @mixin \Eloquent
  */
-	class IdeHelperUser {}
+	class User extends \Eloquent implements \Filament\Models\Contracts\FilamentUser {}
 }
 

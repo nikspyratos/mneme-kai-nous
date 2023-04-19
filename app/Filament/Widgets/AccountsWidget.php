@@ -47,7 +47,9 @@ class AccountsWidget extends BaseWidget
             }
             if ($account->is_main) {
                 $name = 'Main ' . $name;
-                $description .= ' | Total spend due: ' . Money::of(CalculateTotalSpendDue::run() / 100, Currencies::RANDS->value)->formatTo('en_ZA');
+                $spendDue = CalculateTotalSpendDue::run();
+                $content .= ' | Due: ' . Money::of($spendDue / 100, Currencies::RANDS->value)->formatTo('en_ZA');
+                $description .= ' | Estimated Net: ' . Money::of(($account->balance - $spendDue) / 100, Currencies::RANDS->value)->formatTo('en_ZA');
             }
             $card = Card::make($name, $content)
                 ->description($description)

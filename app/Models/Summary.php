@@ -29,6 +29,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereUpdatedAt($value)
  *
  * @mixin \Eloquent
+ * @mixin IdeHelperSummary
  */
 class Summary extends Model
 {

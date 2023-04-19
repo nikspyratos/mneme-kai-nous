@@ -64,7 +64,10 @@ use Illuminate\Support\Facades\Log;
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereUpdatedAt($value)
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
+ *
  * @mixin \Eloquent
+ * @mixin IdeHelperExpectedTransaction
  */
 class ExpectedTransaction extends Model
 {

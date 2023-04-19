@@ -63,6 +63,7 @@ use Illuminate\Support\Facades\Log;
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereUpdatedAt($value)
  *
  * @mixin \Eloquent
+ * @mixin IdeHelperAccount
  */
 class Account extends Model
 {

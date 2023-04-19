@@ -44,7 +44,10 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Budget whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget withCurrentTallies()
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tally> $tallies
+ *
  * @mixin \Eloquent
+ * @mixin IdeHelperBudget
  */
 class Budget extends Model
 {

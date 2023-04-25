@@ -19,7 +19,7 @@ class TallyRolloverDateCalculator
         if (! $date) {
             $date = Carbon::today();
         }
-        if ($date->day > $rolloverDay) {
+        if ($date->day >= $rolloverDay) {
             $rolloverDate = $date->setDay($rolloverDay);
         } else {
             $rolloverDate = $date->endOfMonth()->subMonth()->setDay($rolloverDay);
@@ -37,7 +37,7 @@ class TallyRolloverDateCalculator
         if (! $date) {
             $date = Carbon::today();
         }
-        if ($date->day > $rolloverDay) {
+        if ($date->day >= $rolloverDay) {
             $rolloverDate = $date->startOfMonth()->addMonth()->setDay($rolloverDay);
         } else {
             $rolloverDate = $date->setDay($rolloverDay);

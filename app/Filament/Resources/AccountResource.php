@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Enums\AccountTypes;
-use App\Enums\Banks;
-use App\Enums\Currencies;
+use App\Enumerations\AccountTypes;
+use App\Enumerations\Banks;
+use App\Enumerations\Currencies;
 use App\Filament\Resources\AccountResource\Pages\CreateAccount;
 use App\Filament\Resources\AccountResource\Pages\EditAccount;
 use App\Filament\Resources\AccountResource\Pages\ListAccounts;

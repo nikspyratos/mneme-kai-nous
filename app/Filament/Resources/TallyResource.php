@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Enums\Currencies;
+use App\Enumerations\Currencies;
 use App\Filament\Resources\TallyResource\Pages;
 use App\Filament\Resources\TallyResource\RelationManagers\TransactionsRelationManager;
 use App\Helpers\EnumHelper;

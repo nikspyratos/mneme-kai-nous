@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Exports\Sheets;
 
-use App\Enums\TransactionTypes;
+use App\Enumerations\TransactionTypes;
 use App\Models\Transaction;
 use Brick\Money\Money;
 use Illuminate\Support\Carbon;

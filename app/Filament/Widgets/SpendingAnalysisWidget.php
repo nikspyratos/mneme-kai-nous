@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
-use App\Enums\TransactionCategories;
-use App\Enums\TransactionTypes;
+use App\Enumerations\TransactionCategories;
+use App\Enumerations\TransactionTypes;
 use App\Models\Transaction;
 use App\Services\TallyRolloverDateCalculator;
 use Filament\Tables\Columns\TextColumn;

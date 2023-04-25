@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Actions\CalculateTotalSpendDue;
-use App\Enums\AccountTypes;
-use App\Enums\Currencies;
+use App\Enumerations\AccountTypes;
+use App\Enumerations\Currencies;
 use App\Models\Account;
 use Brick\Money\Money;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;

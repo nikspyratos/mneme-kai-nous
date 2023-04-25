@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\AccountTypes;
-use App\Enums\Banks;
-use App\Enums\Currencies;
-use App\Enums\InvestecTransactionTypes;
-use App\Enums\TransactionTypes;
+use App\Enumerations\AccountTypes;
+use App\Enumerations\Banks;
+use App\Enumerations\Currencies;
+use App\Enumerations\InvestecTransactionTypes;
+use App\Enumerations\TransactionTypes;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Models\Transaction;

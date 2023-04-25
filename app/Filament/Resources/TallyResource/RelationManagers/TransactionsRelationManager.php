@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\TallyResource\RelationManagers;
 
-use App\Enums\TransactionCategories;
+use App\Enumerations\TransactionCategories;
 use App\Helpers\EnumHelper;
 use App\Models\ExpectedTransaction;
 use App\Models\Tally;

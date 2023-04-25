@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Enums\Currencies;
-use App\Enums\TransactionCategories;
-use App\Enums\TransactionTypes;
+use App\Enumerations\Currencies;
+use App\Enumerations\TransactionCategories;
+use App\Enumerations\TransactionTypes;
 use App\Filament\Resources\TransactionResource\Pages\CreateTransaction;
 use App\Filament\Resources\TransactionResource\Pages\EditTransaction;
 use App\Filament\Resources\TransactionResource\Pages\ListTransactions;
@@ -107,7 +107,14 @@ class TransactionResource extends Resource
     {
         $transactionCategoriesSelect = EnumHelper::enumToFilamentOptionArray(TransactionCategories::cases());
         $expectedTransactionSelect = ExpectedTransaction::all()->pluck('name', 'id')->toArray();
-        $talliesSelect = Tally::all()->pluck('name', 'id')->toArray();
+        $talliesSelect = Tally::select(['name', 'id', 'start_date', 'end_date'])->get();
+        $talliesSelect = $talliesSelect->map(function ($tally) {
+            return [
+                'name' => $tally->name . '(' . $tally->start_date->format('M') . ' - ' . $tally->end_date->format('M') . ')',
+                'id' => $tally->id,
+            ];
+        })->pluck('name', 'id')
+        ->toArray();
 
         return $table
             ->columns([

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\AccountTypes;
+use App\Enumerations\AccountTypes;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

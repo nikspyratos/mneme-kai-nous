@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Enums\BudgetPeriodTypes;
+use App\Enumerations\BudgetPeriodTypes;
 use App\Models\Budget;
 use App\Models\Summary;
 use App\Models\Tally;

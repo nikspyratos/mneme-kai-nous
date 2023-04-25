@@ -38,7 +38,6 @@ use Illuminate\Support\Arr;
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereZone($value)
  *
  * @mixin \Eloquent
- * @mixin IdeHelperLoadsheddingSchedule
  */
 class LoadsheddingSchedule extends Model
 {

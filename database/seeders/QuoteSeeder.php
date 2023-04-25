@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Enums\PerceptionsIds;
+use App\Enumerations\PerceptionsIds;
 use App\Models\Quote;
 use Illuminate\Database\Seeder;
 

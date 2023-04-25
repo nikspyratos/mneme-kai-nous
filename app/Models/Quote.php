@@ -32,7 +32,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Quote whereUpdatedAt($value)
  *
  * @mixin \Eloquent
- * @mixin IdeHelperQuote
  */
 class Quote extends Model
 {

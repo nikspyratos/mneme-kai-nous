@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
-use App\Enums\TransactionTypes;
+use App\Enumerations\TransactionTypes;
 use App\Models\ExpectedTransaction;
 use App\Services\TallyRolloverDateCalculator;
 use Filament\Tables\Columns\TextColumn;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Enums\Banks;
-use App\Enums\Currencies;
-use App\Enums\TransactionTypes;
+use App\Enumerations\Banks;
+use App\Enumerations\Currencies;
+use App\Enumerations\TransactionTypes;
 use App\Models\Account;
 use App\Models\Budget;
 use App\Models\ExpectedTransaction;

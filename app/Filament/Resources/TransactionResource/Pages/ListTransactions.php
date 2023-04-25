@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\Resources\TransactionResource\Pages;
 
 use App\Actions\ConvertTransactionsToMarkdown;
-use App\Enums\Banks;
-use App\Enums\TransactionTypes;
+use App\Enumerations\Banks;
+use App\Enumerations\TransactionTypes;
 use App\Exports\TransactionsExport;
 use App\Filament\Resources\TransactionResource;
 use App\Imports\BankZeroImport;

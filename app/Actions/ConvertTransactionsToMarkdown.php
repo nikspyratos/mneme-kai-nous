@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\ExpenseGroups;
-use App\Enums\TransactionTypes;
+use App\Enumerations\ExpenseGroups;
+use App\Enumerations\TransactionTypes;
 use App\Models\Account;
 use App\Models\Budget;
 use App\Models\ExpectedTransaction;

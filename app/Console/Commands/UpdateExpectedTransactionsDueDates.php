@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Enums\DuePeriods;
-use App\Enums\TransactionTypes;
+use App\Enumerations\DuePeriods;
+use App\Enumerations\TransactionTypes;
 use App\Models\ExpectedTransaction;
 use App\Services\TallyRolloverDateCalculator;
 use Illuminate\Console\Command;

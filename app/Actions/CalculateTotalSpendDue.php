@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\AccountTypes;
-use App\Enums\Currencies;
-use App\Enums\TransactionTypes;
+use App\Enumerations\AccountTypes;
+use App\Enumerations\Currencies;
+use App\Enumerations\TransactionTypes;
 use App\Models\Account;
 use App\Models\ExpectedTransaction;
 use App\Models\Tally;

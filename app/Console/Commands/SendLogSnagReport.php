@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Enums\AccountTypes;
+use App\Enumerations\AccountTypes;
 use App\Models\Account;
 use App\Models\LoadsheddingSchedule;
 use App\Models\Quote;

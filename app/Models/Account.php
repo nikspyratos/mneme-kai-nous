@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\AccountTypes;
-use App\Enums\Banks;
-use App\Enums\TransactionTypes;
+use App\Enumerations\AccountTypes;
+use App\Enumerations\Banks;
+use App\Enumerations\TransactionTypes;
 use App\Models\Traits\FormatsMoneyColumns;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -63,7 +63,6 @@ use Illuminate\Support\Facades\Log;
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereUpdatedAt($value)
  *
  * @mixin \Eloquent
- * @mixin IdeHelperAccount
  */
 class Account extends Model
 {

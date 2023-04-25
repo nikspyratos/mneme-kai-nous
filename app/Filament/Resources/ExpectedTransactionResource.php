@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Enums\Currencies;
-use App\Enums\DuePeriods;
-use App\Enums\TransactionTypes;
+use App\Enumerations\Currencies;
+use App\Enumerations\DuePeriods;
+use App\Enumerations\TransactionTypes;
 use App\Filament\Resources\ExpectedTransactionResource\Pages;
 use App\Helpers\EnumHelper;
 use App\Models\Budget;

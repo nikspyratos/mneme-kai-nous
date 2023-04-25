@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\DuePeriods;
-use App\Enums\TransactionTypes;
+use App\Enumerations\DuePeriods;
+use App\Enumerations\TransactionTypes;
 use App\Models\Traits\CategorisesTransactions;
 use App\Models\Traits\FormatsMoneyColumns;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Log;
  * @property int|null $due_day
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property \Illuminate\Support\Collection|null $identifier
+ * @property array|null $identifier
  * @property string|null $identifier_transaction_type
  * @property int $enabled
  * @property string $type
@@ -64,10 +64,7 @@ use Illuminate\Support\Facades\Log;
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereUpdatedAt($value)
  *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
- *
  * @mixin \Eloquent
- * @mixin IdeHelperExpectedTransaction
  */
 class ExpectedTransaction extends Model
 {

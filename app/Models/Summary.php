@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\TransactionCategories;
-use App\Enums\TransactionTypes;
+use App\Enumerations\TransactionCategories;
+use App\Enumerations\TransactionTypes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -29,7 +29,6 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereUpdatedAt($value)
  *
  * @mixin \Eloquent
- * @mixin IdeHelperSummary
  */
 class Summary extends Model
 {

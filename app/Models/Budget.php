@@ -21,7 +21,7 @@ use Illuminate\Support\Carbon;
  * @property string $period_type
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property \Illuminate\Support\Collection|null $identifier
+ * @property array|null $identifier
  * @property string|null $identifier_transaction_type
  * @property int $enabled
  * @property-read string $formatted_amount
@@ -44,10 +44,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Budget whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget withCurrentTallies()
  *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tally> $tallies
- *
  * @mixin \Eloquent
- * @mixin IdeHelperBudget
  */
 class Budget extends Model
 {

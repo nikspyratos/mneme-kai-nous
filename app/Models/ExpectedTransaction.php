@@ -126,9 +126,15 @@ class ExpectedTransaction extends Model
 
     public function getNextDueDate(): ?Carbon
     {
-        if (Carbon::today()->day > $this->due_day) {
+        $today = Carbon::today();
+        if ($today->day > $this->due_day) {
             if ($this->due_period == DuePeriods::MONTHLY->value) {
-                return Carbon::today()->startOfMonth()->addMonth()->setDay($this->due_day);
+                $nextDueDate = Carbon::today()->startOfMonth()->addMonth()->setDay($this->due_day);
+                //Set it to the next period if it's already been paid
+                if ($this->is_paid && $today->month < $nextDueDate->month) {
+                    $nextDueDate = $nextDueDate->startOfMonth()->addMonth()->setDay($this->due_day);
+                }
+                return $nextDueDate;
             } elseif ($this->due_period == DuePeriods::WEEKLY->value) {
                 return Carbon::today()->startofWeek()->addWeek()->setDay($this->due_day);
             }

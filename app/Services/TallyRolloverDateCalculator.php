@@ -22,7 +22,7 @@ class TallyRolloverDateCalculator
         if ($date->day >= $rolloverDay) {
             $rolloverDate = $date->setDay($rolloverDay);
         } else {
-            $rolloverDate = $date->endOfMonth()->subMonth()->setDay($rolloverDay);
+            $rolloverDate = $date->startOfMonth()->subMonth()->setDay($rolloverDay);
         }
         if ($rolloverDate->isWeekend()) {
             $rolloverDate = $rolloverDate->previousWeekday();

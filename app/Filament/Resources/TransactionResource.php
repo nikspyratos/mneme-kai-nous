@@ -61,8 +61,7 @@ class TransactionResource extends Resource
                     ->label('Expected Transactions')
                     ->options($expectedTransactionSelect)
                     ->multiple()
-                    ->searchable()
-                    ->required(),
+                    ->searchable(),
                 Select::make('tally_id')
                     /** @phpstan-ignore-next-line */ //https://github.com/nunomaduro/larastan/issues/1110
                     ->relationship('tally', 'name', fn (Builder $query) => $query->forCurrentBudgetMonth()),

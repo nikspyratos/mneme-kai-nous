@@ -114,9 +114,9 @@ class ExpectedTransaction extends Model
         return $this->belongsTo(ExpectedTransactionTemplate::class, 'expected_transaction_template_id');
     }
 
-    public function budget(): BelongsTo
+    public function tally(): BelongsTo
     {
-        return $this->belongsTo(Budget::class);
+        return $this->belongsTo(Tally::class);
     }
 
     public function transactions(): BelongsToMany

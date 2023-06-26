@@ -169,7 +169,7 @@ class TransactionResource extends Resource
                     ->form([
                         Select::make('expected_transactions')
                             ->label('Expected Transactions')
-                            ->relationship('expectedTransactions', 'name', fn (Builder $query) => $query->where('is_paid', false))
+                            ->relationship('expectedTransactions', 'name')
                             ->multiple()
                             ->searchable()
                             ->required(),

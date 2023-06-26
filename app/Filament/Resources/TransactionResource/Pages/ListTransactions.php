@@ -55,8 +55,8 @@ class ListTransactions extends ListRecords
 
     public function updateExpectedTransactions(Transaction $record, array $data)
     {
-        $record->expectedTransactions()->sync($data['expected_transactions']);
-        ExpectedTransaction::whereId($data['expected_transactions'])->update(['is_paid' => true]);
+        //Not ideal - but using relationship for searchable select makes the data array empty!
+        $record->expectedTransactions()->latest()->update(['is_paid' => true]);
     }
 
     public function splitTransaction(Transaction $record, array $data)

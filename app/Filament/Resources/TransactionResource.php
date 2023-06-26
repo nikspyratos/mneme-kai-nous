@@ -105,7 +105,6 @@ class TransactionResource extends Resource
     public static function table(Table $table): Table
     {
         $transactionCategoriesSelect = EnumHelper::enumToFilamentOptionArray(TransactionCategories::cases());
-        $expectedTransactionSelect = ExpectedTransaction::all()->pluck('name', 'id')->toArray();
         $talliesSelect = Tally::forCurrentBudgetMonth()->select(['name', 'id', 'start_date', 'end_date'])->get();
         $talliesSelect = $talliesSelect->map(function ($tally) {
             return [
@@ -170,7 +169,7 @@ class TransactionResource extends Resource
                     ->form([
                         Select::make('expected_transactions')
                             ->label('Expected Transactions')
-                            ->options($expectedTransactionSelect)
+                            ->relationship('expectedTransactions', 'name', fn (Builder $query) => $query->where('is_paid', false))
                             ->multiple()
                             ->searchable()
                             ->required(),

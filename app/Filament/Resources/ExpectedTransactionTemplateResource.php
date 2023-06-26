@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Enumerations\Currencies;
+use App\Enumerations\DuePeriods;
 use App\Enumerations\TransactionTypes;
-use App\Filament\Resources\ExpectedTransactionResource\Pages;
+use App\Filament\Resources\ExpectedTransactionTemplateResource\Pages;
 use App\Helpers\EnumHelper;
-use App\Models\ExpectedTransaction;
-use App\Models\Tally;
+use App\Models\ExpectedTransactionTemplate;
+use Filament\Forms;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -19,17 +20,14 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ToggleColumn;
-use Filament\Tables\Filters\Filter;
-use Illuminate\Database\Eloquent\Builder;
 
-class ExpectedTransactionResource extends Resource
+class ExpectedTransactionTemplateResource extends Resource
 {
-    protected static ?string $model = ExpectedTransaction::class;
+    protected static ?string $model = ExpectedTransactionTemplate::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-list';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard';
 
     protected static ?string $navigationGroup = 'Finance';
 
@@ -37,11 +35,11 @@ class ExpectedTransactionResource extends Resource
     {
         $currenciesSelect = EnumHelper::enumToFilamentOptionArray(Currencies::cases());
         $transactionTypesSelect = EnumHelper::enumToFilamentOptionArray(TransactionTypes::cases());
+        $duePeriodSelect = EnumHelper::enumToFilamentOptionArray(DuePeriods::cases());
 
         return $form
             ->schema([
-                Select::make('tally_id')
-                    ->relationship('tally', 'name'),
+                Forms\Components\TextInput::make('budget_id'),
                 TextInput::make('name')
                     ->required(),
                 TextInput::make('description'),
@@ -55,8 +53,15 @@ class ExpectedTransactionResource extends Resource
                     })
                     ->numeric()
                     ->required(),
-                DatePicker::make('next_due_date'),
+                Select::make('due_period')
+                    ->options($duePeriodSelect),
+                TextInput::make('due_day')
+                    ->numeric()
+                    ->minValue(1)
+                    ->maxValue(31),
                 TextInput::make('group'),
+                Forms\Components\TextInput::make('identifier'),
+                Forms\Components\TextInput::make('identifier_transaction_type'),
                 Select::make('type')
                     ->options($transactionTypesSelect)
                     ->disablePlaceholderSelection(),
@@ -79,38 +84,37 @@ class ExpectedTransactionResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $tallySelect = Tally::all()->pluck('name', 'id')->toArray();
-
         return $table
             ->columns([
-                TextColumn::make('template')
-                    ->label('Template ID')
-                    ->formatStateUsing(fn (ExpectedTransaction $record): string => (string) $record->template?->id),
-                SelectColumn::make('tally_id')
-                    ->label('Tally')
-                    ->options($tallySelect)
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('name'),
-                TextColumn::make('description')->limit(20),
-                TextColumn::make('group'),
-                TextColumn::make('amount')->formatStateUsing(fn (ExpectedTransaction $record): string => $record->formatted_amount),
-                TextColumn::make('next_due_date')->date(),
-                ToggleColumn::make('enabled'),
-                TextColumn::make('type'),
-                ToggleColumn::make('is_tax_relevant'),
-                ToggleColumn::make('is_paid'),
+                Tables\Columns\TextColumn::make('budget_id'),
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('description'),
+                Tables\Columns\TextColumn::make('group'),
+                TextColumn::make('amount')->formatStateUsing(fn (ExpectedTransactionTemplate $record): string => $record->formatted_amount),
+                Tables\Columns\TextColumn::make('due_period'),
+                Tables\Columns\TextColumn::make('due_day'),
+                Tables\Columns\TextColumn::make('identifier'),
+                Tables\Columns\TextColumn::make('identifier_transaction_type'),
+                Tables\Columns\IconColumn::make('enabled')
+                    ->boolean(),
+                Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\IconColumn::make('is_tax_relevant')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('is_paid')
+                    ->boolean(),
             ])
-            ->defaultSort('next_due_date', 'desc')
             ->filters([
-                Filter::make('is_paid')
-                    ->label('Is Paid')
-                    ->query(fn (Builder $query): Builder => $query->where('is_paid', true)),
-                Filter::make('unpaid')
-                    ->label('Unpaid')
-                    ->query(fn (Builder $query): Builder => $query->where('is_paid', false)),
+                //
             ])
             ->actions([
+                Action::make('create_instance')
+                    ->label('Create instance')
+                    ->form([
+                        DateTimePicker::make('due_date')->label('Due Date')->required(),
+                    ])
+                    ->action('createExpectedTransactionInstance')
+                    ->icon('heroicon-o-clipboard')
+                    ->color('success'),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -128,8 +132,9 @@ class ExpectedTransactionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListExpectedTransactions::route('/'),
-            'edit' => Pages\EditExpectedTransaction::route('/{record}/edit'),
+            'index' => Pages\ListExpectedTransactionTemplates::route('/'),
+            'create' => Pages\CreateExpectedTransactionTemplate::route('/create'),
+            'edit' => Pages\EditExpectedTransactionTemplate::route('/{record}/edit'),
         ];
     }
 }

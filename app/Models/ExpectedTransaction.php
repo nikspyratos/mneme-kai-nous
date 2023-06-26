@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enumerations\DuePeriods;
 use App\Enumerations\TransactionTypes;
 use App\Models\Traits\CategorisesTransactions;
 use App\Models\Traits\FormatsMoneyColumns;
@@ -39,6 +38,7 @@ use Illuminate\Support\Facades\Log;
  * @property-read \App\Models\Budget|null $budget
  * @property-read string $formatted_amount
  * @property-read string $identifier_string
+ * @property-read \App\Models\ExpectedTransactionTemplate|null $template
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
  *
@@ -71,14 +71,13 @@ class ExpectedTransaction extends Model
     use HasFactory, CategorisesTransactions, FormatsMoneyColumns;
 
     public $fillable = [
-        'budget_id',
+        'expected_transaction_template_id',
+        'tally_id',
         'name',
         'description',
         'group',
         'currency',
         'amount',
-        'due_period',
-        'due_day',
         'next_due_date',
         'is_paid',
         'identifier',
@@ -114,6 +113,11 @@ class ExpectedTransaction extends Model
         static::updating($tallyUpdateFunction);
     }
 
+    public function template(): BelongsTo
+    {
+        return $this->belongsTo(ExpectedTransactionTemplate::class, 'expected_transaction_template_id');
+    }
+
     public function budget(): BelongsTo
     {
         return $this->belongsTo(Budget::class);
@@ -122,25 +126,6 @@ class ExpectedTransaction extends Model
     public function transactions(): BelongsToMany
     {
         return $this->belongsToMany(Transaction::class);
-    }
-
-    public function getNextDueDate(): ?Carbon
-    {
-        $today = Carbon::today();
-        if ($today->day > $this->due_day) {
-            if ($this->due_period == DuePeriods::MONTHLY->value) {
-                $nextDueDate = Carbon::today()->startOfMonth()->addMonth()->setDay($this->due_day);
-                //Set it to the next period if it's already been paid
-                if ($this->is_paid && $today->month < $nextDueDate->month) {
-                    $nextDueDate = $nextDueDate->startOfMonth()->addMonth()->setDay($this->due_day);
-                }
-                return $nextDueDate;
-            } elseif ($this->due_period == DuePeriods::WEEKLY->value) {
-                return Carbon::today()->startofWeek()->addWeek()->setDay($this->due_day);
-            }
-        }
-
-        return null;
     }
 
     public function getFormattedAmountAttribute(): string

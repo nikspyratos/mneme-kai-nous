@@ -6,11 +6,14 @@ namespace App\Console\Commands;
 
 use App\Enumerations\BudgetPeriodTypes;
 use App\Models\Budget;
+use App\Models\ExpectedTransaction;
+use App\Models\ExpectedTransactionTemplate;
 use App\Models\Summary;
 use App\Models\Tally;
 use App\Services\LogSnag;
 use App\Services\TallyRolloverDateCalculator;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 
 class RolloverBudgetMonth extends Command
@@ -27,7 +30,7 @@ class RolloverBudgetMonth extends Command
      *
      * @var string
      */
-    protected $description = 'Creates new tallies for each budget and carry over known balances, for the set month rollover day.';
+    protected $description = 'Creates new tallies for each budget, carry over known balances, and create new expected transaction instances for the set month rollover day.';
 
     /**
      * Execute the console command.
@@ -69,6 +72,22 @@ class RolloverBudgetMonth extends Command
                 ]);
                 $this->info('Created Tally: ' . $tally->name);
                 $hasCreatedTally = true;
+            }
+            $this->info('Creating Expected Transactions for period');
+            $expectedTransactionTemplates = ExpectedTransactionTemplate::whereEnabled(true)->get();
+            foreach ($expectedTransactionTemplates as $template) {
+                ExpectedTransaction::create(
+                    array_merge(
+                        Arr::only(
+                            $template->toArray(),
+                            get_fillable(ExpectedTransaction::class)
+                        ),
+                        [
+                            'name' => $template->name . ': ' . $nextRolloverDate->monthName . ' ' . $nextRolloverDate->year,
+                            'next_due_date' => $template->getNextDueDate(),
+                        ]
+                    )
+                );
             }
             $this->info('---');
         });

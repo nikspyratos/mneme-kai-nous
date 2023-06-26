@@ -23,7 +23,6 @@ class Kernel extends ConsoleKernel
         })->hourlyAt(35);
 
         $schedule->command('app:prune-files')->dailyAt('04:00');
-        $schedule->command('app:update-expected-transactions-due-dates')->dailyAt('04:30');
         $schedule->command('app:update-loadshedding-schedules')->dailyAt('04:30');
         $schedule->command('app:send-logsnag-report')->dailyAt('06:00');
 

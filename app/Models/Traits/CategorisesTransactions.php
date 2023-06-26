@@ -24,7 +24,7 @@ trait CategorisesTransactions
     public function getIdentifierStringAttribute(): string
     {
         return $this->identifier
-            ? implode(', ', $this->identifier->pluck('identifier')->toArray())
+            ? implode(', ', collect($this->identifier)->pluck('identifier')->toArray())
             : '';
     }
 }

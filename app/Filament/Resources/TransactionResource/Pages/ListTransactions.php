@@ -56,7 +56,8 @@ class ListTransactions extends ListRecords
     public function updateExpectedTransactions(Transaction $record, array $data)
     {
         //Not ideal - but using relationship for searchable select makes the data array empty!
-        $record->expectedTransactions()->latest()->update(['is_paid' => true]);
+        //also doesn't handle multiple ETs and just updates all ETs
+//        $record->expectedTransactions()->latest()->update(['is_paid' => true]);
     }
 
     public function splitTransaction(Transaction $record, array $data)

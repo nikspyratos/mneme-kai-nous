@@ -33,7 +33,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExpectedTransaction> $expectedTransactions
  * @property-read int|null $expected_transactions_count
- *
+ * @property-read string $formatted_amount
  * @method static \Database\Factories\ExpectedTransactionTemplateFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate newQuery()
@@ -55,7 +55,6 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class ExpectedTransactionTemplate extends Model

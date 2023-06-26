@@ -31,9 +31,9 @@ use Illuminate\Support\Carbon;
  * @property-read string $formatted_limit
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Tally forCurrentBudgetMonth()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally forPeriod(\Illuminate\Support\Carbon $startDate, \Illuminate\Support\Carbon $endDate)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally forRecentBudgetMonths()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally query()
@@ -47,7 +47,6 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class Tally extends Model
@@ -83,6 +82,11 @@ class Tally extends Model
     {
         return $query->where('start_date', '>=', $startDate)
             ->where('end_date', '<=', $endDate);
+    }
+
+    public function scopeForRecentBudgetMonths($query)
+    {
+        return $this->scopeForPeriod($query, TallyRolloverDateCalculator::getPreviousDate(Carbon::today()->subMonths(3)), TallyRolloverDateCalculator::getNextDate());
     }
 
     public function scopeForCurrentBudgetMonth($query)

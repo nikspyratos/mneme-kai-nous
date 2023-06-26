@@ -79,7 +79,14 @@ class ExpectedTransactionResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $tallySelect = Tally::all()->pluck('name', 'id')->toArray();
+        $talliesSelect = Tally::forRecentBudgetMonths()->select(['name', 'id', 'start_date', 'end_date'])->get();
+        $talliesSelect = $talliesSelect->map(function ($tally) {
+            return [
+                'name' => $tally->name . '(' . $tally->start_date->format('M') . ' - ' . $tally->end_date->format('M') . ')',
+                'id' => $tally->id,
+            ];
+        })->pluck('name', 'id')
+        ->toArray();
 
         return $table
             ->columns([
@@ -88,7 +95,7 @@ class ExpectedTransactionResource extends Resource
                     ->formatStateUsing(fn (ExpectedTransaction $record): string => (string) $record->template?->id),
                 SelectColumn::make('tally_id')
                     ->label('Tally')
-                    ->options($tallySelect)
+                    ->options($talliesSelect)
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('name'),

@@ -324,6 +324,7 @@ namespace App\Models{
  * @property-read int|null $transactions_count
  * @method static \Illuminate\Database\Eloquent\Builder|Tally forCurrentBudgetMonth()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally forPeriod(\Illuminate\Support\Carbon $startDate, \Illuminate\Support\Carbon $endDate)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tally forRecentBudgetMonths()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tally query()

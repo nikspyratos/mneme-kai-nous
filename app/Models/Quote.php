@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Perception|null $perception
- *
  * @method static \Database\Factories\QuoteFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Quote newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Quote newQuery()
@@ -30,7 +29,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Quote whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quote wherePerceptionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quote whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class Quote extends Model

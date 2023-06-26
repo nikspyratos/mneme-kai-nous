@@ -105,7 +105,7 @@ class TransactionResource extends Resource
     public static function table(Table $table): Table
     {
         $transactionCategoriesSelect = EnumHelper::enumToFilamentOptionArray(TransactionCategories::cases());
-        $talliesSelect = Tally::forCurrentBudgetMonth()->select(['name', 'id', 'start_date', 'end_date'])->get();
+        $talliesSelect = Tally::forRecentBudgetMonths()->select(['name', 'id', 'start_date', 'end_date'])->get();
         $talliesSelect = $talliesSelect->map(function ($tally) {
             return [
                 'name' => $tally->name . '(' . $tally->start_date->format('M') . ' - ' . $tally->end_date->format('M') . ')',

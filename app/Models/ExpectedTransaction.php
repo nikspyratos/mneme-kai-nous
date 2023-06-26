@@ -23,8 +23,6 @@ use Illuminate\Support\Facades\Log;
  * @property string|null $group
  * @property string $currency
  * @property int|null $amount
- * @property string|null $due_period
- * @property int|null $due_day
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property array|null $identifier
@@ -33,26 +31,24 @@ use Illuminate\Support\Facades\Log;
  * @property string $type
  * @property int $is_tax_relevant
  * @property Carbon|null $next_due_date
- * @property int|null $budget_id
  * @property bool $is_paid
+ * @property int|null $expected_transaction_template_id
+ * @property int|null $tally_id
  * @property-read \App\Models\Budget|null $budget
  * @property-read string $formatted_amount
  * @property-read string $identifier_string
  * @property-read \App\Models\ExpectedTransactionTemplate|null $template
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction query()
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereBudgetId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereCurrency($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereDueDay($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereDuePeriod($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereEnabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereExpectedTransactionTemplateId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereGroup($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereIdentifier($value)
@@ -61,9 +57,9 @@ use Illuminate\Support\Facades\Log;
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereIsTaxRelevant($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereNextDueDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereTallyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class ExpectedTransaction extends Model

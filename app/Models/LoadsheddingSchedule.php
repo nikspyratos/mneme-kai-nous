@@ -22,7 +22,6 @@ use Illuminate\Support\Arr;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $is_home
  * @property-read string $today_times_formatted
- *
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule query()
@@ -36,7 +35,6 @@ use Illuminate\Support\Arr;
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereTodayTimes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereZone($value)
- *
  * @mixin \Eloquent
  */
 class LoadsheddingSchedule extends Model

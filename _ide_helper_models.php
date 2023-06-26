@@ -58,9 +58,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereOverdraftAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereUpdatedAt($value)
- * @mixin \Eloquent
- * @mixin IdeHelperAccount
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  */
 	class Account extends \Eloquent {}
 }
@@ -74,9 +71,9 @@ namespace App\Models{
  * @property string $currency
  * @property int|null $amount
  * @property string $period_type
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property \Illuminate\Support\Collection|null $identifier
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property array|null $identifier
  * @property string|null $identifier_transaction_type
  * @property int $enabled
  * @property-read string $formatted_amount
@@ -97,10 +94,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Budget wherePeriodType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Budget withCurrentTallies()
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tally> $tallies
- * @mixin \Eloquent
- * @mixin IdeHelperBudget
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tally> $tallies
  */
 	class Budget extends \Eloquent {}
 }
@@ -115,34 +108,32 @@ namespace App\Models{
  * @property string|null $group
  * @property string $currency
  * @property int|null $amount
- * @property string|null $due_period
- * @property int|null $due_day
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property \Illuminate\Support\Collection|null $identifier
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property array|null $identifier
  * @property string|null $identifier_transaction_type
  * @property int $enabled
  * @property string $type
  * @property int $is_tax_relevant
- * @property Carbon|null $next_due_date
- * @property int|null $budget_id
+ * @property \Illuminate\Support\Carbon|null $next_due_date
  * @property bool $is_paid
+ * @property int|null $expected_transaction_template_id
+ * @property int|null $tally_id
  * @property-read \App\Models\Budget|null $budget
  * @property-read string $formatted_amount
  * @property-read string $identifier_string
+ * @property-read \App\Models\ExpectedTransactionTemplate|null $template
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction query()
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereBudgetId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereCurrency($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereDueDay($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereDuePeriod($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereEnabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereExpectedTransactionTemplateId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereGroup($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereIdentifier($value)
@@ -151,14 +142,60 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereIsTaxRelevant($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereNextDueDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereTallyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
- * @mixin \Eloquent
- * @mixin IdeHelperExpectedTransaction
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  */
 	class ExpectedTransaction extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\ExpectedTransactionTemplate
+ *
+ * @property int $id
+ * @property int|null $budget_id
+ * @property string $name
+ * @property string|null $description
+ * @property string $group
+ * @property string $currency
+ * @property int $amount
+ * @property string|null $due_period
+ * @property int|null $due_day
+ * @property array|null $identifier
+ * @property string|null $identifier_transaction_type
+ * @property int $enabled
+ * @property string $type
+ * @property int $is_tax_relevant
+ * @property bool $is_paid
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExpectedTransaction> $expectedTransactions
+ * @property-read int|null $expected_transactions_count
+ * @property-read string $formatted_amount
+ * @method static \Database\Factories\ExpectedTransactionTemplateFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereBudgetId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereCurrency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereDueDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereDuePeriod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereEnabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereGroup($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereIdentifier($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereIdentifierTransactionType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereIsPaid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereIsTaxRelevant($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereUpdatedAt($value)
+ */
+	class ExpectedTransactionTemplate extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -189,8 +226,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereTodayTimes($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereZone($value)
- * @mixin \Eloquent
- * @mixin IdeHelperLoadsheddingSchedule
  */
 	class LoadsheddingSchedule extends \Eloquent {}
 }
@@ -217,10 +252,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Perception whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Perception whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Perception whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Quote> $quotes
- * @mixin \Eloquent
- * @mixin IdeHelperPerception
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Quote> $quotes
  */
 	class Perception extends \Eloquent {}
 }
@@ -247,8 +278,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Quote whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quote wherePerceptionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Quote whereUpdatedAt($value)
- * @mixin \Eloquent
- * @mixin IdeHelperQuote
  */
 	class Quote extends \Eloquent {}
 }
@@ -260,8 +289,8 @@ namespace App\Models{
  * @property int $id
  * @property string $name
  * @property array $data
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Illuminate\Database\Eloquent\Builder|Summary newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Summary newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Summary query()
@@ -270,8 +299,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Summary whereUpdatedAt($value)
- * @mixin \Eloquent
- * @mixin IdeHelperSummary
  */
 	class Summary extends \Eloquent {}
 }
@@ -285,10 +312,10 @@ namespace App\Models{
  * @property string $name
  * @property string $currency
  * @property int|null $balance
- * @property Carbon $start_date
- * @property Carbon $end_date
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon $start_date
+ * @property \Illuminate\Support\Carbon $end_date
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $limit
  * @property-read \App\Models\Budget|null $budget
  * @property-read string $formatted_balance
@@ -310,10 +337,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereStartDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tally whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
- * @mixin \Eloquent
- * @mixin IdeHelperTally
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  */
 	class Tally extends \Eloquent {}
 }
@@ -325,7 +348,7 @@ namespace App\Models{
  * @property int $id
  * @property int $account_id
  * @property int|null $tally_id
- * @property Carbon $date
+ * @property \Illuminate\Support\Carbon $date
  * @property string|null $type
  * @property string|null $description
  * @property string|null $detail
@@ -333,8 +356,8 @@ namespace App\Models{
  * @property int|null $amount
  * @property int|null $fee
  * @property int|null $listed_balance
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null $category
  * @property array|null $data
  * @property int $is_tax_relevant
@@ -374,12 +397,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereTallyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Transaction> $children
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExpectedTransaction> $expectedTransactions
- * @mixin \Eloquent
- * @mixin IdeHelperTransaction
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Transaction> $children
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExpectedTransaction> $expectedTransactions
  */
 	class Transaction extends \Eloquent {}
 }
@@ -391,12 +408,12 @@ namespace App\Models{
  * @property int $id
  * @property string $name
  * @property string $email
- * @property Carbon|null $email_verified_at
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $remember_token
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $birthdate
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $birthdate
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
@@ -414,12 +431,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
- * @mixin \Eloquent
- * @mixin IdeHelperUser
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  */
 	class User extends \Eloquent implements \Filament\Models\Contracts\FilamentUser {}
 }

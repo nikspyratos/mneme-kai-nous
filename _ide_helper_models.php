@@ -119,9 +119,9 @@ namespace App\Models{
  * @property bool $is_paid
  * @property int|null $expected_transaction_template_id
  * @property int|null $tally_id
- * @property-read \App\Models\Budget|null $budget
  * @property-read string $formatted_amount
  * @property-read string $identifier_string
+ * @property-read \App\Models\Tally|null $tally
  * @property-read \App\Models\ExpectedTransactionTemplate|null $template
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count

@@ -5,83 +5,84 @@ declare(strict_types=1);
 namespace App\Services;
 
 use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use InvestecSdkPhp\Connectors\InvestecConnector;
+use InvestecSdkPhp\DataTransferObjects\PrivateBanking\PayMultiple\PayMultipleDto;
+use InvestecSdkPhp\DataTransferObjects\PrivateBanking\TransferMultiple\TransferMultipleDto;
+use InvestecSdkPhp\Enumerations\TransactionType;
+use Saloon\Contracts\Authenticator;
 
 class InvestecApiClient
 {
-    private string $baseUrl;
-    private string $clientId;
-    private string $clientSecret;
-    private string $apiKey;
+    private InvestecConnector $client;
 
     public function __construct()
     {
-        $this->baseUrl = config('app.bank_apis.investec.base_url');
-        $this->clientId = config('app.bank_apis.investec.client_id');
-        $this->clientSecret = config('app.bank_apis.investec.secret');
-        $this->apiKey = config('app.bank_apis.investec.api_key');
+        $this->client = new InvestecConnector(
+            config('app.bank_apis.investec.client_id'),
+            config('app.bank_apis.investec.secret'),
+            config('app.bank_apis.investec.api_key')
+        );
     }
 
     public function getAccounts(): array
     {
-        $accessToken = $this->getAccessToken();
-        $response = Http::withToken($accessToken)
-            ->get($this->baseUrl . '/za/pb/v1/accounts');
-        Log::debug('Investec getAccounts', ['code' => $response->status(), 'data' => $response->json()]);
+        $response = $this->client->privateBanking($this->getAuthentication())->getAccounts();
+        Log::debug('Investec getAccounts', ['code' => $response->status(), 'data' => $response->body()]);
 
         return $response->json('data.accounts');
     }
 
     public function getAccountBalance(string $accountIdentifier): array
     {
-        $accessToken = $this->getAccessToken();
-        $url = $this->baseUrl . sprintf('/za/pb/v1/accounts/%s/balance', $accountIdentifier);
-        $response = Http::withToken($accessToken)
-            ->get($url);
-        Log::debug('Investec getAccountBalance', ['url' => $url, 'code' => $response->status(), 'data' => $response->json()]);
+        $response = $this->client->privateBanking($this->getAuthentication())->getAccountBalance($accountIdentifier);
+        Log::debug('Investec getAccountBalance', ['code' => $response->status(), 'data' => $response->body()]);
 
         return $response->json('data');
     }
 
-    public function getTransactions(string $accountIdentifier, ?string $startDate = null, ?string $endDate = null, ?string $transactionType = null): array
+    public function getTransactions(string $accountIdentifier, ?string $startDate = null, ?string $endDate = null, ?TransactionType $transactionType = null): array
     {
-        $accessToken = $this->getAccessToken('transactions');
-        $data = [
-            'fromDate' => $startDate ?? Carbon::today()->subDay()->format('Y-m-d'),
-            'toDate' => $endDate ?? Carbon::today()->addDay()->format('Y-m-d'),
-        ];
-
-        if ($transactionType) {
-            $data['transactionType'] = $transactionType;
-        }
-        $url = $this->baseUrl . sprintf('/za/pb/v1/accounts/%s/transactions', $accountIdentifier);
-        $response = Http::withToken($accessToken)
-            ->get($url, $data);
-        Log::debug('Investec getTransactions', ['account' => $accountIdentifier, 'url' => $url, 'code' => $response->status(), 'data' => $response->json()]);
+        $fromDate = $startDate ?? Carbon::today()->subDay()->format('Y-m-d');
+        $toDate = $endDate ?? Carbon::today()->addDay()->format('Y-m-d');
+        $response = $this->client->privateBanking($this->getAuthentication())->getAccountTransactions($accountIdentifier, $fromDate, $toDate, $transactionType);
+        Log::debug('Investec getTransactions', ['account' => $accountIdentifier, 'code' => $response->status(), 'data' => $response->body()]);
 
         return $response->json('data.transactions');
     }
 
-    private function getAccessToken(string $scope = 'accounts'): string
+    public function getBeneficiaries()
     {
-        return Cache::remember('bank_apis.investec.access_token_' . $scope, 1799, function () use ($scope) {
-            try {
-                $response = Http::asForm()
-                    ->withToken(base64_encode($this->clientId . ':' . $this->clientSecret), 'Basic')
-                    ->withHeaders(['x-api-key' => $this->apiKey])
-                    ->post(
-                        $this->baseUrl . '/identity/v2/oauth2/token',
-                        [
-                            'grant_type' => 'client_credentials',
-                            'scope' => $scope,
-                        ]
-                    );
-                Log::debug('Investec getAccessToken', ['code' => $response->status(), 'data' => $response->json()]);
+        $response = $this->client->privateBanking($this->getAuthentication())->getBeneficiaries();
+        Log::debug('Investec getBeneficiaries', ['code' => $response->status(), 'data' => $response->body()]);
 
-                return $response->json('access_token');
+        return $response->json('data');
+    }
+
+    public function transferMultiple(string $accountIdentifier, TransferMultipleDto $transferMultipleDto)
+    {
+        $response = $this->client->privateBanking($this->getAuthentication(['transactions']))->transferMultiple($accountIdentifier, $transferMultipleDto);
+        Log::debug('Investec transferMultiple', ['account' => $accountIdentifier, 'code' => $response->status(), 'data' => $response->body()]);
+
+        return $response->json('data.TransferResponses');
+    }
+
+    public function payMultiple(string $accountIdentifier, PayMultipleDto $payMultipleDto)
+    {
+        $response = $this->client->privateBanking($this->getAuthentication(['transactions']))->payMultiple($accountIdentifier, $payMultipleDto);
+        Log::debug('Investec payMultiple', ['account' => $accountIdentifier, 'code' => $response->status(), 'data' => $response->body()]);
+
+        return $response->json('data.TransferResponses');
+    }
+
+    private function getAuthentication(array $scopes = ['accounts']): Authenticator
+    {
+        return Cache::remember('bank_apis.investec.access_token_' . Arr::join($scopes, '_'), 1799, function () use ($scopes) {
+            try {
+                return $this->client->getAccessToken($scopes);
             } catch (Exception $e) {
                 Log::error('Investec getAccessToken failed', ['message' => $e->getMessage()]);
             }

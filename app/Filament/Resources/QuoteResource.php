@@ -27,7 +27,7 @@ class QuoteResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('perceptionId')
+                Select::make('perception_id')
                     ->relationship('perception', 'name')
                     ->required()
                     ->preload(),

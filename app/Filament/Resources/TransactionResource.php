@@ -134,7 +134,7 @@ class TransactionResource extends Resource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('type'),
-                TextColumn::make('description')->limit(20),
+                TextColumn::make('description')->limit(20)->searchable(),
                 ToggleColumn::make('is_tax_relevant'),
             ])
             ->defaultSort('date', 'desc')

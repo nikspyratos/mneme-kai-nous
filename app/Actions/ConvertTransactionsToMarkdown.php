@@ -27,15 +27,7 @@ class ConvertTransactionsToMarkdown
         }
         $tallies = array_filter($tallies);
 
-        [
-            $expectedExpenses,
-            $expectedExpensesGroups,
-            $expectedExpensesRequiredSum,
-            $expectedExpensesSum,
-            $expectedIncomes,
-            $expectedIncomesSum,
-            $onceOffExpectedExpenses
-        ] = CreateExpectedTransactionSummaryMarkdown::run($date);
+        $expectedTransactionData = CreateExpectedTransactionSummaryMarkdown::run($date);
 
         $formattedTransactions = [];
         foreach ($accounts as $account) {
@@ -59,13 +51,13 @@ class ConvertTransactionsToMarkdown
                 'accounts' => $accounts,
                 'budgets' => $budgets,
                 'tallies' => $tallies,
-                'expectedExpenses' => $expectedExpenses,
-                'expectedExpensesSum' => $expectedExpensesSum,
-                'expectedExpensesRequiredSum' => $expectedExpensesRequiredSum,
-                'expectedIncomes' => $expectedIncomes,
-                'expectedIncomesSum' => $expectedIncomesSum,
-                'onceOffExpectedExpenses' => $onceOffExpectedExpenses,
-                'expectedExpensesGroups' => $expectedExpensesGroups,
+                'expectedExpenses' => $expectedTransactionData['expectedExpenses'],
+                'expectedExpensesSum' => $expectedTransactionData['expectedExpensesSum'],
+                'expectedExpensesRequiredSum' => $expectedTransactionData['expectedExpensesRequiredSum'],
+                'expectedIncomes' => $expectedTransactionData['expectedIncomes'],
+                'expectedIncomesSum' => $expectedTransactionData['expectedIncomesSum'],
+                'onceOffExpectedExpenses' => $expectedTransactionData['onceOffExpectedExpenses'],
+                'expectedExpensesGroups' => $expectedTransactionData['expectedExpensesGroups'],
                 'formattedTransactions' => $formattedTransactions,
                 'month' => $date->monthName,
                 'year' => $date->year,

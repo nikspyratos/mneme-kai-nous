@@ -9,6 +9,7 @@ use App\Enumerations\TransactionTypes;
 use App\Models\Account;
 use App\Models\Budget;
 use App\Models\ExpectedTransaction;
+use App\Models\ExpectedTransactionTemplate;
 use App\Services\TallyRolloverDateCalculator;
 use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -30,7 +31,7 @@ class ConvertTransactionsToMarkdown
         }
         $tallies = array_filter($tallies);
 
-        $expectedExpenses = ExpectedTransaction::whereEnabled(true)
+        $expectedExpenses = ExpectedTransactionTemplate::whereEnabled(true)
             ->whereNotNull('due_period')
             ->where('type', '=', TransactionTypes::DEBIT->value)
             ->get();
@@ -39,7 +40,7 @@ class ConvertTransactionsToMarkdown
             ->where('type', '=', TransactionTypes::DEBIT->value)
             ->whereBetween('next_due_date', [$startDate, $endDate])
             ->get();
-        $expectedIncomes = ExpectedTransaction::whereEnabled(true)
+        $expectedIncomes = ExpectedTransactionTemplate::whereEnabled(true)
             ->where('type', '=', TransactionTypes::CREDIT->value)
             ->get();
 

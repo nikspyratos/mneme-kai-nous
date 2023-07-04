@@ -14,8 +14,18 @@ add('writable_dirs', []);
 // Hosts
 
 host('207.154.230.127')
-    ->set('remote_user', 'deployer')
-    ->set('deploy_path', '~/mneme-kai-nous');
+    ->set('remote_user', 'forge')
+    ->set('deploy_path', '~/mneme-kai-nous.ankyr.dev')
+    ->set('ssh_arguments', ['-i ~/.ssh/id_rsa_mkn']);
+
+task('composer', function () {
+    run('cd ~/mneme-kai-nous.ankyr.dev && composer install');
+});
+
+task('npm', function () {
+    run('cd ~/mneme-kai-nous.ankyr.dev && npm install');
+    run('cd ~/mneme-kai-nous.ankyr.dev && npm run build');
+});
 
 // Hooks
 

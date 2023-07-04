@@ -16,7 +16,7 @@ enum ExpenseGroups: string
     public function isRequired(): bool
     {
         return match ($this) {
-            self::RICHMOND_203, self::OTHER, self::PAYMENTS => true,
+            self::RICHMOND_203, self::OTHER => true,
             default => false,
         };
     }

@@ -12,7 +12,7 @@ class LoadsheddingCards
     public static function getCards(): array
     {
         $cards = [];
-        $schedules = LoadsheddingSchedule::whereNotNull('today_times')->get();
+        $schedules = LoadsheddingSchedule::whereEnabled(true)->whereNotNull('today_times')->get();
         $content = '';
         foreach ($schedules as $schedule) {
             $cards[] = Card::make($schedule->name . ' Loadshedding', $schedule->today_times_formatted);

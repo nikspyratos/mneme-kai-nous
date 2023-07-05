@@ -167,7 +167,6 @@ namespace App\Models{
  * @property int $enabled
  * @property string $type
  * @property int $is_tax_relevant
- * @property bool $is_paid
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExpectedTransaction> $expectedTransactions
@@ -189,7 +188,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereIdentifier($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereIdentifierTransactionType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereIsPaid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereIsTaxRelevant($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate whereType($value)
@@ -212,6 +210,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $is_home
+ * @property bool $enabled
  * @property-read string $today_times_formatted
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule newQuery()
@@ -219,6 +218,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereApiId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereEnabled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereIsHome($value)
  * @method static \Illuminate\Database\Eloquent\Builder|LoadsheddingSchedule whereName($value)

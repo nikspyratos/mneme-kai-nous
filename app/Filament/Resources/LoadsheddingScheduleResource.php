@@ -33,6 +33,8 @@ class LoadsheddingScheduleResource extends Resource
                     ->required(),
                 Forms\Components\Checkbox::make('is_home')
                     ->required(),
+                Forms\Components\Checkbox::make('enabled')
+                    ->required(),
             ]);
     }
 
@@ -57,6 +59,7 @@ class LoadsheddingScheduleResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ToggleColumn::make('is_home'),
+                Tables\Columns\ToggleColumn::make('enabled'),
             ])
             ->filters([
                 //

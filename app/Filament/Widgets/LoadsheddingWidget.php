@@ -13,7 +13,7 @@ class LoadsheddingWidget extends Widget
 
     public function getViewData(): array
     {
-        $schedules = LoadsheddingSchedule::whereNotNull('today_times')->get();
+        $schedules = LoadsheddingSchedule::whereEnabled(true)->whereNotNull('today_times')->get();
 
         return [
             'schedules' => $schedules,

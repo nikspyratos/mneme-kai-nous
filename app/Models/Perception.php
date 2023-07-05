@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Quote> $quotes
  * @property-read int|null $quotes_count
+ *
  * @method static \Database\Factories\PerceptionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Perception newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Perception newQuery()
@@ -29,6 +30,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Perception whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Perception whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Perception whereUpdatedAt($value)
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Quote> $quotes
+ *
  * @mixin \Eloquent
  */
 class Perception extends Model

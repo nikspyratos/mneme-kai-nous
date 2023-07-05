@@ -31,7 +31,7 @@ class UpdateLoadsheddingSchedules extends Command
      */
     public function handle(EskomSePushApiClient $eskomSePushApiClient): void
     {
-        $schedules = LoadsheddingSchedule::all();
+        $schedules = LoadsheddingSchedule::whereEnabled(true);
         foreach ($schedules as $schedule) {
             $schedule->data = $eskomSePushApiClient->getZoneData($schedule->api_id);
             $events = collect($schedule->data['events']);

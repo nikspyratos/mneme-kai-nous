@@ -40,6 +40,7 @@ use Illuminate\Support\Facades\Log;
  * @property-read \App\Models\ExpectedTransactionTemplate|null $template
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
  * @property-read int|null $transactions_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction query()
@@ -60,6 +61,10 @@ use Illuminate\Support\Facades\Log;
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereTallyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereUpdatedAt($value)
+ *
+ * @property-read \App\Models\Tally|null $tally
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
+ *
  * @mixin \Eloquent
  */
 class ExpectedTransaction extends Model

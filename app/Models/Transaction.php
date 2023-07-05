@@ -46,6 +46,7 @@ use Illuminate\Support\Carbon;
  * @property-read string $formatted_listed_balance
  * @property-read Transaction|null $parent
  * @property-read \App\Models\Tally|null $tally
+ *
  * @method static \Database\Factories\TransactionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction inCurrentBudgetMonth()
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction newModelQuery()
@@ -69,6 +70,10 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereTallyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Transaction whereUpdatedAt($value)
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Transaction> $children
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExpectedTransaction> $expectedTransactions
+ *
  * @mixin \Eloquent
  */
 class Transaction extends Model

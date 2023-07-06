@@ -7,6 +7,7 @@ namespace App\Filament\Resources\ExpectedTransactionTemplateResource\Pages;
 use App\Filament\Resources\ExpectedTransactionTemplateResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
 
 class EditExpectedTransactionTemplate extends EditRecord
 {
@@ -17,5 +18,13 @@ class EditExpectedTransactionTemplate extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+        $data['amount'] *= 100;
+        $record->update($data);
+
+        return $record;
     }
 }

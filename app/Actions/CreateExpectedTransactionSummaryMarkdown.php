@@ -9,6 +9,8 @@ use App\Enumerations\TransactionTypes;
 use App\Models\ExpectedTransaction;
 use App\Models\ExpectedTransactionTemplate;
 use App\Services\TallyRolloverDateCalculator;
+use Brick\Money\Currency;
+use Brick\Money\Money;
 use Illuminate\Support\Carbon;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -53,7 +55,9 @@ class CreateExpectedTransactionSummaryMarkdown
 
         $expectedExpensesRequiredSum = $expectedExpensesSum;
         foreach ($expectedExpensesGroups as $expectedExpensesGroup) {
-            $expectedExpensesRequiredSum -= $expectedExpensesGroup['total'];
+            if (! $expectedExpensesGroup['required']) {
+                $expectedExpensesRequiredSum -= $expectedExpensesGroup['total'];
+            }
         }
 
         return [

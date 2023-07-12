@@ -14,9 +14,7 @@
 **Totals**
 *Total: {{ $expectedExpensesSum }}*
 @foreach ($expectedExpensesGroups as $expectedExpensesGroup)
-@if (!$expectedExpensesGroup['required'])
 *Total (w/o {{ $expectedExpensesGroup['title'] }}): {{ $expectedExpensesSum - $expectedExpensesGroup['total'] }}*
-@endif
 @endforeach
 *Total (only required): {{ $expectedExpensesRequiredSum }}*
 @endif

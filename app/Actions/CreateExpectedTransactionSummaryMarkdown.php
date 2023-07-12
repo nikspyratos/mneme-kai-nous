@@ -53,9 +53,7 @@ class CreateExpectedTransactionSummaryMarkdown
 
         $expectedExpensesRequiredSum = $expectedExpensesSum;
         foreach ($expectedExpensesGroups as $expectedExpensesGroup) {
-            if (! $expectedExpensesGroup['required']) {
-                $expectedExpensesRequiredSum -= $expectedExpensesGroup['total'];
-            }
+            $expectedExpensesRequiredSum -= $expectedExpensesGroup['total'];
         }
 
         return [

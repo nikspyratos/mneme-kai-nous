@@ -48,12 +48,12 @@ class BudgetResource extends Resource
                         $component->state($state / 100);
                     })
                     ->required(),
-                Select::make('transaction_type')
+                Select::make('period_type')
                     ->options($periodTypesSelect)
                     ->required(),
                 Repeater::make('identifier')
                     ->schema([
-                        TextInput::make('identifier')->required(),
+                        TextInput::make('identifier'),
                     ])
                     ->columns(1),
                 Select::make('identifier_transaction_type')

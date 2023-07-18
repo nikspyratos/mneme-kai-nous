@@ -30,6 +30,7 @@ class CalculateTotalSpendDue
                 ]
             )
             ->whereIsPaid(false)
+            ->whereEnabled(true)
             ->get();
         $talliesTotal = 0;
         foreach ($tallies as $tally) {
@@ -40,6 +41,7 @@ class CalculateTotalSpendDue
         $creditTotal = ($creditAccounts->sum('debt') - $creditAccounts->sum('balance'));
         $expectedExpensesTotal = $expectedExpenses->sum('amount');
 
+//        dd($talliesTotal, $creditTotal, $expectedExpensesTotal);
         return $talliesTotal + $creditTotal + $expectedExpensesTotal;
     }
 }

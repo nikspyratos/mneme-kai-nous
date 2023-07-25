@@ -76,18 +76,21 @@ class RolloverBudgetMonth extends Command
             $this->info('Creating Expected Transactions for period');
             $expectedTransactionTemplates = ExpectedTransactionTemplate::whereEnabled(true)->get();
             foreach ($expectedTransactionTemplates as $template) {
-                ExpectedTransaction::create(
-                    array_merge(
-                        Arr::only(
-                            $template->toArray(),
-                            get_fillable(ExpectedTransaction::class)
-                        ),
-                        [
-                            'name' => $template->name . ': ' . $nextRolloverDate->monthName . ' ' . $nextRolloverDate->year,
-                            'next_due_date' => $template->getNextDueDate(),
-                        ]
-                    )
-                );
+                $name = $template->name . ': ' . $nextRolloverDate->monthName . ' ' . $nextRolloverDate->year;
+                if (ExpectedTransaction::whereName($name)->doesntExist()) {
+                    ExpectedTransaction::create(
+                        array_merge(
+                            Arr::only(
+                                $template->toArray(),
+                                get_fillable(ExpectedTransaction::class)
+                            ),
+                            [
+                                'name' => $name,
+                                'next_due_date' => $template->getNextDueDate(),
+                            ]
+                        )
+                    );
+                }
             }
             $this->info('---');
         });

@@ -41,7 +41,6 @@ class CalculateTotalSpendDue
         $creditTotal = ($creditAccounts->sum('debt') - $creditAccounts->sum('balance'));
         $expectedExpensesTotal = $expectedExpenses->sum('amount');
 
-//        dd($talliesTotal, $creditTotal, $expectedExpensesTotal);
         return $talliesTotal + $creditTotal + $expectedExpensesTotal;
     }
 }

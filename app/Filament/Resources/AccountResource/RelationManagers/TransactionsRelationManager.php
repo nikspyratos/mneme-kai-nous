@@ -12,13 +12,13 @@ use App\Models\Transaction;
 use Filament\Forms;
 use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\Select;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class TransactionsRelationManager extends RelationManager
 {
@@ -26,7 +26,7 @@ class TransactionsRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'description';
 
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -36,7 +36,7 @@ class TransactionsRelationManager extends RelationManager
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         $transactionCategoriesSelect = EnumHelper::enumToFilamentOptionArray(TransactionCategories::cases());
         $expectedTransactionSelect = ExpectedTransaction::all()->pluck('name', 'id')->toArray();

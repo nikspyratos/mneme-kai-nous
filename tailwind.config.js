@@ -16,10 +16,6 @@ module.exports = {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                danger: colors.rose,
-                primary: colors.emerald,
-                success: colors.emerald,
-                warning: colors.amber,
             },
         },
     },

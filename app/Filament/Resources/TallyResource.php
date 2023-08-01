@@ -12,17 +12,17 @@ use App\Models\Tally;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class TallyResource extends Resource
 {
     protected static ?string $model = Tally::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-sort-ascending';
+    protected static ?string $navigationIcon = 'heroicon-o-bars-arrow-up';
 
     protected static ?string $navigationGroup = 'Finance';
 

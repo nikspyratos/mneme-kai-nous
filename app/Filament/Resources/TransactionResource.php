@@ -20,9 +20,8 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\DeleteAction;
@@ -33,13 +32,14 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
 class TransactionResource extends Resource
 {
     protected static ?string $model = Transaction::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-cash';
+    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
     protected static ?string $navigationGroup = 'Finance';
 
@@ -190,7 +190,7 @@ class TransactionResource extends Resource
                             ->required(),
                         ])
                         ->action('splitTransaction')
-                        ->icon('heroicon-o-view-grid-add')
+                        ->icon('heroicon-o-squares-plus')
                         ->color('success'),
                     Action::make('Owed')
                         ->form([

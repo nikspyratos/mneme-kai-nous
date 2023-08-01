@@ -21,14 +21,14 @@ class ManageQuotes extends ManageRecords
         Excel::import(new QuotesImport, Storage::path($data['file']));
     }
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),
             Actions\Action::make('import')
                 ->label('Import quotes')
                 ->color('success')
-                ->icon('heroicon-o-document-add')
+                ->icon('heroicon-o-document-plus')
                 ->action('importQuotes')
                 ->form([
                     FileUpload::make('file')

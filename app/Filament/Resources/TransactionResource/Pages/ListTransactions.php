@@ -104,7 +104,7 @@ class ListTransactions extends ListRecords
         ]);
     }
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         $firstTransactionDate = Transaction::orderBy('date')->first()->date;
         $lastTransactionDate = Transaction::orderByDesc('date')->first()->date;
@@ -114,7 +114,7 @@ class ListTransactions extends ListRecords
             Action::make('import_bankzero')
                 ->label('Import from BankZero')
                 ->color('success')
-                ->icon('heroicon-o-document-add')
+                ->icon('heroicon-o-document-plus')
                 ->action('importBankZero')
                 ->form([
                     Select::make('account')
@@ -131,7 +131,7 @@ class ListTransactions extends ListRecords
             Action::make('export_tax')
                 ->label('Export Tax-Related')
                 ->color('success')
-                ->icon('heroicon-o-document-download')
+                ->icon('heroicon-o-document-arrow-down')
                 ->action('exportTaxRelated')
                 ->form([
                     DatePicker::make('start_date')

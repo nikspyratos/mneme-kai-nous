@@ -73,7 +73,7 @@ class User extends Authenticatable implements FilamentUser
         'birthdate' => 'datetime',
     ];
 
-    public function canAccessFilament(): bool
+    public function canAccessPanel(\Filament\Panel $panel): bool
     {
         return true;
     }

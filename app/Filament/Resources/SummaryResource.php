@@ -7,11 +7,11 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SummaryResource\Pages;
 use App\Models\Summary;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Table;
 
 class SummaryResource extends Resource
 {

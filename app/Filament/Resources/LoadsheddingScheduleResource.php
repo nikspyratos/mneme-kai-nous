@@ -7,16 +7,16 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LoadsheddingScheduleResource\Pages;
 use App\Models\LoadsheddingSchedule;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 
 class LoadsheddingScheduleResource extends Resource
 {
     protected static ?string $model = LoadsheddingSchedule::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-lightning-bolt';
+    protected static ?string $navigationIcon = 'heroicon-o-bolt';
     protected static ?string $navigationGroup = 'General';
 
     public static function form(Form $form): Form

@@ -17,7 +17,7 @@ class QuoteCards
             Card::make('Quote', $quote->content)
                 ->description($quote->author)
                 ->color('primary')
-                ->icon('heroicon-o-annotation'),
+                ->icon('heroicon-o-chat-bubble-bottom-center-text'),
         ];
     }
 }

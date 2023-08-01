@@ -9,17 +9,17 @@ use App\Models\Quote;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class QuoteResource extends Resource
 {
     protected static ?string $model = Quote::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-annotation';
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-bottom-center-text';
 
     protected static ?string $navigationGroup = 'Perceptions';
 

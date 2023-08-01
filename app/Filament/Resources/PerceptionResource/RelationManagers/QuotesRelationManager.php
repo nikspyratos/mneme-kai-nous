@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Filament\Resources\PerceptionResource\RelationManagers;
 
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 
 class QuotesRelationManager extends RelationManager
 {
@@ -16,7 +16,7 @@ class QuotesRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'content';
 
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -28,7 +28,7 @@ class QuotesRelationManager extends RelationManager
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
             ->columns([

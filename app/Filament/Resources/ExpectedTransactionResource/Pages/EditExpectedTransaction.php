@@ -13,7 +13,7 @@ class EditExpectedTransaction extends EditRecord
 {
     protected static string $resource = ExpectedTransactionResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make(),

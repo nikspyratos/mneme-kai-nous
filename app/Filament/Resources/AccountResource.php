@@ -18,13 +18,13 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Table;
 
 class AccountResource extends Resource
 {
@@ -86,7 +86,7 @@ class AccountResource extends Resource
                                     ->thousandsSeparator(',')
                                 );
                         })
-                        ->visible(fn (Closure $get): bool => in_array($get('type'), [AccountTypes::DEBT->value, AccountTypes::CREDIT->value])),
+                        ->visible(fn (\Filament\Forms\Get $get): bool => in_array($get('type'), [AccountTypes::DEBT->value, AccountTypes::CREDIT->value])),
                     TextInput::make('bank_identifier'),
                     Checkbox::make('has_overdraft')->reactive(),
                     TextInput::make('overdraft_amount')
@@ -101,7 +101,7 @@ class AccountResource extends Resource
                                     ->padFractionalZeros(false) // Pad zeros at the end of the number to always maintain the maximum number of decimal places.
                                     ->thousandsSeparator(',') // Add a separator for thousands.
                                 );
-                        })->hidden(fn (Closure $get) => $get('has_overdraft') == false),
+                        })->hidden(fn (\Filament\Forms\Get $get) => $get('has_overdraft') == false),
                     Checkbox::make('is_primary'),
                     Checkbox::make('is_main')->rules([function (Account $record) {
                         return function (string $attribute, $value, Closure $fail) use ($record) {

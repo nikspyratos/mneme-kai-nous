@@ -12,7 +12,7 @@ class EditSummary extends EditRecord
 {
     protected static string $resource = SummaryResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make(),

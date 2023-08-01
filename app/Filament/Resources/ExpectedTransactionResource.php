@@ -15,21 +15,21 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
 class ExpectedTransactionResource extends Resource
 {
     protected static ?string $model = ExpectedTransaction::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-list';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
 
     protected static ?string $navigationGroup = 'Finance';
 

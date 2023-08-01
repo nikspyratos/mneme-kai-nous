@@ -23,11 +23,11 @@ class AccountsWidget extends BaseWidget
             $content = $account->formatted_balance;
             $description = $account->bank_name;
             $color = 'success';
-            $icon = 'cash';
+            $icon = 'banknotes';
             if ($account->type == AccountTypes::DEBT->value) {
                 $content = $account->formatted_debt_balance . ' / ' . $account->formatted_debt;
                 $description .= ' | Paid off: ' . $account->debt_paid_off_percentage . '%';
-                $icon = 'library';
+                $icon = 'building-library';
             } elseif ($account->type == AccountTypes::CREDIT->value) {
                 $availableCreditPercentage = $account->available_credit_percentage;
                 $content = $account->formatted_balance . ' / ' . $account->formatted_debt;

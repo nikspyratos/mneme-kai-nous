@@ -12,7 +12,7 @@ class ListSummaries extends ListRecords
 {
     protected static string $resource = SummaryResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),

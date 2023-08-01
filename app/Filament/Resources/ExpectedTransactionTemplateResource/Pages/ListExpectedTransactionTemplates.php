@@ -40,7 +40,7 @@ class ListExpectedTransactionTemplates extends ListRecords
         );
     }
 
-    public function showSummary() :string
+    public function showSummary(): string
     {
         return view(
             'markdown_expected_transactions',
@@ -48,7 +48,7 @@ class ListExpectedTransactionTemplates extends ListRecords
         )->render();
     }
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),
@@ -56,7 +56,7 @@ class ListExpectedTransactionTemplates extends ListRecords
                 ->label('Show Summary')
                 ->color('success')
                 ->icon('heroicon-o-document-text')
-                ->action(fn() => [])
+                ->action(fn () => [])
                 ->form([
                     Textarea::make('summary')
                         ->default($this->showSummary()),

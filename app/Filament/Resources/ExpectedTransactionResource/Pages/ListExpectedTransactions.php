@@ -12,7 +12,7 @@ class ListExpectedTransactions extends ListRecords
 {
     protected static string $resource = ExpectedTransactionResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),

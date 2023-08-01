@@ -12,7 +12,7 @@ class ListBudgets extends ListRecords
 {
     protected static string $resource = BudgetResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),

@@ -16,12 +16,12 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class ExpectedTransactionTemplateResource extends Resource
 {

@@ -26,28 +26,12 @@ class Dashboard extends BasePage
         Tally::forCurrentBudgetMonth()->get()->each->calculateBalance();
     }
 
-    protected function getColumns(): int|array
+    public function getColumns(): int|array
     {
         return 5;
     }
 
-    protected function getActions(): array
-    {
-        return [
-            Action::make('download_database')
-                ->label('Download Database')
-                ->color('success')
-                ->icon('heroicon-o-database')
-                ->action('downloadDatabase'),
-            Action::make('recalculate_tallies')
-                ->label('Recalculate Tally Balances')
-                ->color('success')
-                ->icon('heroicon-o-calculator')
-                ->action('recalculateTallyBalances'),
-        ];
-    }
-
-    protected function getWidgets(): array
+    public function getWidgets(): array
     {
         return [
             AccountsWidget::class,
@@ -55,6 +39,22 @@ class Dashboard extends BasePage
             TalliesTableWidget::class,
             SpendingAnalysisWidget::class,
             GeneralWidget::class,
+        ];
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('download_database')
+                ->label('Download Database')
+                ->color('success')
+                ->icon('heroicon-o-circle-stack')
+                ->action('downloadDatabase'),
+            Action::make('recalculate_tallies')
+                ->label('Recalculate Tally Balances')
+                ->color('success')
+                ->icon('heroicon-o-calculator')
+                ->action('recalculateTallyBalances'),
         ];
     }
 }

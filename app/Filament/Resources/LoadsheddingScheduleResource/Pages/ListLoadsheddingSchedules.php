@@ -12,7 +12,7 @@ class ListLoadsheddingSchedules extends ListRecords
 {
     protected static string $resource = LoadsheddingScheduleResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),

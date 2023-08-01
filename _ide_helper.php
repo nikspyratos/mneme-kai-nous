@@ -4,7 +4,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 10.15.0.
+ * Generated for Laravel 10.17.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -2773,6 +2773,18 @@
         {
                         /** @var \Illuminate\View\Compilers\BladeCompiler $instance */
                         return $instance->getCustomDirectives();
+        }
+                    /**
+         * Indicate that the following callable should be used to prepare strings for compilation.
+         *
+         * @param callable $callback
+         * @return \Illuminate\View\Compilers\BladeCompiler 
+         * @static 
+         */ 
+        public static function prepareStringsForCompilationUsing($callback)
+        {
+                        /** @var \Illuminate\View\Compilers\BladeCompiler $instance */
+                        return $instance->prepareStringsForCompilationUsing($callback);
         }
                     /**
          * Register a new precompiler.
@@ -7840,7 +7852,7 @@
      * @method static \Illuminate\Http\Client\PendingRequest sink(string|resource $to)
      * @method static \Illuminate\Http\Client\PendingRequest timeout(int $seconds)
      * @method static \Illuminate\Http\Client\PendingRequest connectTimeout(int $seconds)
-     * @method static \Illuminate\Http\Client\PendingRequest retry(int $times, Closure|int $sleepMilliseconds = 0, callable|null $when = null, bool $throw = true)
+     * @method static \Illuminate\Http\Client\PendingRequest retry(int $times, \Closure|int $sleepMilliseconds = 0, callable|null $when = null, bool $throw = true)
      * @method static \Illuminate\Http\Client\PendingRequest withOptions(array $options)
      * @method static \Illuminate\Http\Client\PendingRequest withMiddleware(callable $middleware)
      * @method static \Illuminate\Http\Client\PendingRequest withRequestMiddleware(callable $middleware)
@@ -19445,6 +19457,16 @@
          *
          * @static 
          */ 
+        public static function setBacktraceLimit($backtraceLimit)
+        {
+                        /** @var \Lorisleiva\Actions\ActionManager $instance */
+                        return $instance->setBacktraceLimit($backtraceLimit);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
         public static function setDesignPatterns($designPatterns)
         {
                         /** @var \Lorisleiva\Actions\ActionManager $instance */
@@ -19459,6 +19481,16 @@
         {
                         /** @var \Lorisleiva\Actions\ActionManager $instance */
                         return $instance->getDesignPatterns();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function registerDesignPattern($designPattern)
+        {
+                        /** @var \Lorisleiva\Actions\ActionManager $instance */
+                        return $instance->registerDesignPattern($designPattern);
         }
                     /**
          * 
@@ -19505,20 +19537,20 @@
          *
          * @static 
          */ 
-        public static function identifyAndDecorate($instance, $limit = 10)
+        public static function identifyAndDecorate($instance)
         {
                         /** @var \Lorisleiva\Actions\ActionManager $instance */
-                        return $instance->identifyAndDecorate($instance, $limit);
+                        return $instance->identifyAndDecorate($instance);
         }
                     /**
          * 
          *
          * @static 
          */ 
-        public static function identifyFromBacktrace($usedTraits, $limit = 10, $frame = null)
+        public static function identifyFromBacktrace($usedTraits, $frame = null)
         {
                         /** @var \Lorisleiva\Actions\ActionManager $instance */
-                        return $instance->identifyFromBacktrace($usedTraits, $limit, $frame);
+                        return $instance->identifyFromBacktrace($usedTraits, $frame);
         }
                     /**
          * 

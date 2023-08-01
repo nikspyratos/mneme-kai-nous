@@ -19175,6 +19175,16 @@
          *
          * @static 
          */ 
+        public static function isDiscoverable($componentNameOrClass)
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->isDiscoverable($componentNameOrClass);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
         public static function resolveMissingComponent($resolver)
         {
                         /** @var \Livewire\LivewireManager $instance */
@@ -19269,6 +19279,16 @@
         {
                         /** @var \Livewire\LivewireManager $instance */
                         return $instance->componentHasBeenRendered();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function forceAssetInjection()
+        {
+                        /** @var \Livewire\LivewireManager $instance */
+                        return $instance->forceAssetInjection();
         }
                     /**
          * 

@@ -7,10 +7,13 @@ namespace App\Filament\Resources;
 use App\Enumerations\Currencies;
 use App\Enumerations\DuePeriods;
 use App\Enumerations\TransactionTypes;
-use App\Filament\Resources\ExpectedTransactionTemplateResource\Pages;
+use App\Filament\Resources\ExpectedTransactionTemplateResource\Pages\CreateExpectedTransactionTemplate;
+use App\Filament\Resources\ExpectedTransactionTemplateResource\Pages\EditExpectedTransactionTemplate;
+use App\Filament\Resources\ExpectedTransactionTemplateResource\Pages\ListExpectedTransactionTemplates;
 use App\Helpers\EnumHelper;
+use App\Models\ExpectedTransaction;
 use App\Models\ExpectedTransactionTemplate;
-use Filament\Forms;
+use App\Services\TallyRolloverDateCalculator;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Repeater;
@@ -18,10 +21,14 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 
 class ExpectedTransactionTemplateResource extends Resource
 {
@@ -39,13 +46,13 @@ class ExpectedTransactionTemplateResource extends Resource
 
         return $form
             ->schema([
-                Forms\Components\TextInput::make('budget_id'),
+                TextInput::make('budget_id'),
                 TextInput::make('name')
                     ->required(),
                 TextInput::make('description'),
                 Select::make('currency')
                     ->options($currenciesSelect)
-                    ->disablePlaceholderSelection()
+                    ->selectablePlaceholder()
                     ->required(),
                 TextInput::make('amount')
                     ->afterStateHydrated(function (TextInput $component, $state) {
@@ -60,11 +67,11 @@ class ExpectedTransactionTemplateResource extends Resource
                     ->minValue(1)
                     ->maxValue(31),
                 TextInput::make('group'),
-                Forms\Components\TextInput::make('identifier'),
-                Forms\Components\TextInput::make('identifier_transaction_type'),
+                TextInput::make('identifier'),
+                TextInput::make('identifier_transaction_type'),
                 Select::make('type')
                     ->options($transactionTypesSelect)
-                    ->disablePlaceholderSelection(),
+                    ->selectablePlaceholder(),
                 Repeater::make('identifier')
                     ->schema([
                         TextInput::make('identifier'),
@@ -72,7 +79,7 @@ class ExpectedTransactionTemplateResource extends Resource
                     ->columns(1),
                 Select::make('identifier_transaction_type')
                     ->options($transactionTypesSelect)
-                    ->disablePlaceholderSelection(),
+                    ->selectablePlaceholder(),
                 Checkbox::make('enabled')
                     ->default(true),
                 Checkbox::make('is_tax_relevant')
@@ -86,21 +93,21 @@ class ExpectedTransactionTemplateResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('budget_id'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('description'),
-                Tables\Columns\TextColumn::make('group'),
+                TextColumn::make('budget_id'),
+                TextColumn::make('name'),
+                TextColumn::make('description'),
+                TextColumn::make('group'),
                 TextColumn::make('amount')->formatStateUsing(fn (ExpectedTransactionTemplate $record): string => $record->formatted_amount),
-                Tables\Columns\TextColumn::make('due_period'),
-                Tables\Columns\TextColumn::make('due_day'),
-                Tables\Columns\TextColumn::make('identifier'),
-                Tables\Columns\TextColumn::make('identifier_transaction_type'),
-                Tables\Columns\IconColumn::make('enabled')
+                TextColumn::make('due_period'),
+                TextColumn::make('due_day'),
+                TextColumn::make('identifier'),
+                TextColumn::make('identifier_transaction_type'),
+                IconColumn::make('enabled')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('type'),
-                Tables\Columns\IconColumn::make('is_tax_relevant')
+                TextColumn::make('type'),
+                IconColumn::make('is_tax_relevant')
                     ->boolean(),
-                Tables\Columns\IconColumn::make('is_paid')
+                IconColumn::make('is_paid')
                     ->boolean(),
             ])
             ->filters([
@@ -112,13 +119,30 @@ class ExpectedTransactionTemplateResource extends Resource
                     ->form([
                         DateTimePicker::make('due_date')->label('Due Date')->required(),
                     ])
-                    ->action('createExpectedTransactionInstance')
+                    ->action(function (ExpectedTransactionTemplate $record, array $data) {
+                        $dueDate = Carbon::parse($data['due_date']);
+                        if ($dueDate->day > TallyRolloverDateCalculator::getRolloverDay()) {
+                            $monthNameDate = TallyRolloverDateCalculator::getNextDate($dueDate);
+                        } else {
+                            $monthNameDate = $dueDate;
+                        }
+                        ExpectedTransaction::create(
+                            array_merge(
+                                Arr::only($record->toArray(), get_fillable(ExpectedTransaction::class)),
+                                [
+                                    'name' => $record->name . ': ' . $monthNameDate->monthName . ' ' . $monthNameDate->year,
+                                    'next_due_date' => $dueDate,
+                                    'is_paid' => false,
+                                ]
+                            )
+                        );
+                    })
                     ->icon('heroicon-o-clipboard')
                     ->color('success'),
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 
@@ -132,9 +156,9 @@ class ExpectedTransactionTemplateResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListExpectedTransactionTemplates::route('/'),
-            'create' => Pages\CreateExpectedTransactionTemplate::route('/create'),
-            'edit' => Pages\EditExpectedTransactionTemplate::route('/{record}/edit'),
+            'index' => ListExpectedTransactionTemplates::route('/'),
+            'create' => CreateExpectedTransactionTemplate::route('/create'),
+            'edit' => EditExpectedTransactionTemplate::route('/{record}/edit'),
         ];
     }
 }

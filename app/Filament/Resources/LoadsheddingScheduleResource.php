@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\LoadsheddingScheduleResource\Pages;
+use App\Filament\Resources\LoadsheddingScheduleResource\Pages\CreateLoadsheddingSchedule;
+use App\Filament\Resources\LoadsheddingScheduleResource\Pages\EditLoadsheddingSchedule;
+use App\Filament\Resources\LoadsheddingScheduleResource\Pages\ListLoadsheddingSchedules;
 use App\Models\LoadsheddingSchedule;
-use Filament\Forms;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
 class LoadsheddingScheduleResource extends Resource
@@ -23,17 +29,17 @@ class LoadsheddingScheduleResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->required(),
-                Forms\Components\TextInput::make('zone')
+                TextInput::make('zone')
                     ->required(),
-                Forms\Components\TextInput::make('api_id')
+                TextInput::make('api_id')
                     ->required(),
-                Forms\Components\TextInput::make('region')
+                TextInput::make('region')
                     ->required(),
-                Forms\Components\Checkbox::make('is_home')
+                Checkbox::make('is_home')
                     ->required(),
-                Forms\Components\Checkbox::make('enabled')
+                Checkbox::make('enabled')
                     ->required(),
             ]);
     }
@@ -42,33 +48,33 @@ class LoadsheddingScheduleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('zone')
+                TextColumn::make('zone')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('api_id')
+                TextColumn::make('api_id')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('region')
+                TextColumn::make('region')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('today_times')
+                TextColumn::make('today_times')
                     ->formatStateUsing(fn (LoadsheddingSchedule $record): string => $record->today_times_formatted)
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ToggleColumn::make('is_home'),
-                Tables\Columns\ToggleColumn::make('enabled'),
+                ToggleColumn::make('is_home'),
+                ToggleColumn::make('enabled'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 
@@ -82,9 +88,9 @@ class LoadsheddingScheduleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLoadsheddingSchedules::route('/'),
-            'create' => Pages\CreateLoadsheddingSchedule::route('/create'),
-            'edit' => Pages\EditLoadsheddingSchedule::route('/{record}/edit'),
+            'index' => ListLoadsheddingSchedules::route('/'),
+            'create' => CreateLoadsheddingSchedule::route('/create'),
+            'edit' => EditLoadsheddingSchedule::route('/{record}/edit'),
         ];
     }
 }

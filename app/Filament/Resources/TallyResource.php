@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Enumerations\Currencies;
-use App\Filament\Resources\TallyResource\Pages;
+use App\Filament\Resources\TallyResource\Pages\CreateTally;
+use App\Filament\Resources\TallyResource\Pages\EditTally;
+use App\Filament\Resources\TallyResource\Pages\ListTallies;
 use App\Filament\Resources\TallyResource\RelationManagers\TransactionsRelationManager;
 use App\Helpers\EnumHelper;
 use App\Models\Tally;
@@ -14,7 +16,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -40,7 +43,7 @@ class TallyResource extends Resource
                     ->required(),
                 Select::make('currency')
                     ->options($currenciesSelect)
-                    ->disablePlaceholderSelection()
+                    ->selectablePlaceholder()
                     ->required(),
                 TextInput::make('balance')
                     ->afterStateHydrated(function (TextInput $component, $state) {
@@ -76,10 +79,10 @@ class TallyResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 
@@ -93,9 +96,9 @@ class TallyResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTallies::route('/'),
-            'create' => Pages\CreateTally::route('/create'),
-            'edit' => Pages\EditTally::route('/{record}/edit'),
+            'index' => ListTallies::route('/'),
+            'create' => CreateTally::route('/create'),
+            'edit' => EditTally::route('/{record}/edit'),
         ];
     }
 }

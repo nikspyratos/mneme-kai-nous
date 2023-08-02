@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\SummaryResource\Pages;
 
 use App\Filament\Resources\SummaryResource;
-use Filament\Pages\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListSummaries extends ListRecords
@@ -15,7 +15,7 @@ class ListSummaries extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 }

@@ -7,7 +7,9 @@ namespace App\Filament\Resources;
 use App\Enumerations\BudgetPeriodTypes;
 use App\Enumerations\Currencies;
 use App\Enumerations\TransactionTypes;
-use App\Filament\Resources\BudgetResource\Pages;
+use App\Filament\Resources\BudgetResource\Pages\CreateBudget;
+use App\Filament\Resources\BudgetResource\Pages\EditBudget;
+use App\Filament\Resources\BudgetResource\Pages\ListBudgets;
 use App\Helpers\EnumHelper;
 use App\Models\Budget;
 use Filament\Forms\Components\Checkbox;
@@ -16,7 +18,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
@@ -41,7 +44,7 @@ class BudgetResource extends Resource
                     ->required(),
                 Select::make('currency')
                     ->options($currenciesSelect)
-                    ->disablePlaceholderSelection()
+                    ->selectablePlaceholder()
                     ->required(),
                 TextInput::make('amount')
                     ->afterStateHydrated(function (TextInput $component, $state) {
@@ -58,7 +61,7 @@ class BudgetResource extends Resource
                     ->columns(1),
                 Select::make('identifier_transaction_type')
                     ->options($transactionTypesSelect)
-                    ->disablePlaceholderSelection(),
+                    ->selectablePlaceholder(),
                 Checkbox::make('enabled'),
             ]);
     }
@@ -79,10 +82,10 @@ class BudgetResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 
@@ -96,9 +99,9 @@ class BudgetResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBudgets::route('/'),
-            'create' => Pages\CreateBudget::route('/create'),
-            'edit' => Pages\EditBudget::route('/{record}/edit'),
+            'index' => ListBudgets::route('/'),
+            'create' => CreateBudget::route('/create'),
+            'edit' => EditBudget::route('/{record}/edit'),
         ];
     }
 }

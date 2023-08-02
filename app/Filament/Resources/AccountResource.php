@@ -19,6 +19,7 @@ use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
@@ -49,17 +50,17 @@ class AccountResource extends Resource
                         ->required(),
                     Select::make('bank_name')
                         ->options($banksSelect)
-                        ->disablePlaceholderSelection(),
+                        ->selectablePlaceholder(),
                     TextInput::make('account_number'),
                     Select::make('currency')
                         ->options($currenciesSelect)
                         ->default(Currencies::RANDS->value)
-                        ->disablePlaceholderSelection()
+                        ->selectablePlaceholder()
                         ->required(),
                     TextInput::make('balance')
                         ->afterStateHydrated(function (TextInput $component, $state) {
                             $component->state($state / 100)
-                                ->mask(fn (TextInput\Mask $mask) => $mask
+                                ->mask(fn ($mask) => $mask
                                     ->numeric()
                                     ->decimalPlaces(2) // Set the number of digits after the decimal point.
                                     ->decimalSeparator('.') // Add a separator for decimal numbers.
@@ -71,13 +72,13 @@ class AccountResource extends Resource
                         }),
                     Select::make('type')
                         ->options($typesSelect)
-                        ->disablePlaceholderSelection()
+                        ->selectablePlaceholder()
                         ->reactive()
                         ->required(),
                     TextInput::make('debt')
                         ->afterStateHydrated(function (TextInput $component, $state) {
                             $component->state($state / 100)
-                                ->mask(fn (TextInput\Mask $mask) => $mask
+                                ->mask(fn ($mask) => $mask
                                     ->numeric()
                                     ->decimalPlaces(2)
                                     ->decimalSeparator('.')
@@ -86,13 +87,13 @@ class AccountResource extends Resource
                                     ->thousandsSeparator(',')
                                 );
                         })
-                        ->visible(fn (\Filament\Forms\Get $get): bool => in_array($get('type'), [AccountTypes::DEBT->value, AccountTypes::CREDIT->value])),
+                        ->visible(fn (Get $get): bool => in_array($get('type'), [AccountTypes::DEBT->value, AccountTypes::CREDIT->value])),
                     TextInput::make('bank_identifier'),
                     Checkbox::make('has_overdraft')->reactive(),
                     TextInput::make('overdraft_amount')
                         ->afterStateHydrated(function (TextInput $component, $state) {
                             $component->state($state / 100)
-                                ->mask(fn (TextInput\Mask $mask) => $mask
+                                ->mask(fn ($mask) => $mask
                                     ->numeric()
                                     ->decimalPlaces(2) // Set the number of digits after the decimal point.
                                     ->decimalSeparator('.') // Add a separator for decimal numbers.
@@ -101,7 +102,7 @@ class AccountResource extends Resource
                                     ->padFractionalZeros(false) // Pad zeros at the end of the number to always maintain the maximum number of decimal places.
                                     ->thousandsSeparator(',') // Add a separator for thousands.
                                 );
-                        })->hidden(fn (\Filament\Forms\Get $get) => $get('has_overdraft') == false),
+                        })->hidden(fn (Get $get) => $get('has_overdraft') == false),
                     Checkbox::make('is_primary'),
                     Checkbox::make('is_main')->rules([function (Account $record) {
                         return function (string $attribute, $value, Closure $fail) use ($record) {

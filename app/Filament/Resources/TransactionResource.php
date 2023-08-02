@@ -73,13 +73,13 @@ class TransactionResource extends Resource
                     ->required(),
                 Select::make('category')
                     ->options($categoriesSelect)
-                    ->disablePlaceholderSelection(),
+                    ->selectablePlaceholder(),
                 Textarea::make('description')
                     ->required(),
                 Textarea::make('detail'),
                 Select::make('currency')
                     ->options($currenciesSelect)
-                    ->disablePlaceholderSelection()
+                    ->selectablePlaceholder()
                     ->required(),
                 TextInput::make('amount')
                     ->afterStateHydrated(function (TextInput $component, $state) {
@@ -163,20 +163,19 @@ class TransactionResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Action::make('Expected')
-                    ->mountUsing((fn (ComponentContainer $form, Transaction $record) => $form->fill([
-                        'expected_transactions' => $record->expectedTransactions->pluck('id')->toArray(),
-                    ])))
-                    ->form([
-                        Select::make('expected_transactions')
-                            ->label('Expected Transactions')
-                            ->relationship('expectedTransactions', 'name')
-                            ->multiple()
-                            ->searchable()
-                            ->required(),
-                    ])
-                    ->action('updateExpectedTransactions')
-                    ->icon('heroicon-o-clipboard')
-                    ->color('success'),
+                        ->mountUsing((fn (ComponentContainer $form, Transaction $record) => $form->fill([
+                            'expected_transactions' => $record->expectedTransactions->pluck('id')->toArray(),
+                        ])))
+                        ->form([
+                            Select::make('expected_transactions')
+                                ->label('Expected Transactions')
+                                ->relationship('expectedTransactions', 'name')
+                                ->multiple()
+                                ->searchable()
+                                ->required(),
+                        ])
+                        ->icon('heroicon-o-clipboard')
+                        ->color('success'),
                     Action::make('Split')
                         ->form([
                             TextInput::make('detail')
@@ -189,7 +188,28 @@ class TransactionResource extends Resource
                             ->numeric()
                             ->required(),
                         ])
-                        ->action('splitTransaction')
+                        ->action(function (Transaction $record, array $data) {
+                            $amount = $data['amount'] * 100;
+                            Transaction::create([
+                                'parent_id' => $record->id,
+                                'account_id' => $record->account_id,
+                                'tally_id' => $record->tally_id,
+                                'date' => $record->date,
+                                'type' => $record->type,
+                                'category' => $record->category,
+                                'description' => $record->description,
+                                'detail' => $data['detail'],
+                                'currency' => $record->currency,
+                                'amount' => $amount,
+                                'fee' => $record->fee,
+                                'listed_balance' => $record->listed_balance,
+                                'data' => $record->data,
+                                'is_tax_relevant' => $record->is_tax_relevant,
+                            ]);
+                            $record->update([
+                                'amount' => $record->amount - $amount,
+                            ]);
+                        })
                         ->icon('heroicon-o-squares-plus')
                         ->color('success'),
                     Action::make('Owed')
@@ -202,7 +222,24 @@ class TransactionResource extends Resource
                             ->required(),
                             Checkbox::make('is_paid'),
                         ])
-                        ->action('owedTransaction')
+                        ->action(function (Transaction $record, array $data) {
+                            $amount = $data['amount'] * 100;
+                            $expectedTransaction = ExpectedTransaction::create([
+                                'name' => 'Owed for transaction ' . $record->id,
+                                'description' => $record->detail,
+                                'group' => 'Owed',
+                                'currency' => $record->currency,
+                                'amount' => $amount,
+                                'is_paid' => $data['is_paid'],
+                                'date' => $record->date,
+                                'type' => TransactionTypes::getOppositeType(TransactionTypes::from($record->type)),
+                                'is_tax_relevant' => $record->is_tax_relevant,
+                            ]);
+                            $record->expectedTransactions()->attach($expectedTransaction->id);
+                            $record->tally->update([
+                                'balance' => $record->tally->balance - $amount,
+                            ]);
+                        })
                         ->visible(fn (Transaction $record) => ! is_null($record->tally_id))
                         ->icon('heroicon-o-scale')
                         ->color('success'),

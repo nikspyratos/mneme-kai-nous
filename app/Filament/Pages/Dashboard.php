@@ -10,22 +10,12 @@ use App\Filament\Widgets\GeneralWidget;
 use App\Filament\Widgets\SpendingAnalysisWidget;
 use App\Filament\Widgets\TalliesTableWidget;
 use App\Models\Tally;
-use Filament\Pages\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Pages\Dashboard as BasePage;
 use Illuminate\Support\Facades\Storage;
 
 class Dashboard extends BasePage
 {
-    public function downloadDatabase()
-    {
-        return Storage::disk('database')->download('database.sqlite');
-    }
-
-    public function recalculateTallyBalances()
-    {
-        Tally::forCurrentBudgetMonth()->get()->each->calculateBalance();
-    }
-
     public function getColumns(): int|array
     {
         return 5;
@@ -49,12 +39,12 @@ class Dashboard extends BasePage
                 ->label('Download Database')
                 ->color('success')
                 ->icon('heroicon-o-circle-stack')
-                ->action('downloadDatabase'),
+                ->action(fn () => Storage::disk('database')->download('database.sqlite')),
             Action::make('recalculate_tallies')
                 ->label('Recalculate Tally Balances')
                 ->color('success')
                 ->icon('heroicon-o-calculator')
-                ->action('recalculateTallyBalances'),
+                ->action(fn () => Tally::forCurrentBudgetMonth()->get()->each->calculateBalance()),
         ];
     }
 }

@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SummaryResource\Pages;
+use App\Filament\Resources\SummaryResource\Pages\CreateSummary;
+use App\Filament\Resources\SummaryResource\Pages\EditSummary;
+use App\Filament\Resources\SummaryResource\Pages\ListSummaries;
 use App\Models\Summary;
-use Filament\Forms;
+use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class SummaryResource extends Resource
@@ -27,8 +32,8 @@ class SummaryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->required(),
-                Forms\Components\KeyValue::make('data')->required(),
+                TextInput::make('name')->required(),
+                KeyValue::make('data')->required(),
             ]);
     }
 
@@ -36,8 +41,8 @@ class SummaryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('data')
+                TextColumn::make('name'),
+                TextColumn::make('data')
                     ->label('Data')
                     ->formatStateUsing(fn (Summary $record): string => json_encode($record->data)),
             ])
@@ -45,11 +50,11 @@ class SummaryResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
                 ViewAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 
@@ -63,9 +68,9 @@ class SummaryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSummaries::route('/'),
-            'create' => Pages\CreateSummary::route('/create'),
-            'edit' => Pages\EditSummary::route('/{record}/edit'),
+            'index' => ListSummaries::route('/'),
+            'create' => CreateSummary::route('/create'),
+            'edit' => EditSummary::route('/{record}/edit'),
         ];
     }
 }

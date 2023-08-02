@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PerceptionResource\Pages;
+use App\Filament\Resources\PerceptionResource\Pages\CreatePerception;
+use App\Filament\Resources\PerceptionResource\Pages\EditPerception;
+use App\Filament\Resources\PerceptionResource\Pages\ListPerceptions;
 use App\Filament\Resources\PerceptionResource\RelationManagers\QuotesRelationManager;
 use App\Models\Perception;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -47,10 +50,10 @@ class PerceptionResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 
@@ -64,9 +67,9 @@ class PerceptionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPerceptions::route('/'),
-            'create' => Pages\CreatePerception::route('/create'),
-            'edit' => Pages\EditPerception::route('/{record}/edit'),
+            'index' => ListPerceptions::route('/'),
+            'create' => CreatePerception::route('/create'),
+            'edit' => EditPerception::route('/{record}/edit'),
         ];
     }
 }

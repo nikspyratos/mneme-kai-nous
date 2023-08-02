@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\TallyResource\Pages;
 
 use App\Filament\Resources\TallyResource;
-use Filament\Pages\Actions;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,7 +16,7 @@ class EditTally extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 

@@ -6,7 +6,8 @@ namespace App\Filament\Resources;
 
 use App\Enumerations\Currencies;
 use App\Enumerations\TransactionTypes;
-use App\Filament\Resources\ExpectedTransactionResource\Pages;
+use App\Filament\Resources\ExpectedTransactionResource\Pages\EditExpectedTransaction;
+use App\Filament\Resources\ExpectedTransactionResource\Pages\ListExpectedTransactions;
 use App\Helpers\EnumHelper;
 use App\Models\ExpectedTransaction;
 use App\Models\Tally;
@@ -17,7 +18,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
@@ -47,7 +49,7 @@ class ExpectedTransactionResource extends Resource
                 TextInput::make('description'),
                 Select::make('currency')
                     ->options($currenciesSelect)
-                    ->disablePlaceholderSelection()
+                    ->selectablePlaceholder()
                     ->required(),
                 TextInput::make('amount')
                     ->afterStateHydrated(function (TextInput $component, $state) {
@@ -59,7 +61,7 @@ class ExpectedTransactionResource extends Resource
                 TextInput::make('group'),
                 Select::make('type')
                     ->options($transactionTypesSelect)
-                    ->disablePlaceholderSelection(),
+                    ->selectablePlaceholder(),
                 Repeater::make('identifier')
                     ->schema([
                         TextInput::make('identifier'),
@@ -67,7 +69,7 @@ class ExpectedTransactionResource extends Resource
                     ->columns(1),
                 Select::make('identifier_transaction_type')
                     ->options($transactionTypesSelect)
-                    ->disablePlaceholderSelection(),
+                    ->selectablePlaceholder(),
                 Checkbox::make('enabled')
                     ->default(true),
                 Checkbox::make('is_tax_relevant')
@@ -118,10 +120,10 @@ class ExpectedTransactionResource extends Resource
                     ->query(fn (Builder $query): Builder => $query->where('is_paid', false)),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                DeleteBulkAction::make(),
             ]);
     }
 
@@ -135,8 +137,8 @@ class ExpectedTransactionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListExpectedTransactions::route('/'),
-            'edit' => Pages\EditExpectedTransaction::route('/{record}/edit'),
+            'index' => ListExpectedTransactions::route('/'),
+            'edit' => EditExpectedTransaction::route('/{record}/edit'),
         ];
     }
 }

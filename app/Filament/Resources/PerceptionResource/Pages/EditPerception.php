@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\PerceptionResource\Pages;
 
 use App\Filament\Resources\PerceptionResource;
-use Filament\Pages\Actions;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditPerception extends EditRecord
@@ -15,7 +15,7 @@ class EditPerception extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

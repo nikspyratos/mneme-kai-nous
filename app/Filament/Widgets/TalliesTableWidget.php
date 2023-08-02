@@ -29,7 +29,7 @@ class TalliesTableWidget extends BaseWidget
         ];
     }
 
-    private function getPercentageColor(Tally $tally)
+    private function getPercentageColor(Tally $tally): string
     {
         $percentage = $tally->getBalancePercentageOfBudget();
         $color = 'success';

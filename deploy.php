@@ -1,7 +1,11 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Deployer;
 
 require 'recipe/laravel.php';
+require 'contrib/crontab.php';
 
 // Config
 
@@ -28,10 +32,11 @@ task('npm', function () {
     run('cd ~/mneme-kai-nous.ankyr.dev/current && npm run build');
 });
 
-task('cron:install', function() {
-    run('crontab ~/mneme-kai-nous.ankyr.dev/current/cron');
-});
+add('crontab:jobs', [
+    '* * * * * cd {{current_path}} && {{bin/php}} artisan schedule:run >> /dev/null 2>&1',
+]);
 
 // Hooks
+after('deploy:success', 'crontab:sync');
 
 after('deploy:failed', 'deploy:unlock');

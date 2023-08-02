@@ -1,1 +1,0 @@
-* * * * * cd ~/mneme-kai-nous.ankyr.dev/current && php artisan schedule:run >> /dev/null 2>&1

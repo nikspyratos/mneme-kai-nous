@@ -11,43 +11,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
-/**
- * App\Models\Budget
- *
- * @property int $id
- * @property string $name
- * @property string $currency
- * @property int|null $amount
- * @property string $period_type
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property array|null $identifier
- * @property string|null $identifier_transaction_type
- * @property int $enabled
- * @property-read string $formatted_amount
- * @property-read string $identifier_string
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tally> $tallies
- * @property-read int|null $tallies_count
- *
- * @method static \Illuminate\Database\Eloquent\Builder|Budget newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Budget newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Budget query()
- * @method static \Illuminate\Database\Eloquent\Builder|Budget whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Budget whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Budget whereCurrency($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Budget whereEnabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Budget whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Budget whereIdentifier($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Budget whereIdentifierTransactionType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Budget whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Budget wherePeriodType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Budget whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Budget withCurrentTallies()
- *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tally> $tallies
- *
- * @mixin \Eloquent
- */
 class Budget extends Model
 {
     use HasFactory, CategorisesTransactions, FormatsMoneyColumns;

@@ -13,59 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Log;
 
-/**
- * App\Models\Account
- *
- * @property int $id
- * @property string $name
- * @property string|null $bank_name
- * @property string|null $account_number
- * @property string $currency
- * @property int|null $balance
- * @property string $type
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property int|null $debt
- * @property bool $has_overdraft
- * @property int|null $overdraft_amount
- * @property string|null $bank_identifier
- * @property array|null $data
- * @property bool $is_primary
- * @property bool|null $is_main
- * @property-read float|null $available_credit_percentage
- * @property-read float|null $debt_paid_off_percentage
- * @property-read string $formatted_balance
- * @property-read string $formatted_debt
- * @property-read string $formatted_debt_balance
- * @property-read string $formatted_overdraft_amount
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
- * @property-read int|null $transactions_count
- *
- * @method static \Database\Factories\AccountFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Account newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Account newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Account query()
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereAccountNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereBalance($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereBankIdentifier($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereBankName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereCurrency($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereData($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereDebt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereHasOverdraft($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereIsMain($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereIsPrimary($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereOverdraftAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereUpdatedAt($value)
- *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
- *
- * @mixin \Eloquent
- */
 class Account extends Model
 {
     use HasFactory, FormatsMoneyColumns;

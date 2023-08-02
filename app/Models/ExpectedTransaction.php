@@ -11,62 +11,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 
-/**
- * App\Models\ExpectedTransaction
- *
- * @property int $id
- * @property string $name
- * @property string|null $description
- * @property string|null $group
- * @property string $currency
- * @property int|null $amount
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property array|null $identifier
- * @property string|null $identifier_transaction_type
- * @property int $enabled
- * @property string $type
- * @property int $is_tax_relevant
- * @property Carbon|null $next_due_date
- * @property bool $is_paid
- * @property int|null $expected_transaction_template_id
- * @property int|null $tally_id
- * @property-read \App\Models\Budget|null $budget
- * @property-read string $formatted_amount
- * @property-read string $identifier_string
- * @property-read \App\Models\ExpectedTransactionTemplate|null $template
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
- * @property-read int|null $transactions_count
- *
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction query()
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereCurrency($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereEnabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereExpectedTransactionTemplateId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereGroup($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereIdentifier($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereIdentifierTransactionType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereIsPaid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereIsTaxRelevant($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereNextDueDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereTallyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransaction whereUpdatedAt($value)
- *
- * @property-read \App\Models\Tally|null $tally
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Transaction> $transactions
- *
- * @mixin \Eloquent
- */
 class ExpectedTransaction extends Model
 {
     use HasFactory, CategorisesTransactions, FormatsMoneyColumns;

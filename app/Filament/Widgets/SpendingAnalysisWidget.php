@@ -16,7 +16,7 @@ class SpendingAnalysisWidget extends BaseWidget
 {
     protected static ?string $heading = 'Spending Analysis';
 
-    protected int|string|array $columnSpan = 1;
+    protected int|string|array $columnSpan = 2;
 
     protected function getTableQuery(): Builder
     {

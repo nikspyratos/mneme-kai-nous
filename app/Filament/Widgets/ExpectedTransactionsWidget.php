@@ -17,7 +17,7 @@ class ExpectedTransactionsWidget extends BaseWidget
 {
     protected static ?string $heading = 'Expected Expenses';
 
-    protected int|string|array $columnSpan = 2;
+    protected int|string|array $columnSpan = 3;
 
     protected function getTableQuery(): Builder
     {

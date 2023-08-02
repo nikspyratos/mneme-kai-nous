@@ -13,7 +13,7 @@ set('repository', 'git@github.com:nikspyratos/mneme-kai-nous.git');
 
 add('shared_files', []);
 add('shared_dirs', ['database']);
-add('writable_dirs', []);
+add('writable_dirs', ['database']);
 
 // Hosts
 

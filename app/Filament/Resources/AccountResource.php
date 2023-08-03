@@ -21,6 +21,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
+use Filament\Support\RawJs;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -60,15 +61,9 @@ class AccountResource extends Resource
                     TextInput::make('balance')
                         ->afterStateHydrated(function (TextInput $component, $state) {
                             $component->state($state / 100)
-                                ->mask(fn ($mask) => $mask
-                                    ->numeric()
-                                    ->decimalPlaces(2) // Set the number of digits after the decimal point.
-                                    ->decimalSeparator('.') // Add a separator for decimal numbers.
-                                    ->mapToDecimalSeparator([',']) // Map additional characters to the decimal separator.
-                                    ->normalizeZeros(false) // Append or remove zeros at the end of the number.
-                                    ->padFractionalZeros(false) // Pad zeros at the end of the number to always maintain the maximum number of decimal places.
-                                    ->thousandsSeparator(',') // Add a separator for thousands.
-                                );
+                                ->mask(RawJs::make(<<<'JS'
+                                        $money($input, '.', ',', 2)
+                                  JS));
                         }),
                     Select::make('type')
                         ->options($typesSelect)
@@ -78,30 +73,20 @@ class AccountResource extends Resource
                     TextInput::make('debt')
                         ->afterStateHydrated(function (TextInput $component, $state) {
                             $component->state($state / 100)
-                                ->mask(fn ($mask) => $mask
-                                    ->numeric()
-                                    ->decimalPlaces(2)
-                                    ->decimalSeparator('.')
-                                    ->normalizeZeros(false)
-                                    ->padFractionalZeros(false)
-                                    ->thousandsSeparator(',')
-                                );
+                                ->mask(RawJs::make(<<<'JS'
+                                        $money($input, '.', ',', 2)
+                                  JS));
                         })
                         ->visible(fn (Get $get): bool => in_array($get('type'), [AccountTypes::DEBT->value, AccountTypes::CREDIT->value])),
                     TextInput::make('bank_identifier'),
                     Checkbox::make('has_overdraft')->reactive(),
                     TextInput::make('overdraft_amount')
+
                         ->afterStateHydrated(function (TextInput $component, $state) {
                             $component->state($state / 100)
-                                ->mask(fn ($mask) => $mask
-                                    ->numeric()
-                                    ->decimalPlaces(2) // Set the number of digits after the decimal point.
-                                    ->decimalSeparator('.') // Add a separator for decimal numbers.
-                                    ->mapToDecimalSeparator([',']) // Map additional characters to the decimal separator.
-                                    ->normalizeZeros(false) // Append or remove zeros at the end of the number.
-                                    ->padFractionalZeros(false) // Pad zeros at the end of the number to always maintain the maximum number of decimal places.
-                                    ->thousandsSeparator(',') // Add a separator for thousands.
-                                );
+                                ->mask(RawJs::make(<<<'JS'
+                                    $money($input, '.', ',', 2)
+                                JS));
                         })->hidden(fn (Get $get) => $get('has_overdraft') == false),
                     Checkbox::make('is_primary'),
                     Checkbox::make('is_main')->rules([function (Account $record) {

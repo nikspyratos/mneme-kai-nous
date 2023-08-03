@@ -81,7 +81,6 @@ class AccountResource extends Resource
                     TextInput::make('bank_identifier'),
                     Checkbox::make('has_overdraft')->reactive(),
                     TextInput::make('overdraft_amount')
-
                         ->afterStateHydrated(function (TextInput $component, $state) {
                             $component->state($state / 100)
                                 ->mask(RawJs::make(<<<'JS'

@@ -8,6 +8,7 @@ use App\Filament\Resources\AccountResource;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class EditAccount extends EditRecord
 {
@@ -23,13 +24,13 @@ class EditAccount extends EditRecord
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
         if (isset($data['balance'])) {
-            $data['balance'] *= 100;
+            $data['balance'] = (int)Str::replace([',', '.'], '',  $data['balance']);
         }
         if (isset($data['debt'])) {
-            $data['debt'] *= 100;
+            $data['debt'] = (int)Str::replace([',', '.'], '',  $data['balance']);
         }
         if (isset($data['overdraft_amount'])) {
-            $data['overdraft_amount'] *= 100;
+            $data['overdraft_amount'] = (int)Str::replace([',', '.'], '',  $data['balance']);
         }
         $record->update($data);
 

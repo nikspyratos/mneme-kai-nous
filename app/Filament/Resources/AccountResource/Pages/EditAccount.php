@@ -24,13 +24,13 @@ class EditAccount extends EditRecord
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
         if (isset($data['balance'])) {
-            $data['balance'] = (int)Str::replace([',', '.'], '',  $data['balance']);
+            $data['balance'] = (int)Str::replace([',', '.'], '',  $data['balance']) * 100;
         }
         if (isset($data['debt'])) {
-            $data['debt'] = (int)Str::replace([',', '.'], '',  $data['balance']);
+            $data['debt'] = (int)Str::replace([',', '.'], '',  $data['debt']) * 100;
         }
         if (isset($data['overdraft_amount'])) {
-            $data['overdraft_amount'] = (int)Str::replace([',', '.'], '',  $data['balance']);
+            $data['overdraft_amount'] = (int)Str::replace([',', '.'], '',  $data['overdraft_amount']) * 100;
         }
         $record->update($data);
 

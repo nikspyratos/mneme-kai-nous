@@ -18,4 +18,5 @@ yarn-error.log
 /.vscode
 rr
 .rr.yaml
+sqlite/database.sqlite
 database.sqlite

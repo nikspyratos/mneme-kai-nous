@@ -11,9 +11,9 @@ require 'contrib/crontab.php';
 
 set('repository', 'git@github.com:nikspyratos/mneme-kai-nous.git');
 
-add('shared_files', ['database.sqlite']);
-add('shared_dirs', []);
-add('writable_dirs', []);
+add('shared_files', []);
+add('shared_dirs', ['sqlite']);
+add('writable_dirs', ['sqlite']);
 
 // Hosts
 

@@ -33,7 +33,6 @@ namespace App\Models{
  * @property-read float|null $available_credit_percentage
  * @property-read float|null $debt_paid_off_percentage
  * @property-read string $formatted_balance
- * @property-read string $formatted_balance_with_signs
  * @property-read string $formatted_debt
  * @property-read string $formatted_debt_balance
  * @property-read string $formatted_overdraft_amount

@@ -1,5 +1,5 @@
 #!/bin/sh
 
-vendor/bin/dep composer 207.154.230.127
-vendor/bin/dep npm 207.154.230.127
-vendor/bin/dep deploy 207.154.230.127
+vendor/bin/dep composer 13.246.221.228
+vendor/bin/dep npm 13.246.221.228
+vendor/bin/dep deploy 13.246.221.228

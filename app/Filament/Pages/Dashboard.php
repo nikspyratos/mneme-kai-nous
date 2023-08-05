@@ -39,7 +39,7 @@ class Dashboard extends BasePage
                 ->label('Download Database')
                 ->color('success')
                 ->icon('heroicon-o-circle-stack')
-                ->action(fn () => Storage::disk('database')->download('database.sqlite')),
+                ->action(fn () => Storage::disk('root')->download('sqlite/database.sqlite')),
             Action::make('recalculate_tallies')
                 ->label('Recalculate Tally Balances')
                 ->color('success')

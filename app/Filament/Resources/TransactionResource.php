@@ -128,7 +128,7 @@ class TransactionResource extends Resource
                     ->label('Amount'),
                 IconColumn::make('categorised')
                     ->boolean()
-                    ->state(fn (Transaction $record) => $record->expectedTransactions()->exists() || ($record->category && $record->tally_id)),
+                    ->state(fn (Transaction $record) => $record->expectedTransactions()->exists() || $record->tally_id),
                 TextColumn::make('description')->limit(20)->searchable(),
                 ToggleColumn::make('is_tax_relevant'),
             ])

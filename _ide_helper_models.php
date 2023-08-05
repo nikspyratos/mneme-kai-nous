@@ -171,6 +171,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ExpectedTransaction> $expectedTransactions
  * @property-read int|null $expected_transactions_count
+ * @property-read string $due_day_formatted
  * @property-read string $formatted_amount
  * @method static \Database\Factories\ExpectedTransactionTemplateFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|ExpectedTransactionTemplate newModelQuery()

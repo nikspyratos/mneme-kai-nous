@@ -85,6 +85,7 @@ class RolloverBudgetMonth extends Command
                                 get_fillable(ExpectedTransaction::class)
                             ),
                             [
+                                'expected_transaction_template_id' => $template->id,
                                 'name' => $name,
                                 'next_due_date' => $template->getNextDueDate(),
                             ]

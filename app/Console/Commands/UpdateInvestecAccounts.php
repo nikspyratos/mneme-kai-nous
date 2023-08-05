@@ -96,7 +96,7 @@ class UpdateInvestecAccounts extends Command
                 $data = [
                     'listed_balance' => $investecTransaction['runningBalance'] * 100,
                     'data' => collect($investecTransaction)
-                        ->except(['transactionDate', 'transactionType', 'description', 'amount', 'runningBalance'])
+                        ->except(['transactionDate', 'description', 'amount', 'runningBalance'])
                         ->toArray(),
                     'type' => $type->value,
                 ];
@@ -144,9 +144,6 @@ class UpdateInvestecAccounts extends Command
                     ],
                     $data
                 );
-                if (! $transaction->category) {
-                    $transaction->update(['category' => $investecTransaction['transactionType']]);
-                }
                 if ($matchedExpectedTransactions->isNotEmpty() && $transaction->expectedTransactions()->count() > 0) {
                     $transaction->expectedTransactions()->sync($matchedExpectedTransactions->pluck('id'));
                 }

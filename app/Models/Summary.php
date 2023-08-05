@@ -33,13 +33,13 @@ class Summary extends Model
             ->groupBy('category')
             ->get()
             ->toArray();
-        $tallies = Tally::forPeriod($startDate, $endDate)->get()->toArray();
+        $tallies = Tally::forPeriod($startDate, $endDate)->get();
         foreach ($tallies as $tally) {
             $data[$tally->name] = $tally->formatted_balance . ' / ' . $tally->formatted_limit . ' - ' . $tally->getBalancePercentageOfBudget() . '%';
         }
 
         return self::create([
-            'name' => sprintf('Summary: %s - %s', $startDate->toDateString(), $endDate->toDateString()),
+            'name' => sprintf('Summary: %s - %s', $startDate->format('M Y'), $endDate->format('M Y')),
             'data' => $data,
         ]);
     }

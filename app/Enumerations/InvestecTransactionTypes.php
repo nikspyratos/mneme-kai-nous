@@ -14,4 +14,9 @@ enum InvestecTransactionTypes: string
     case BUDGET_INSTALMENT = 'BudgetInstalments';
     case FASTER_PAYMENT_FEE = 'FasterPay';
     case FEES_AND_INTEREST = 'FeesAndInterest';
+
+    public static function values(): array
+    {
+        return array_column(self::cases(), 'value');
+    }
 }

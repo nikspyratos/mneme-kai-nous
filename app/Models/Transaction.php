@@ -87,6 +87,11 @@ class Transaction extends Model
         return $this->formatKeyAsMoneyString('amount');
     }
 
+    public function getFormattedAmountWithSignsAttribute(): string
+    {
+        return $this->formatKeyAsMoneyString('amount', true);
+    }
+
     public function getFormattedFeeAttribute(): string
     {
         return $this->formatKeyAsMoneyString('fee');

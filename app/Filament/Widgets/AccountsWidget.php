@@ -18,9 +18,9 @@ class AccountsWidget extends BaseWidget
     {
         $data = [];
         $accounts = Account::whereIsPrimary(true)->get();
-        $accounts->each(function ($account) use (&$data) {
+        $accounts->each(function (Account $account) use (&$data) {
             $name = $account->type . ': ' . $account->name;
-            $content = $account->formatted_balance;
+            $content = $account->formatted_balance_with_signs;
             $description = $account->bank_name;
             $color = 'success';
             $icon = 'banknotes';

@@ -108,13 +108,13 @@ class AccountResource extends Resource
                 TextColumn::make('name'),
                 TextColumn::make('bank_name'),
                 TextColumn::make('account_number')->toggleable(true, true),
-                TextColumn::make('balance')->formatStateUsing(fn (Account $record): string => $record->formatted_balance),
-                TextColumn::make('debt')->formatStateUsing(fn (Account $record): string => $record->formatted_debt),
+                TextColumn::make('formatted_balance')->label('Balance'),
+                TextColumn::make('formatted_debt')->label('Debt'),
                 TextColumn::make('type'),
                 ToggleColumn::make('has_overdraft')->toggleable(true, true),
-                TextColumn::make('overdraft_amount')
-                    ->toggleable(true, true)
-                    ->formatStateUsing(fn (Account $record): string => $record->formatted_overdraft_amount),
+                TextColumn::make('formatted_overdraft_amount')
+                    ->label('Overdraft Amount')
+                    ->toggleable(true, true),
                 TextColumn::make('bank_identifier')
                     ->toggleable(true, true),
                 TextColumn::make('type'),

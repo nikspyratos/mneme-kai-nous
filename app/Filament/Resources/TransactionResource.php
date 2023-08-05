@@ -124,8 +124,8 @@ class TransactionResource extends Resource
                     ->sortable()
                     ->toggleable(true, true)
                     ->limit(20),
-                TextColumn::make('amount')
-                    ->formatStateUsing(fn (Transaction $record): string => $record->formatted_amount),
+                TextColumn::make('formatted_amount_with_signs')
+                    ->label('Amount'),
                 IconColumn::make('categorised')
                     ->boolean()
                     ->state(fn (Transaction $record) => $record->expectedTransactions()->exists() || ($record->category && $record->tally_id)),

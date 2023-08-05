@@ -10,15 +10,18 @@ use Brick\Money\Money;
 
 trait FormatsMoneyColumns
 {
-    public function formatKeyAsMoneyString(string $key): string
+    public function formatKeyAsMoneyString(string $key, bool $withSigns = false): string
     {
         if (isset($this->$key)) {
             $amount = round($this->$key / 100, 2);
+
             $formatted = Money::of($amount, Currency::of($this->currency))->formatTo('en_ZA');
-            if ($this->type == TransactionTypes::DEBIT->value) {
-                $formatted = '-' . $formatted;
-            } else {
-                $formatted = '+' . $formatted;
+            if ($withSigns && isset($this->type)) {
+                if ($this->type == TransactionTypes::DEBIT->value) {
+                    $formatted = '-' . $formatted;
+                } elseif ($this->type == TransactionTypes::CREDIT->value) {
+                    $formatted = '+' . $formatted;
+                }
             }
 
             return $formatted;

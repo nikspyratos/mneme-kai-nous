@@ -26,16 +26,21 @@ class Summary extends Model
     public static function createForPeriod(Carbon $startDate, Carbon $endDate): self
     {
         $categories = TransactionCategories::values();
-        $data = Transaction::selectRaw('id, currency, category, SUM(amount) as total')
+        $data = [];
+        $transactions = Transaction::selectRaw('id, currency, category, SUM(amount) as total')
             ->where('type', TransactionTypes::DEBIT->value)
             ->whereIn('category', $categories)
             ->whereBetween('date', [$startDate, $endDate])
             ->groupBy('category')
-            ->get()
-            ->toArray();
+            ->get();
         $tallies = Tally::forPeriod($startDate, $endDate)->get();
+
+        foreach ($transactions as $transaction) {
+            $data[$transaction->category] = $transaction->formatKeyAsMoneyString('total');
+        }
         foreach ($tallies as $tally) {
-            $data[$tally->name] = $tally->formatted_balance . ' / ' . $tally->formatted_limit . ' - ' . $tally->getBalancePercentageOfBudget() . '%';
+            $data[$tally->name] = $tally->formatted_balance;
+            $data[$tally->name . ' Percentage'] = $tally->getBalancePercentageOfBudget() . '%';
         }
 
         return self::create([

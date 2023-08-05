@@ -22,7 +22,7 @@ class SummaryResource extends Resource
 {
     protected static ?string $model = Summary::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard';
+    protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
 
     protected static ?string $navigationGroup = 'Finance';
 
@@ -42,10 +42,8 @@ class SummaryResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name'),
-                TextColumn::make('data')
-                    ->label('Data')
-                    ->formatStateUsing(fn (Summary $record): string => json_encode($record->data)),
             ])
+            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])

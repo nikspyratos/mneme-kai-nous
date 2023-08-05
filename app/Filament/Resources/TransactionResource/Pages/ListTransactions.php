@@ -17,6 +17,8 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ListRecords\Tab;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -24,6 +26,19 @@ use Maatwebsite\Excel\Facades\Excel;
 class ListTransactions extends ListRecords
 {
     protected static string $resource = TransactionResource::class;
+
+    public function getTabs(): array
+    {
+        return [
+            'all' => Tab::make('All')->icon('heroicon-o-clipboard-document-list'),
+            'Expected' => Tab::make('Expected')
+                ->icon('heroicon-o-list-bullet')
+                ->modifyQueryUsing(fn (Builder $query) => $query->has('expectedTransactions')),
+            'Tax Relevant' => Tab::make('Tax Relevant')
+                ->icon('heroicon-o-building-storefront')
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('is_tax_relevant', true)),
+        ];
+    }
 
     protected function getHeaderActions(): array
     {

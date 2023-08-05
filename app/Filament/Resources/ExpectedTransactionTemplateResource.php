@@ -24,8 +24,8 @@ use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
@@ -93,22 +93,13 @@ class ExpectedTransactionTemplateResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('budget_id'),
                 TextColumn::make('name'),
-                TextColumn::make('description'),
+                TextColumn::make('description')->toggleable(true, true),
                 TextColumn::make('group'),
                 TextColumn::make('amount')->formatStateUsing(fn (ExpectedTransactionTemplate $record): string => $record->formatted_amount),
-                TextColumn::make('due_period'),
-                TextColumn::make('due_day'),
-                TextColumn::make('identifier'),
-                TextColumn::make('identifier_transaction_type'),
-                IconColumn::make('enabled')
-                    ->boolean(),
-                TextColumn::make('type'),
-                IconColumn::make('is_tax_relevant')
-                    ->boolean(),
-                IconColumn::make('is_paid')
-                    ->boolean(),
+                TextColumn::make('due_day_formatted')->label('Due'),
+                ToggleColumn::make('enabled'),
+                ToggleColumn::make('is_tax_relevant'),
             ])
             ->filters([
                 //

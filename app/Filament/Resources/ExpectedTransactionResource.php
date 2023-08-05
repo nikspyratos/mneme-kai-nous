@@ -20,7 +20,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\Filter;
@@ -92,21 +91,12 @@ class ExpectedTransactionResource extends Resource
 
         return $table
             ->columns([
-                TextColumn::make('template')
-                    ->label('Template ID')
-                    ->formatStateUsing(fn (ExpectedTransaction $record): string => (string) $record->template?->id),
-                SelectColumn::make('tally_id')
-                    ->label('Tally')
-                    ->options($talliesSelect)
-                    ->sortable()
-                    ->searchable(),
                 TextColumn::make('name'),
-                TextColumn::make('description')->limit(20),
+                TextColumn::make('description')->toggleable(true, true)->limit(20),
                 TextColumn::make('group'),
                 TextColumn::make('amount')->formatStateUsing(fn (ExpectedTransaction $record): string => $record->formatted_amount),
                 TextColumn::make('next_due_date')->date(),
                 ToggleColumn::make('enabled'),
-                TextColumn::make('type'),
                 ToggleColumn::make('is_tax_relevant'),
                 ToggleColumn::make('is_paid'),
             ])

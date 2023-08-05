@@ -27,7 +27,7 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Columns\SelectColumn;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\Filter;
@@ -122,18 +122,13 @@ class TransactionResource extends Resource
                     ->searchable(),
                 TextColumn::make('account.name')
                     ->sortable()
+                    ->toggleable(true, true)
                     ->limit(20),
-                TextColumn::make('amount')->formatStateUsing(fn (Transaction $record): string => $record->formatted_amount),
-                SelectColumn::make('tally_id')
-                    ->label('Tally')
-                    ->options($talliesSelect)
-                    ->sortable()
-                    ->searchable(),
-                SelectColumn::make('category')
-                    ->options($transactionCategoriesSelect)
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('type'),
+                TextColumn::make('amount')
+                    ->formatStateUsing(fn (Transaction $record): string => $record->formatted_amount),
+                IconColumn::make('categorised')
+                    ->boolean()
+                    ->state(fn (Transaction $record) => $record->expectedTransactions()->exists() || ($record->category && $record->tally_id)),
                 TextColumn::make('description')->limit(20)->searchable(),
                 ToggleColumn::make('is_tax_relevant'),
             ])
@@ -151,17 +146,25 @@ class TransactionResource extends Resource
                     ->options(EnumHelper::enumToFilamentOptionArray(TransactionCategories::cases()))
                     ->attribute('category'),
                 Filter::make('No Tally')->query(fn (Builder $query) => $query->whereNull('tally_id')),
-                //                Filter::make('Has Expected Transaction(s)')->query(fn (Builder $query) => $query->whereHas('expectedTransactions')),
-                //                Filter::make('No Expected Transaction(s)')->query(fn (Builder $query) => $query->whereDoesntHave('expectedTransactions')),
                 Filter::make('Has Category')->query(fn (Builder $query) => $query->whereIn('category', TransactionCategories::values())),
                 Filter::make('No Category')->query(fn (Builder $query) => $query->whereNull('category')->orWhereNotIn('category', TransactionCategories::values())),
-                Filter::make('Tax Relevant')->query(fn (Builder $query) => $query->where('is_tax_relevant', true)),
-                Filter::make('Tax Irrelevant')->query(fn (Builder $query) => $query->where('is_tax_relevant', false)),
                 /** @phpstan-ignore-next-line */ //https://github.com/nunomaduro/larastan/issues/1110
                 Filter::make('Current Budget Month')->query(fn (Builder $query) => $query->inCurrentBudgetMonth()),
             ])
             ->actions([
                 ActionGroup::make([
+                    Action::make('Categorise')
+                        ->form([
+                            Select::make('tally_id')
+                                ->label('Tally')
+                                ->options($talliesSelect)
+                                ->required(),
+                            Select::make('category')
+                                ->options($transactionCategoriesSelect),
+                        ])
+                        ->icon('heroicon-o-inbox-stack')
+                        ->color('success')
+                        ->action(fn (Transaction $record, array $data) => $record->update($data)),
                     Action::make('Expected')
                         ->mountUsing((fn (ComponentContainer $form, Transaction $record) => $form->fill([
                             'expected_transactions' => $record->expectedTransactions->pluck('id')->toArray(),

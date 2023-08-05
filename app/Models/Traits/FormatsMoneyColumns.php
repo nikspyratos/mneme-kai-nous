@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Traits;
 
+use App\Enumerations\TransactionTypes;
 use Brick\Money\Currency;
 use Brick\Money\Money;
 
@@ -13,8 +14,14 @@ trait FormatsMoneyColumns
     {
         if (isset($this->$key)) {
             $amount = round($this->$key / 100, 2);
+            $formatted = Money::of($amount, Currency::of($this->currency))->formatTo('en_ZA');
+            if ($this->type == TransactionTypes::DEBIT->value) {
+                $formatted = '-' . $formatted;
+            } else {
+                $formatted = '+' . $formatted;
+            }
 
-            return Money::of($amount, Currency::of($this->currency))->formatTo('en_ZA');
+            return $formatted;
         }
 
         return 'N/A';

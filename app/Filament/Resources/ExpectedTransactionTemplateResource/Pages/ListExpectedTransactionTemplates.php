@@ -7,9 +7,9 @@ namespace App\Filament\Resources\ExpectedTransactionTemplateResource\Pages;
 use App\Actions\CreateExpectedTransactionSummaryMarkdown;
 use App\Filament\Resources\ExpectedTransactionTemplateResource;
 use Filament\Actions\Action;
+use Filament\Actions\CreateAction;
 use Filament\Forms\Components\Textarea;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Tables\Actions\CreateAction;
 use Illuminate\Support\Carbon;
 
 class ListExpectedTransactionTemplates extends ListRecords

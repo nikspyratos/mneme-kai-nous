@@ -36,6 +36,20 @@ class ExpectedTransactionTemplate extends Model
         'identifier' => 'array',
     ];
 
+    public function getDueDayFormattedAttribute(): string
+    {
+        $suffix = 'th';
+        if (in_array($this->due_day, [1, 21, 31])) {
+            $suffix = 'st';
+        } elseif (in_array($this->due_day, [2, 22])) {
+            $suffix = 'nd';
+        } elseif (in_array($this->due_day, [3, 23])) {
+            $suffix = 'rd';
+        }
+
+        return $this->due_day . $suffix . ' ' . $this->due_period;
+    }
+
     public function getNextDueDate(): ?Carbon
     {
         $today = Carbon::today();

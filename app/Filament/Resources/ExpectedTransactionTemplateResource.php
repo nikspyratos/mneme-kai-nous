@@ -15,7 +15,7 @@ use App\Models\ExpectedTransaction;
 use App\Models\ExpectedTransactionTemplate;
 use App\Services\TallyRolloverDateCalculator;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -108,7 +108,7 @@ class ExpectedTransactionTemplateResource extends Resource
                 Action::make('create_instance')
                     ->label('Create instance')
                     ->form([
-                        DateTimePicker::make('due_date')->label('Due Date')->required(),
+                        DatePicker::make('due_date')->label('Due Date')->required(),
                     ])
                     ->action(function (ExpectedTransactionTemplate $record, array $data) {
                         $dueDate = Carbon::parse($data['due_date']);

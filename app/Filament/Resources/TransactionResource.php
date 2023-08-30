@@ -16,7 +16,7 @@ use App\Models\Tally;
 use App\Models\Transaction;
 use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -65,7 +65,7 @@ class TransactionResource extends Resource
                 Select::make('tally_id')
                     /** @phpstan-ignore-next-line */ //https://github.com/nunomaduro/larastan/issues/1110
                     ->relationship('tally', 'name', fn (Builder $query) => $query->forCurrentBudgetMonth()),
-                DateTimePicker::make('date')
+                DatePicker::make('date')
                     ->required(),
                 Select::make('type')
                     ->options($transactionTypesSelect)

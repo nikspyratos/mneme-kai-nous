@@ -23,11 +23,11 @@ class Kernel extends ConsoleKernel
         })->hourlyAt(35);
 
         $schedule->command('app:prune-files')->dailyAt('04:00');
-        $schedule->command('app:update-loadshedding-schedules')->dailyAt('04:30');
-        $schedule->command('app:send-logsnag-report')->dailyAt('06:00');
+//        $schedule->command('app:update-loadshedding-schedules')->dailyAt('04:30');
+//        $schedule->command('app:send-logsnag-report')->dailyAt('06:00');
 
         $schedule->command('telescope:prune --hours=48')->monthly();
-        $schedule->command('app:rollover-budget-month')->monthlyOn(config('app.financial_month_rollover_day'));
+//        $schedule->command('app:rollover-budget-month')->monthlyOn(config('app.financial_month_rollover_day'));
     }
 
     /**

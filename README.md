@@ -1,6 +1,15 @@
 # Mneme kai Nous
 
-Personal automation
+This project was my personal finance & small scale personal automation repository. It is now public for interest purposes, as I've moved my budgeting elsewhere.
+
+It can:
+- Track Investec transactional data via the API, by using [my SDK](https://github.com/nikspyratos/investec-sdk-php)
+- Track Woolworths credit card and Absa card transactions via [SMS interception](https://writing.nikspyratos.com/Writing/2023/07-18+Build+Your+Own+Budgeting+-+How+to+track+your+transactions+automatically+from+APIs+and+your+phone)
+- Track Loadshedding with the [ESP API](https://eskomsepush.gumroad.com/)
+- Life percentage tracker
+- Random quotes from quote archives
+
+Made to run with Deployer.
 
 ## Install
 

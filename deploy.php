@@ -17,19 +17,19 @@ add('writable_dirs', ['sqlite']);
 
 // Hosts
 
-host('13.246.221.228')
+host('YOURIPHERE')
     ->set('remote_user', 'deployer')
-    ->set('deploy_path', '~/mneme-kai-nous.ankyr.dev')
-    ->set('ssh_arguments', ['-i ~/.ssh/mkn_aws.pem'])
+    ->set('deploy_path', '~/your_domain_here')
+    ->set('ssh_arguments', ['-i ~/.ssh/your_key_here'])
     ->set('forward_agent', false);
 
 task('composer', function () {
-    run('cd ~/mneme-kai-nous.ankyr.dev/current && composer install');
+    run('cd ~/your_domain_here/current && composer install');
 });
 
 task('npm', function () {
-    run('cd ~/mneme-kai-nous.ankyr.dev/current && npm install');
-    run('cd ~/mneme-kai-nous.ankyr.dev/current && npm run build');
+    run('cd ~/your_domain_here/current && npm install');
+    run('cd ~/your_domain_here/current && npm run build');
 });
 
 add('crontab:jobs', [
